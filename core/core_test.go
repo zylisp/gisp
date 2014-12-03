@@ -1,56 +1,41 @@
 package core
 
 import (
-	"fmt"
-	. "gopkg.in/check.v1"
-	"io"
+	. "github.com/masukomi/check"
 	"testing"
 )
 
-func Test_isInt(t *testing.T) {
-	if isInt(1) != true {
-		t.Error("1 wasn't an integer")
-	}
-	if isInt(4.0) == true {
-		t.Error("4.0 tested as an int")
-	}
+// hook up gocheck into the "go test" runner
+func Test(t *testing.T) { TestingT(t) }
+
+type CoreSuite struct{}
+
+var _ = Suite(&CoreSuite{})
+
+func (s *CoreSuite) Test_isInt(c *C) {
+	c.Assert(isInt(1), IsTrue)
+	c.Assert(isInt(4.0), IsFalse)
 }
 
-func test_isFloat(t *testing.T) {
-	if isFloat(1) == true {
-		t.Error("1 tested as a float")
-	}
-	if isFloat(4.0) != true {
-		t.Error("4.0 wasn't a float")
-	}
+func (s *CoreSuite) Test_isFloat(c *C) {
+	c.Assert(isFloat(1), IsFalse)
+	c.Assert(isFloat(4.0), IsTrue)
+	c.Assert(isFloat(3.5), IsTrue)
 }
 
-func Test_MOD(t *testing.T) {
-	if MOD(4.0, 2.0) != 0 {
-		t.Error("4.0 % 2.0 != 0")
-	}
-	if MOD(7, 3.5) != 1 {
-		t.Error(fmt.Printf(" 7 % 3.5 returned: \"%v\"", MOD(7, 3.5)))
-	}
-	if MOD(4, 2) != 0 {
-		t.Error("4 % 2 != 0")
-	}
+func (s *CoreSuite) Test_MOD(c *C) {
+	// c.Assert(MOD(4.0, 2.0), Equals, 0) // two floats
+	// c.Assert(MOD(4, 2), Equals, 0)     // two ints
+	// c.Assert(MOD(9.0, 3), Equals, 0)   // float, int
+	c.Assert(MOD(7, 3.5), Equals, 1) // int, float
 }
 
-func Test_ADD(t *testing.T) {
-	if ADD(3, 4.1) != 7.1 {
-		t.Error("can't add an int and a float")
-	} else {
-		t.Log("can add int and float")
-	}
-	if ADD(3, 4) != 7.0 {
-		t.Error("can't add two ints")
-	} else {
-		t.Log("can add two int's")
-	}
-	if ADD(3.0, 4.1) != 7.1 {
-		t.Error("Can't add two floats")
-	} else {
-		t.Log("can add two floats")
-	}
+func (s *CoreSuite) Test_ADD(c *C) {
+	// adding ints and floats
+	c.Assert(ADD(3, 4.1), Equals, 7.1)
+	c.Assert(ADD(4.1, 3), Equals, 7.1)
+	// adding ints
+	c.Assert(ADD(3, 4), Equals, 7.0)
+	// adding floats
+	c.Assert(ADD(3.0, 4.1), Equals, 7.1)
 }
