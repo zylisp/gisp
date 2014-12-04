@@ -32,6 +32,8 @@ func MOD(a, b Any) int {
 	return n % m
 }
 
+// ADD any number of int or float64 args
+// ALWAYS returns a float64
 func ADD(args ...Any) float64 {
 	var sum float64 = 0
 
@@ -41,6 +43,8 @@ func ADD(args ...Any) float64 {
 			sum += float64(n.(int))
 		case isFloat(n):
 			sum += n.(float64)
+		default:
+			panic("ADD requires int and/or float64 objects")
 		}
 	}
 
