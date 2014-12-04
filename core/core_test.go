@@ -36,6 +36,7 @@ func (s *CoreSuite) Test_ADD(c *C) {
 	c.Assert(ADD(4.1, 3), Equals, 7.1)
 	// adding ints
 	c.Assert(ADD(3, 4), Equals, 7.0)
+	// NOTE ADD always returns a float
 	// adding floats
 	c.Assert(ADD(3.0, 4.1), Equals, 7.1)
 }

@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/jcla1/gisp/lexer"
+	"github.com/masukomi/gisp/lexer"
 	"fmt"
 	"go/token"
 )
