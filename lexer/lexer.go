@@ -100,8 +100,8 @@ func (l *Lexer) accept(valid string) bool {
 	return false
 }
 
-// acceptRun consumes a run of runes from the valid set.
-func (l *Lexer) acceptRun(valid string) {
+// acceptRuneRun consumes a run of runes from the valid set.
+func (l *Lexer) acceptRuneRun(valid string) {
 	for strings.IndexRune(valid, l.next()) >= 0 {
 	}
 	l.backup()
@@ -203,7 +203,7 @@ func lexIdentifier(l *Lexer) stateFn {
 	for r := l.next(); isAlphaNumeric(r); r = l.next() {
 	}
 	l.backup()
-	
+
 	l.emit(ItemIdent)
 	return lexWhitespace
 }
@@ -255,13 +255,13 @@ func (l *Lexer) scanNumber() bool {
 	if l.accept("0") && l.accept("xX") {
 		digits = "0123456789abcdefABCDEF"
 	}
-	l.acceptRun(digits)
+	l.acceptRuneRun(digits)
 	if l.accept(".") {
-		l.acceptRun(digits)
+		l.acceptRuneRun(digits)
 	}
 	if l.accept("eE") {
 		l.accept("+-")
-		l.acceptRun("0123456789")
+		l.acceptRuneRun("0123456789")
 	}
 	// Is it imaginary?
 	l.accept("i")
