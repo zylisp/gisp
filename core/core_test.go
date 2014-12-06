@@ -15,12 +15,14 @@ var _ = Suite(&CoreSuite{})
 func (s *CoreSuite) Test_isInt(c *C) {
 	c.Assert(isInt(1), IsTrue)
 	c.Assert(isInt(4.0), IsFalse)
+	c.Assert(isInt(int64(3)), IsTrue)
 }
 
 func (s *CoreSuite) Test_isFloat(c *C) {
 	c.Assert(isFloat(1), IsFalse)
 	c.Assert(isFloat(4.0), IsTrue)
 	c.Assert(isFloat(3.5), IsTrue)
+	c.Assert(isFloat(float32(3.5)), IsTrue)
 }
 
 func (s *CoreSuite) Test_MOD(c *C) {

@@ -206,11 +206,10 @@ func LTEQ(args ...Any) bool {
 }
 
 func isFloat(n Any) bool {
-	var typeName = reflect.TypeOf(n).Name()
-	switch {
-	case typeName == "float64":
+	switch n.(type) {
+	case float64:
 		return true
-	case typeName == "float32":
+	case float32:
 		return true
 	default:
 		return false
@@ -218,7 +217,14 @@ func isFloat(n Any) bool {
 }
 
 func isInt(n Any) bool {
-	return reflect.TypeOf(n).Name() == "int"
+	switch n.(type) {
+	case int:
+		return true
+	case int64:
+		return true
+	default:
+		return false
+	}
 }
 
 func Get(args ...Any) Any {
