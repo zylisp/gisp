@@ -35,20 +35,21 @@ func MOD(a, b Any) int {
 // ADD any number of int or float64 args
 // ALWAYS returns a float64
 func ADD(args ...Any) float64 {
-	var sum float64 = 0
-
+	length := len(args)
+	nums := make([]Number, length, length)
 	for i := 0; i < len(args); i++ {
 		switch n := args[i]; {
 		case isInt(n):
-			sum += float64(n.(int))
+			nums[i] = Number{Value: n.(int)}
 		case isFloat(n):
-			sum += n.(float64)
+			nums[i] = Number{Value: n.(float64)}
 		default:
 			panic("ADD requires int and/or float64 objects")
 		}
 	}
-
-	return sum
+	sumNum, _ := AddNumbers(nums...)
+	// TODO: address the potential error there
+	return sumNum.ToFloat()
 }
 
 func SUB(args ...Any) float64 {
@@ -206,6 +207,11 @@ func LTEQ(args ...Any) bool {
 }
 
 func isFloat(n Any) bool {
+	nType := reflect.TypeOf(n)
+	if nType == reflect.TypeOf(Number{}) {
+		return isFloat(n.(Number).Value)
+	}
+
 	switch n.(type) {
 	case float64:
 		return true
@@ -217,6 +223,10 @@ func isFloat(n Any) bool {
 }
 
 func isInt(n Any) bool {
+	nType := reflect.TypeOf(n)
+	if nType == reflect.TypeOf(Number{}) {
+		return isInt(n.(Number).Value)
+	}
 	switch n.(type) {
 	case int:
 		return true
