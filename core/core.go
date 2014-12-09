@@ -47,8 +47,10 @@ func ADD(args ...Any) float64 {
 			panic("ADD requires int and/or float64 objects")
 		}
 	}
-	sumNum, _ := AddNumbers(nums...)
-	// TODO: address the potential error there
+	sumNum, err := AddNumbers(nums...)
+	if err != nil {
+		panic(fmt.Sprintf("%v", err))
+	}
 	return sumNum.ToFloat()
 }
 

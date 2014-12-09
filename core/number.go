@@ -49,6 +49,9 @@ func (n Number) add(args ...Number) (newNum Number, err error) {
 		} else if isFloat(newNum) {
 			newNum.Value = newNum.Value.(float64) + float64(x.Value.(int))
 		} else {
+			// can only happen if someone has constructed
+			// a Number object with something other than a number
+			// in Value
 			err = errors.New("ADD requires int and/or float64 objects")
 		}
 	}
