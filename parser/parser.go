@@ -23,38 +23,38 @@ func Parse(l *lexer.Lexer) []Node {
 }
 
 func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
-	for item := l.NextItem(); item.Type != lexer.ItemEOF; {
+	for item := l.NextAtom(); item.Type != lexer.AtomEOF; {
 		switch t := item.Type; t {
-		case lexer.ItemIdent:
+		case lexer.AtomIdent:
 			tree = append(tree, NewIdentNode(item.Value))
-		case lexer.ItemString:
+		case lexer.AtomString:
 			tree = append(tree, newStringNode(item.Value))
-		case lexer.ItemInt:
+		case lexer.AtomInt:
 			tree = append(tree, newIntNode(item.Value))
-		case lexer.ItemFloat:
+		case lexer.AtomFloat:
 			tree = append(tree, newFloatNode(item.Value))
-		case lexer.ItemComplex:
+		case lexer.AtomComplex:
 			tree = append(tree, newComplexNode(item.Value))
-		case lexer.ItemLeftParen:
+		case lexer.AtomLeftParen:
 			tree = append(tree, newCallNode(parser(l, make([]Node, 0), ')')))
-		case lexer.ItemLeftVect:
+		case lexer.AtomLeftVect:
 			tree = append(tree, newVectNode(parser(l, make([]Node, 0), ']')))
-		case lexer.ItemRightParen:
+		case lexer.AtomRightParen:
 			if lookingFor != ')' {
 				panic(fmt.Sprintf("unexpected \")\" [%d]", item.Pos))
 			}
 			return tree
-		case lexer.ItemRightVect:
+		case lexer.AtomRightVect:
 			if lookingFor != ']' {
 				panic(fmt.Sprintf("unexpected \"]\" [%d]", item.Pos))
 			}
 			return tree
-		case lexer.ItemError:
+		case lexer.AtomError:
 			println(item.Value)
 		default:
-			panic("Bad Item type")
+			panic("Bad Atom type")
 		}
-		item = l.NextItem()
+		item = l.NextAtom()
 	}
 
 	return tree
