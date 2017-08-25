@@ -9,37 +9,51 @@ import (
 
 type Pos int
 
-type Item struct {
-	Type  ItemType
+type Atom struct {
+	Type  AtomType
 	Pos   Pos
 	Value string
 }
 
-type ItemType int
+type AtomType int
 
 const (
-	ItemError ItemType = iota
-	ItemEOF
+	AtomError AtomType = iota
+	AtomEOF
 
-	ItemLeftParen
-	ItemRightParen
-	ItemLeftVect
-	ItemRightVect
+	AtomLeftParen
+	AtomRightParen
+	AtomLeftVect
+	AtomRightVect
 
-	ItemIdent
-	ItemString
-	ItemChar
-	ItemFloat
-	ItemInt
-	ItemComplex
+	AtomIdent
+	AtomString
+	AtomChar
+	AtomFloat
+	AtomInt
+	AtomComplex
 
-	ItemQuote
-	ItemQuasiQuote
-	ItemUnquote
-	ItemUnquoteSplice
+	// Ok, these aren't really atoms but...
+	AtomQuote
+	AtomQuasiQuote
+	AtomUnquote
+	AtomUnquoteSplice
 )
 
 const EOF = -1
+
+var AdditionalAlphaNumRunes map[rune]bool = map[rune]bool{
+	'>': true,
+	'<': true,
+	'=': true,
+	'-': true,
+	'+': true,
+	'*': true,
+	'&': true,
+	'_': true,
+	'/': true,
+	'?': true,
+}
 
 type stateFn func(*Lexer) stateFn
 
@@ -51,7 +65,7 @@ type Lexer struct {
 	start   Pos
 	width   Pos
 	lastPos Pos
-	items   chan Item
+	items   chan Atom
 
 	parenDepth int
 	vectDepth  int
@@ -81,9 +95,9 @@ func (l *Lexer) backup() {
 	l.pos -= l.width
 }
 
-// emit passes an Item back to the client.
-func (l *Lexer) emit(t ItemType) {
-	l.items <- Item{t, l.start, l.input[l.start:l.pos]}
+// emit passes an Atom back to the client.
+func (l *Lexer) emit(t AtomType) {
+	l.items <- Atom{t, l.start, l.input[l.start:l.pos]}
 	l.start = l.pos
 }
 
@@ -100,19 +114,19 @@ func (l *Lexer) accept(valid string) bool {
 	return false
 }
 
-// acceptRun consumes a run of runes from the valid set.
-func (l *Lexer) acceptRun(valid string) {
+// acceptRuneRun consumes a run of runes from the valid set.
+func (l *Lexer) acceptRuneRun(valid string) {
 	for strings.IndexRune(valid, l.next()) >= 0 {
 	}
 	l.backup()
 }
 
 func (l *Lexer) errorf(format string, args ...interface{}) stateFn {
-	l.items <- Item{ItemError, l.start, fmt.Sprintf(format, args...)}
+	l.items <- Atom{AtomError, l.start, fmt.Sprintf(format, args...)}
 	return nil
 }
 
-func (l *Lexer) NextItem() Item {
+func (l *Lexer) NextAtom() Atom {
 	item := <-l.items
 	l.lastPos = item.Pos
 	return item
@@ -122,7 +136,7 @@ func Lex(name, input string) *Lexer {
 	l := &Lexer{
 		name:  name,
 		input: input,
-		items: make(chan Item),
+		items: make(chan Atom),
 	}
 	go l.run()
 	return l
@@ -136,20 +150,20 @@ func (l *Lexer) run() {
 }
 
 func lexLeftVect(l *Lexer) stateFn {
-	l.emit(ItemLeftVect)
+	l.emit(AtomLeftVect)
 
 	return lexWhitespace
 }
 
 func lexRightVect(l *Lexer) stateFn {
-	l.emit(ItemRightVect)
+	l.emit(AtomRightVect)
 
 	return lexWhitespace
 }
 
 // lexes an open parenthesis
 func lexLeftParen(l *Lexer) stateFn {
-	l.emit(ItemLeftParen)
+	l.emit(AtomLeftParen)
 
 	return lexWhitespace
 }
@@ -163,7 +177,7 @@ func lexWhitespace(l *Lexer) stateFn {
 
 	switch r := l.next(); {
 	case r == EOF:
-		l.emit(ItemEOF)
+		l.emit(AtomEOF)
 		return nil
 	case r == '(':
 		return lexLeftParen
@@ -195,7 +209,7 @@ func lexString(l *Lexer) stateFn {
 			return l.errorf("unterminated quoted string")
 		}
 	}
-	l.emit(ItemString)
+	l.emit(AtomString)
 	return lexWhitespace
 }
 
@@ -203,14 +217,14 @@ func lexIdentifier(l *Lexer) stateFn {
 	for r := l.next(); isAlphaNumeric(r); r = l.next() {
 	}
 	l.backup()
-	
-	l.emit(ItemIdent)
+
+	l.emit(AtomIdent)
 	return lexWhitespace
 }
 
 // lex a close parenthesis
 func lexRightParen(l *Lexer) stateFn {
-	l.emit(ItemRightParen)
+	l.emit(AtomRightParen)
 
 	return lexWhitespace
 }
@@ -237,11 +251,11 @@ func lexNumber(l *Lexer) stateFn {
 		if !l.scanNumber() || l.input[l.pos-1] != 'i' {
 			return l.errorf("bad number syntax: %q", l.input[l.start:l.pos])
 		}
-		l.emit(ItemComplex)
+		l.emit(AtomComplex)
 	} else if strings.ContainsRune(l.input[l.start:l.pos], '.') {
-		l.emit(ItemFloat)
+		l.emit(AtomFloat)
 	} else {
-		l.emit(ItemInt)
+		l.emit(AtomInt)
 	}
 
 	return lexWhitespace
@@ -255,13 +269,13 @@ func (l *Lexer) scanNumber() bool {
 	if l.accept("0") && l.accept("xX") {
 		digits = "0123456789abcdefABCDEF"
 	}
-	l.acceptRun(digits)
+	l.acceptRuneRun(digits)
 	if l.accept(".") {
-		l.acceptRun(digits)
+		l.acceptRuneRun(digits)
 	}
 	if l.accept("eE") {
 		l.accept("+-")
-		l.acceptRun("0123456789")
+		l.acceptRuneRun("0123456789")
 	}
 	// Is it imaginary?
 	l.accept("i")
@@ -285,7 +299,7 @@ func isEndOfLine(r rune) bool {
 
 // isAlphaNumeric reports whether r is a valid rune for an identifier.
 func isAlphaNumeric(r rune) bool {
-	return r == '>' || r == '<' || r == '=' || r == '-' || r == '+' || r == '*' || r == '&' || r == '_' || r == '/' || unicode.IsLetter(r) || unicode.IsDigit(r)
+	return AdditionalAlphaNumRunes[r] == true || unicode.IsLetter(r) || unicode.IsDigit(r)
 }
 
 func debug(msg string) {

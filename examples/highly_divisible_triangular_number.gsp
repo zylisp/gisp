@@ -1,5 +1,5 @@
 (ns main
-    "github.com/jcla1/gisp/core"
+    "github.com/masukomi/gisp/core"
     ; "math"
     "fmt")
 

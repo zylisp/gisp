@@ -1,8 +1,8 @@
 package generator
 
 import (
-	"github.com/jcla1/gisp/parser"
-	h "github.com/jcla1/gisp/generator/helpers"
+	"github.com/masukomi/gisp/parser"
+	h "github.com/masukomi/gisp/generator/helpers"
 	"go/ast"
 	"go/token"
 )

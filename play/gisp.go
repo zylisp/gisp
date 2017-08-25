@@ -139,8 +139,8 @@ func (l *lexer) accept(valid string) bool {
 	return false
 }
 
-// acceptRun consumes a run of runes from the valid set.
-func (l *lexer) acceptRun(valid string) {
+// acceptRuneRun consumes a run of runes from the valid set.
+func (l *lexer) acceptRuneRun(valid string) {
 	for strings.IndexRune(valid, l.next()) >= 0 {
 	}
 	l.backup()
@@ -214,7 +214,7 @@ func lexBool(l *lexer) stateFn {
 }
 
 func lexQuote(l *lexer) stateFn {
-	l.acceptRun(" ")
+	l.acceptRuneRun(" ")
 	l.ignore()
 	l.emit(_QUOTE)
 
@@ -245,7 +245,7 @@ func lexQuote(l *lexer) stateFn {
 }
 
 func lexQuasiquote(l *lexer) stateFn {
-	l.acceptRun(" ")
+	l.acceptRuneRun(" ")
 	l.ignore()
 	l.emit(_QUASIQUOTE)
 
@@ -281,7 +281,7 @@ func lexUnquote(l *lexer) stateFn {
 		return lexUnquoteSplice
 	}
 
-	l.acceptRun(" ")
+	l.acceptRuneRun(" ")
 	l.ignore()
 	l.emit(_UNQUOTE)
 
@@ -313,7 +313,7 @@ func lexUnquote(l *lexer) stateFn {
 
 func lexUnquoteSplice(l *lexer) stateFn {
 	r := l.next()
-	l.acceptRun(" ")
+	l.acceptRuneRun(" ")
 	l.ignore()
 	l.emit(_UNQUOTESPLICE)
 
@@ -403,7 +403,7 @@ func lexString(l *lexer) stateFn {
 // digits.  Everything else is crap.
 func lexInt(l *lexer) stateFn {
 	digits := "0123456789"
-	l.acceptRun(digits)
+	l.acceptRuneRun(digits)
 
 	r := l.peek()
 
@@ -433,7 +433,7 @@ func lexInt(l *lexer) stateFn {
 func lexFloat(l *lexer) stateFn {
 
 	digits := "0123456789"
-	l.acceptRun(digits)
+	l.acceptRuneRun(digits)
 
 	l.emit(_FLOAT)
 

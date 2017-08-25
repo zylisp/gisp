@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/jcla1/gisp/generator"
-	"github.com/jcla1/gisp/parser"
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/masukomi/gisp/generator"
+	"github.com/masukomi/gisp/parser"
 	"go/ast"
 	"go/printer"
 	"go/token"

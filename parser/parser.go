@@ -1,121 +1,15 @@
 package parser
 
 import (
-	"github.com/jcla1/gisp/lexer"
 	"fmt"
+	"github.com/masukomi/gisp/lexer"
 	"go/token"
 )
-
-type Node interface {
-	Type() NodeType
-	// Position() Pos
-	String() string
-	Copy() Node
-}
 
 type Pos int
 
 func (p Pos) Position() Pos {
 	return p
-}
-
-type NodeType int
-
-func (t NodeType) Type() NodeType {
-	return t
-}
-
-const (
-	NodeIdent NodeType = iota
-	NodeString
-	NodeNumber
-	NodeCall
-	NodeVector
-)
-
-type IdentNode struct {
-	// Pos
-	NodeType
-	Ident string
-}
-
-func (node *IdentNode) Copy() Node {
-	return NewIdentNode(node.Ident)
-}
-
-func (node *IdentNode) String() string {
-	if node.Ident == "nil" {
-		return "()"
-	}
-
-	return node.Ident
-}
-
-type StringNode struct {
-	// Pos
-	NodeType
-	Value string
-}
-
-func (node *StringNode) Copy() Node {
-	return newStringNode(node.Value)
-}
-
-func (node *StringNode) String() string {
-	return node.Value
-}
-
-type NumberNode struct {
-	// Pos
-	NodeType
-	Value      string
-	NumberType token.Token
-}
-
-func (node *NumberNode) Copy() Node {
-	return &NumberNode{NodeType: node.Type(), Value: node.Value, NumberType: node.NumberType}
-}
-
-func (node *NumberNode) String() string {
-	return node.Value
-}
-
-type VectorNode struct {
-	// Pos
-	NodeType
-	Nodes []Node
-}
-
-func (node *VectorNode) Copy() Node {
-	vect := &VectorNode{NodeType: node.Type(), Nodes: make([]Node, len(node.Nodes))}
-	for i, v := range node.Nodes {
-		vect.Nodes[i] = v.Copy()
-	}
-	return vect
-}
-
-func (node *VectorNode) String() string {
-	return fmt.Sprint(node.Nodes)
-}
-
-type CallNode struct {
-	// Pos
-	NodeType
-	Callee Node
-	Args   []Node
-}
-
-func (node *CallNode) Copy() Node {
-	call := &CallNode{NodeType: node.Type(), Callee: node.Callee.Copy(), Args: make([]Node, len(node.Args))}
-	for i, v := range node.Args {
-		call.Args[i] = v.Copy()
-	}
-	return call
-}
-
-func (node *CallNode) String() string {
-	args := fmt.Sprint(node.Args)
-	return fmt.Sprintf("(%s %s)", node.Callee, args[1:len(args)-1])
 }
 
 var nilNode = NewIdentNode("nil")
@@ -129,38 +23,38 @@ func Parse(l *lexer.Lexer) []Node {
 }
 
 func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
-	for item := l.NextItem(); item.Type != lexer.ItemEOF; {
+	for item := l.NextAtom(); item.Type != lexer.AtomEOF; {
 		switch t := item.Type; t {
-		case lexer.ItemIdent:
+		case lexer.AtomIdent:
 			tree = append(tree, NewIdentNode(item.Value))
-		case lexer.ItemString:
+		case lexer.AtomString:
 			tree = append(tree, newStringNode(item.Value))
-		case lexer.ItemInt:
+		case lexer.AtomInt:
 			tree = append(tree, newIntNode(item.Value))
-		case lexer.ItemFloat:
+		case lexer.AtomFloat:
 			tree = append(tree, newFloatNode(item.Value))
-		case lexer.ItemComplex:
+		case lexer.AtomComplex:
 			tree = append(tree, newComplexNode(item.Value))
-		case lexer.ItemLeftParen:
+		case lexer.AtomLeftParen:
 			tree = append(tree, newCallNode(parser(l, make([]Node, 0), ')')))
-		case lexer.ItemLeftVect:
+		case lexer.AtomLeftVect:
 			tree = append(tree, newVectNode(parser(l, make([]Node, 0), ']')))
-		case lexer.ItemRightParen:
+		case lexer.AtomRightParen:
 			if lookingFor != ')' {
 				panic(fmt.Sprintf("unexpected \")\" [%d]", item.Pos))
 			}
 			return tree
-		case lexer.ItemRightVect:
+		case lexer.AtomRightVect:
 			if lookingFor != ']' {
 				panic(fmt.Sprintf("unexpected \"]\" [%d]", item.Pos))
 			}
 			return tree
-		case lexer.ItemError:
+		case lexer.AtomError:
 			println(item.Value)
 		default:
-			panic("Bad Item type")
+			panic("Bad Atom type")
 		}
-		item = l.NextItem()
+		item = l.NextAtom()
 	}
 
 	return tree

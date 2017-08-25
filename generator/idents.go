@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"github.com/jcla1/gisp/parser"
+	"github.com/masukomi/gisp/parser"
 	"bytes"
 	"go/ast"
 	"regexp"
