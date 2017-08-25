@@ -1,8 +1,8 @@
 package generator
 
 import (
-	h "github.com/masukomi/gisp/generator/helpers"
-	"github.com/masukomi/gisp/parser"
+	h "github.com/rcarmo/gisp/generator/helpers"
+	"github.com/rcarmo/gisp/parser"
 	"go/ast"
 	"go/token"
 )

@@ -1,6 +1,6 @@
 (ns main
     "fmt"
-    "github.com/masukomi/gisp/core")
+    "github.com/rcarmo/gisp/core")
 
 (def main (fn []
     (let [[n 4000000]]

@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"github.com/masukomi/gisp/lexer"
+	"github.com/rcarmo/gisp/lexer"
 	"go/token"
 )
 

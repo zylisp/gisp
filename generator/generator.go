@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"github.com/masukomi/gisp/parser"
+	"github.com/rcarmo/gisp/parser"
 	"fmt"
 	"go/ast"
 	"go/token"
