@@ -9,8 +9,10 @@
 
 ## Status
 
-Project was largely abandoned in 2014, but revived in 2017 with updates from
-various forks as well as some additional cleanup work.
+This project was largely abandoned in 2014, but revived in 2017 with updates
+from various forks as well as some additional cleanup work. It was brought into
+the ZYLISP Github org for exploratory purposes, and received more loving tweaks
+and cleanups. More to come ...
 
 ## Includes
 
