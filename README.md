@@ -4,9 +4,8 @@ Simple (non standard) compiler of Lisp/Scheme to Go.
 
 ## Status
 
-Extant. Project has been largely abandoned since 2014, but I decided to bring
-together the available source code and have a Go (pun intended) at it as a
-weekend project.
+Project was largely abandoned in 2014, but revived in 2017 with updates from
+various forks as well as some additional cleanup work.
 
 ## Includes
 
