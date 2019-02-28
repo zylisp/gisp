@@ -1,5 +1,5 @@
 (ns main
-    "github.com/rcarmo/gisp/core"
+    "github.com/zylisp/gisp/core"
     ; "math"
     "fmt")
 

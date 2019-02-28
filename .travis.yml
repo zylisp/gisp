@@ -1,0 +1,15 @@
+language: go
+go:
+  - 1.12.x
+git:
+  # Needs to include the commit of the latest tag
+  depth: 50
+before_install:
+  - mkdir -p $GOPATH/src/github.com/zylisp
+script:
+  - export GOPATH=${TRAVIS_BUILD_DIR}:${GOPATH}
+  - export PATH=${TRAVIS_BUILD_DIR}/bin:${PATH}
+  - make
+notifications:
+  email:
+      - oubiwann@gmail.com

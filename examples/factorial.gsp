@@ -1,6 +1,6 @@
 (ns main
     "fmt"
-    "github.com/rcarmo/gisp/core")
+    "github.com/zylisp/gisp/core")
 
 (def main (fn []
     (fmt/printf "10! = %d\n" (int (assert float64 (factorial 10))))))

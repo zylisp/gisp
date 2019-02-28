@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	. "github.com/rcarmo/check"
+	. "github.com/masukomi/check"
 	"testing"
 )
 

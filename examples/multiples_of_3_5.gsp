@@ -1,6 +1,6 @@
 (ns main
     "fmt"
-    "github.com/rcarmo/gisp/core")
+    "github.com/zylisp/gisp/core")
 
 (def main (fn []
     (fmt/println (sum-of-multiples 1000))))

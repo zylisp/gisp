@@ -2,7 +2,7 @@
     "fmt"
     "strconv"
     "math/big"
-    "github.com/rcarmo/gisp/core")
+    "github.com/zylisp/gisp/core")
 
 (def main (fn []
     (fmt/println "The sum of the digits of 2^1000 is:"
