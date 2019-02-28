@@ -29,11 +29,65 @@ $ make
 
 ## Usage
 
-From here you can type in forms and you'll get the Go AST back.
-To compile a file:
+Start the REPL:
 
 ```
-> ./gisp filename.gsp
+$ ./bin/gisp
+```
+
+From here you can type in forms and you'll get the Go AST back:
+
+```lisp
+>> (+ 1 1)
+[(+ 1 1)]
+     0  []ast.Expr (len = 1) {
+     1  .  0: *ast.CallExpr {
+     2  .  .  Fun: *ast.SelectorExpr {
+     3  .  .  .  X: *ast.Ident {
+     4  .  .  .  .  NamePos: -
+     5  .  .  .  .  Name: "core"
+     6  .  .  .  }
+     7  .  .  .  Sel: *ast.Ident {
+     8  .  .  .  .  NamePos: -
+     9  .  .  .  .  Name: "ADD"
+    10  .  .  .  }
+    11  .  .  }
+    12  .  .  Lparen: -
+    13  .  .  Args: []ast.Expr (len = 2) {
+    14  .  .  .  0: *ast.Ident {
+    15  .  .  .  .  NamePos: -
+    16  .  .  .  .  Name: "1"
+    17  .  .  .  }
+    18  .  .  .  1: *ast.Ident {
+    19  .  .  .  .  NamePos: -
+    20  .  .  .  .  Name: "1"
+    21  .  .  .  }
+    22  .  .  }
+    23  .  .  Ellipsis: -
+    24  .  .  Rparen: -
+    25  .  }
+    26  }
+```
+
+To exit the REPL, just hit `<CONTROL>-C`.
+
+To generate Go:
+
+```
+$ ./bin/gisp examples/even_fib_terms.gsp > examples/even_fib_terms.go
+```
+
+To compile the generated Go:
+
+```
+$ go build -o ./bin/sum-fib-terms examples/even_fib_terms.go
+```
+
+Then you can run on your system:
+
+```
+$ ./bin/sum-fib-terms
+Sum of all even fibonacci terms below 4000000: 4613732
 ```
 
 ## Functions
