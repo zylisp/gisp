@@ -1,6 +1,11 @@
 # gisp
 
-Simple (non standard) compiler of Lisp/Scheme to Go.
+*Simple (non standard) compiler of Lisp/Scheme to Go*
+
+[![Build Status][travis-badge]][travis]
+[![Tag][tag-badge]][tag]
+[![Go version][go-v]](.travis.yml)
+
 
 ## Status
 
@@ -106,3 +111,14 @@ See [examples](examples) for some Project Euler solutions
 ## License
 
 MIT
+
+
+<!-- Named page links below: /-->
+
+[logo]: media/images/logo-1-250x.png
+[logo-large]: media/images/logo-1.png
+[travis]: https://travis-ci.org/zylisp/gisp
+[travis-badge]: https://travis-ci.org/zylisp/gisp.png?branch=master
+[tag-badge]: https://img.shields.io/github/tag/zylisp/gisp.svg
+[tag]: https://github.com/zylisp/gisp/tags
+[go-v]: https://img.shields.io/badge/Go-1.12-blue.svg
