@@ -7,7 +7,7 @@ LAST_COMMIT = $(shell git rev-parse --short HEAD)
 all: build test
 
 deps:
-	echo
+	@echo
 
 lint-deps:
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
@@ -17,11 +17,11 @@ test-deps:
 	go get github.com/masukomi/check
 
 build: deps
-	/bin/echo "package gisp" > $(VERSION_SRC)
-	/bin/echo "" >> $(VERSION_SRC)
-	/bin/echo "func init() { GITLASTTAG = \"$(LAST_TAG)\"; \
-	GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
-	go install github.com/zylisp/gisp/cmd/gisp
+	@echo "package gisp" > $(VERSION_SRC)
+	@echo "" >> $(VERSION_SRC)
+	@echo "func init() { GITLASTTAG = \"$(LAST_TAG)\"; \
+		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
+	@go install github.com/zylisp/gisp/cmd/gisp
 
 lint: lint-deps
 	golangci-lint run
