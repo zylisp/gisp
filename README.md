@@ -112,7 +112,7 @@ $ zyc examples/even_fib_terms.gsp
 ```
 
 By default, this will create the executable binary file `even_fib_terms` in
-the current working directory. If you'd like to specific the filename (and its
+the current working directory. If you'd like to specify the filename (and its
 path):
 
 ```
@@ -126,7 +126,7 @@ $ ./bin/sum-fib-terms
 Sum of all even fibonacci terms below 4000000: 4613732
 ```
 
-To see the other options available to `zyc`, run `zyc -h`.
+To see the other compiler options available, run `zyc -h`.
 
 
 ## Functions
