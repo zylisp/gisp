@@ -33,49 +33,73 @@ $ export PATH=$PATH:`pwd`/bin
 $ make
 ```
 
+That last step creates the `zylisp` binary and runs all the tests.
+
+
 ## Usage
 
-Start the REPL:
+Start the REPL by executing the binary:
 
 ```
-$ ./bin/gisp
+$ ./bin/zylisp
+```
+```
+Okay, 3, 2, 1 - Let's jam!
+
+Welcome to
+
+/^^^^^^^^/^^ /^^      /^^ /^^       /^^ /^^^^^^^^ /^^^^^^^^^
+       /^^    /^^    /^^  /^^       /^^ /^^       /^^    /^^
+      /^^      /^^ /^^    /^^       /^^ /^^       /^^    /^^
+    /^^          /^^      /^^       /^^ /^^^^^^^^ /^^^^^^^^^
+   /^^           /^^      /^^       /^^       /^^ /^^
+ /^^             /^^      /^^       /^^ /^^   /^^ /^^
+/^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
+
+ZYLISP version: 0.7.0-alpha1/47d1949 [AST mode]
+Go version: go1.12
+
+        Docs: https://zylisp.github.io/zylisp/
+     Project: https://github.com/zylisp/zylisp
+Instructions: Simply type any form to view the generated Go AST.
+        Exit: <CONTROL><C>
+
+AST>
 ```
 
 From here you can type in forms and you'll get the Go AST back:
 
 ```lisp
->> (+ 1 1)
-[(+ 1 1)]
+AST> (do-something 1 2)
+```
+```
+Parsed:
+[(do-something 1 2)]
+AST:
      0  []ast.Expr (len = 1) {
      1  .  0: *ast.CallExpr {
-     2  .  .  Fun: *ast.SelectorExpr {
-     3  .  .  .  X: *ast.Ident {
-     4  .  .  .  .  NamePos: -
-     5  .  .  .  .  Name: "core"
-     6  .  .  .  }
-     7  .  .  .  Sel: *ast.Ident {
-     8  .  .  .  .  NamePos: -
-     9  .  .  .  .  Name: "ADD"
-    10  .  .  .  }
-    11  .  .  }
-    12  .  .  Lparen: -
-    13  .  .  Args: []ast.Expr (len = 2) {
-    14  .  .  .  0: *ast.Ident {
-    15  .  .  .  .  NamePos: -
-    16  .  .  .  .  Name: "1"
-    17  .  .  .  }
-    18  .  .  .  1: *ast.Ident {
-    19  .  .  .  .  NamePos: -
-    20  .  .  .  .  Name: "1"
-    21  .  .  .  }
-    22  .  .  }
-    23  .  .  Ellipsis: -
-    24  .  .  Rparen: -
-    25  .  }
-    26  }
+     2  .  .  Fun: *ast.Ident {
+     3  .  .  .  NamePos: -
+     4  .  .  .  Name: "doSomething"
+     5  .  .  }
+     6  .  .  Lparen: -
+     7  .  .  Args: []ast.Expr (len = 2) {
+     8  .  .  .  0: *ast.Ident {
+     9  .  .  .  .  NamePos: -
+    10  .  .  .  .  Name: "1"
+    11  .  .  .  }
+    12  .  .  .  1: *ast.Ident {
+    13  .  .  .  .  NamePos: -
+    14  .  .  .  .  Name: "2"
+    15  .  .  .  }
+    16  .  .  }
+    17  .  .  Ellipsis: -
+    18  .  .  Rparen: -
+    19  .  }
+    20  }
 ```
 
-To exit the REPL, just hit `<CONTROL>-C`.
+To exit the REPL, just hit `<CONTROL><C>`.
 
 To generate Go:
 
