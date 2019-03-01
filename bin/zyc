@@ -1,0 +1,22 @@
+#!/bin/sh
+
+This script automates the original process of compiling Go bytecode. For
+example, you used to have to do this:
+
+	$ ./bin/gisp examples/even_fib_terms.gsp > examples/even_fib_terms.go
+	$ go build -o ./bin/sum-fib-terms examples/even_fib_terms.go
+
+Now you can just do this:
+
+	$ zyc examples/even_fib_terms.gsp
+
+FILE=$1
+FILENAME_W_EXT=$(basename $FILE)
+FILENAME="${FILENAME_W_EXT%.*}"
+TMPDIR=/tmp/$(mktemp)
+mkdir -p $TMPDIR
+FILENAME_GO=${TMPDIR}/${FILENAME}.go
+echo "Go file: $FILENAME_GO"
+zylisp $FILE > $FILENAME_GO
+go build -o $FILENAME $FILENAME_GO
+echo "Created file at: $FILENAME"

@@ -14,6 +14,7 @@ from various forks as well as some additional cleanup work. It was brought into
 the ZYLISP Github org for exploratory purposes, and received more loving tweaks
 and cleanups. More to come ...
 
+
 ## Includes
 
 - Lexer based on Rob Pike's
@@ -34,6 +35,9 @@ $ make
 ```
 
 That last step creates the `zylisp` binary and runs all the tests.
+
+Note that the ZYLISP instructions and docs assume the `./bin` dir has been
+added to the `PATH` as above.
 
 
 ## Usage
@@ -104,13 +108,15 @@ To exit the REPL, just hit `<CONTROL><C>`.
 To generate Go:
 
 ```
-$ ./bin/gisp examples/even_fib_terms.gsp > examples/even_fib_terms.go
+$ zyc examples/even_fib_terms.gsp
 ```
 
-To compile the generated Go:
+By default, this will create the executable binary file `even_fib_terms` in
+the current working directory. If you'd like to specific the filename (and its
+path):
 
 ```
-$ go build -o ./bin/sum-fib-terms examples/even_fib_terms.go
+$ zyc -o bin/fib-even-terms examples/even_fib_terms.gsp
 ```
 
 Then you can run on your system:
@@ -120,6 +126,9 @@ $ ./bin/sum-fib-terms
 Sum of all even fibonacci terms below 4000000: 4613732
 ```
 
+To see the other options available to `zyc`, run `zyc -h`.
+
+
 ## Functions
 
 ```
@@ -128,11 +137,13 @@ Sum of all even fibonacci terms below 4000000: 4613732
 
 See [examples](examples) for some Project Euler solutions
 
+
 ## Credits
 
 * @jcla1 for the initial implementation
 * @masukomi for adding a number of tests and checks
 * @m90 for README fixes
+
 
 ## License
 
