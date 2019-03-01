@@ -1,4 +1,4 @@
-# gisp
+# ZYLISP
 
 *Simple (non standard) compiler of Lisp/Scheme to Go*
 
@@ -157,8 +157,8 @@ MIT
 
 [logo]: media/images/logo-1-250x.png
 [logo-large]: media/images/logo-1.png
-[travis]: https://travis-ci.org/zylisp/gisp
-[travis-badge]: https://travis-ci.org/zylisp/gisp.png?branch=master
-[tag-badge]: https://img.shields.io/github/tag/zylisp/gisp.svg
-[tag]: https://github.com/zylisp/gisp/tags
+[travis]: https://travis-ci.org/zylisp/zylisp
+[travis-badge]: https://travis-ci.org/zylisp/zylisp.png?branch=master
+[tag-badge]: https://img.shields.io/github/tag/zylisp/zylisp.svg
+[tag]: https://github.com/zylisp/zylisp/tags
 [go-v]: https://img.shields.io/badge/Go-1.12-blue.svg
