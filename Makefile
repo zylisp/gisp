@@ -4,7 +4,7 @@ LAST_COMMIT = $(shell git rev-parse --short HEAD)
 
 .PHONY: build test all
 
-all: build test
+all: build test build-examples
 
 deps:
 	@echo
@@ -44,3 +44,8 @@ test: test-deps
 	cd src/github.com/zylisp/gisp/lexer && \
 	go test -v
 
+build-examples:
+	zyc -o ./bin/examples examples/*.gsp
+
+clean-examples:
+	rm -rf ./bin/examples
