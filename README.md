@@ -105,7 +105,7 @@ AST:
 
 To exit the REPL, just hit `<CONTROL><C>`.
 
-To generate Go:
+To compile:
 
 ```
 $ zyc examples/even_fib_terms.gsp
@@ -127,6 +127,9 @@ Sum of all even fibonacci terms below 4000000: 4613732
 ```
 
 To see the other compiler options available, run `zyc -h`.
+
+Note that the compilation process involves parsing, generating an AST,
+generating Go code, and finally, compiling that Go code.
 
 
 ## Functions
