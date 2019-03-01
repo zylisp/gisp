@@ -112,17 +112,24 @@ $ zyc examples/even_fib_terms.gsp
 ```
 
 By default, this will create the executable binary file `even_fib_terms` in
-the current working directory. If you'd like to specify the filename (and its
-path):
+the current working directory. You also have the option of specifying the
+filename/path of the output:
 
 ```
-$ zyc -o bin/fib-even-terms examples/even_fib_terms.gsp
+$ zyc -o bin/examples/fib-even-terms examples/even_fib_terms.gsp
 ```
 
-Then you can run on your system:
+Or, if you prefer, you can compile all the `.gsp` files in a directory, in
+which case the output option is interpreted as a directory:
 
 ```
-$ ./bin/sum-fib-terms
+$ zyc -o bin/examples examples/*.gsp
+```
+
+Then you can run them on your system as any compiled Go:
+
+```
+$ ./bin/examples/sum-fib-terms
 Sum of all even fibonacci terms below 4000000: 4613732
 ```
 
