@@ -49,3 +49,6 @@ build-examples:
 
 clean-examples:
 	rm -rf ./bin/examples
+
+bench-inner-outer:
+	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
