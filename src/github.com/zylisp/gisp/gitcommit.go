@@ -1,3 +1,3 @@
 package gisp
 
-func init() { GITLASTTAG = "0.5.0"; 	GITLASTCOMMIT = "b51f806" }
+func init() { GITLASTTAG = "0.5.0"; 	GITLASTCOMMIT = "bbb9d82" }

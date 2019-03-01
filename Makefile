@@ -21,7 +21,7 @@ build: deps
 	@echo "" >> $(VERSION_SRC)
 	@echo "func init() { GITLASTTAG = \"$(LAST_TAG)\"; \
 		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
-	@go install github.com/zylisp/gisp/cmd/gisp
+	@go install github.com/zylisp/gisp/cmd/zylisp
 
 lint: lint-deps
 	golangci-lint run
