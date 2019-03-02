@@ -8,6 +8,44 @@ import (
 	"os"
 )
 
+func dispatchLisp(isCli bool) {
+	if isCli {
+		// LISP CLI
+		fmt.Println("The Lisp CLI is currently not supported")
+	} else {
+		// LISP REPL
+		fmt.Println("Lisp mode is currently not supported")
+		// repl.LispMain()
+	}
+}
+
+func dispatchAst(isCli bool, files []string) {
+	if isCli {
+		// AST CLI
+		for _, file := range files {
+			// XXX check to see if printing or saving to file; currently
+			generator.PrintGeneratedAst(file)
+		}
+	} else {
+		// AST REPL
+		repl.AstMain()
+	}
+}
+
+func dispatchGoGen(isCli bool, files []string) {
+	if isCli {
+		// Go-generator CLI
+		for _, file := range files {
+			// XXX check to see if printing or saving to file
+			generator.PrintGeneratedGo(file)
+		}
+	} else {
+		// Go-generator REPL
+		fmt.Println("Go-gen mode is currently not supported")
+		// repl.GoGenMain()
+	}
+}
+
 func main() {
 	astPtr := flag.Bool("ast", false, "Enable AST mode")
 	cliPtr := flag.Bool("cli", false, "Run as a CLI tool")
@@ -18,31 +56,16 @@ func main() {
 
 	flag.Parse()
 	files := flag.Args()
-	if *cliPtr == true && len(files) < 1 {
+	if *cliPtr && len(files) < 1 {
 		fmt.Println("You need to provide at least one file upon which to operate")
 		os.Exit(1)
 	}
-	if *lispPtr == true {
-		if *cliPtr == true {
-			fmt.Println("The Lisp CLI is currently not supported")
-		} else if *cliPtr == false {
-			fmt.Println("Lisp mode is currently not supported")
-		}
-	} else if *astPtr == true {
-		if *cliPtr == true {
-			fmt.Println("AST CLI is not currently supported")
-		} else if *cliPtr == false {
-			repl.AstMain()
-		}
-	} else if *goPtr == true {
-		if *cliPtr == true {
-			for _, file := range files {
-				// XXX check to see if printing or saving to file
-				generator.PrintGenerated(file)
-			}
-		} else if *cliPtr == false {
-			fmt.Println("Go mode is currently not supported")
-		}
+	if *lispPtr {
+		dispatchLisp(*cliPtr)
+	} else if *astPtr {
+		dispatchAst(*cliPtr, files)
+	} else if *goPtr {
+		dispatchGoGen(*cliPtr, files)
 	} else {
 		fmt.Println("You need to supply a mode")
 	}

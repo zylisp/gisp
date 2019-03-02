@@ -144,11 +144,20 @@ func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	return fset, a
 }
 
-func WriteGenerated(filename string) {
+func PrintGeneratedAst(filename string) {
+	fset, a := GenerateASTFromLispFile(filename)
+	ast.Print(fset, a)
+	return
+}
+
+func WriteGeneratedGo(filename string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(filename)
 	printer.Fprint(&buf, fset, a)
-	err := ioutil.WriteFile(filename, buf.Bytes(), 0644)
+	// XXX change filename: remove extension, add .go ... also, allow for
+	//     an output file to be provided
+	outfile := fmt.Sprintf("%s.go", filename)
+	err := ioutil.WriteFile(outfile, buf.Bytes(), 0644)
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
@@ -156,7 +165,7 @@ func WriteGenerated(filename string) {
 	}
 }
 
-func PrintGenerated(filename string) {
+func PrintGeneratedGo(filename string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(filename)
 	printer.Fprint(&buf, fset, a)
