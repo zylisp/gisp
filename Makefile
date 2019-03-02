@@ -44,7 +44,6 @@ vet:
 	# go vet github.com/zylisp/gisp/parser
 	go vet github.com/zylisp/gisp/repl
 
-
 test: test-deps
 	echo "running 'go test' for core ..." && \
 	cd src/github.com/zylisp/gisp/core && \
@@ -62,3 +61,14 @@ clean-examples:
 
 bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
+
+view-docs:
+	@echo "View project docs in a browser at:"
+	@echo "  http://localhost:6060/pkg/"
+	@echo "In particular, the zylisp cmd docs are here:"
+	@echo "  http://localhost:6060/pkg/github.com/zylisp/gisp/cmd/zylisp/"
+	@echo
+	@echo "Starting docs HTTP server ..."
+	@GOPATH=`pwd` godoc -http=:6060 -goroot=`pwd` -links=true -notes="BUG|TODO|XXX|ISSUE"
+
+
