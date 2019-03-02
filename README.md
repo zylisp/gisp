@@ -42,10 +42,11 @@ added to the `PATH` as above.
 
 ## Usage
 
-Start the REPL by executing the binary:
+### AST REPL
 
+Start the REPL by executing the binary with the appropriate flag:
 ```
-$ ./bin/zylisp
+$ ./bin/zylisp -ast
 ```
 ```
 Okay, 3, 2, 1 - Let's jam!
@@ -105,6 +106,62 @@ AST:
 
 To exit the REPL, just hit `<CONTROL><C>`.
 
+
+### Go REPL
+
+TBD
+
+
+### Lisp REPL
+
+TBD
+
+
+### CLI
+
+You may also call `zylisp` as a command line tool by passing the `cli` flag.
+Currently, only the following command-line modes are supported:
+
+* `zylisp -go -cli`
+
+To generate Go code from a Lisp file:
+
+```
+$ zylisp -go -cli examples/factorial.gsp
+```
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/zylisp/gisp/core"
+)
+
+func main() {
+    fmt.Printf("10! = %d\n", int(factorial(10).(float64)))
+}
+func factorial(n core.Any) core.Any {
+    return func() core.Any {
+        if core.LT(n, 2) {
+            return 1
+        } else {
+            return core.MUL(n, factorial(core.ADD(n, -1)))
+        }
+    }()
+}
+```
+
+You may also generate code for multiple files at once using file system globs:
+
+```
+$ zylisp -go -cli examples/*.gsp
+```
+
+At a future date writing these to files will also be supported.
+
+
+### Compiler
+
 To compile:
 
 ```
@@ -139,7 +196,7 @@ Note that the compilation process involves parsing, generating an AST,
 generating Go code, and finally, compiling that Go code.
 
 
-## Functions
+## Supported Lisp Functions
 
 ```
 +, -, *, mod, let, if, ns, def, fn, all pre-existing Go functions
