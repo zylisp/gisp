@@ -1,5 +1,5 @@
 /*
-The ZYLISP command line and multi-REPL tool
+The ZYLISP command line and multi-REPL tool.
 
 Overview
 

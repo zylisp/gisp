@@ -1,7 +1,7 @@
 VERSION_SRC = src/github.com/zylisp/gisp/gitcommit.go
 LAST_TAG = $(shell git describe --abbrev=0 --tags)
 LAST_COMMIT = $(shell git rev-parse --short HEAD)
-
+DOC_DIR = doc/doc
 .PHONY: build test all
 
 all: build test build-examples
@@ -62,13 +62,36 @@ clean-examples:
 bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
 
-view-docs:
+docs:
+	mkdir -p $(DOC_DIR)/cmd/zylisp $(DOC_DIR)/core $(DOC_DIR)/generator \
+					 $(DOC_DIR)/generator/helpers $(DOC_DIR)/lexer \
+					 $(DOC_DIR)/parser $(DOC_DIR)/repl
+	godoc -url /pkg/github.com/zylisp/gisp > \
+		$(DOC_DIR)/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/cmd/ > \
+		$(DOC_DIR)/cmd/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/cmd/zylisp > \
+		$(DOC_DIR)/cmd/zylisp/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/core > \
+		$(DOC_DIR)/core/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/generator > \
+		$(DOC_DIR)/generator/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/generator/helpers > \
+		$(DOC_DIR)/generator/helpers/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/lexer > \
+		$(DOC_DIR)/lexer/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/parser > \
+		$(DOC_DIR)/parser/index.html
+	godoc -url /pkg/github.com/zylisp/gisp/repl > \
+		$(DOC_DIR)/repl/index.html
+
+view-docs: docs
 	@echo "View project docs in a browser at:"
 	@echo "  http://localhost:6060/pkg/"
 	@echo "In particular, the zylisp cmd docs are here:"
 	@echo "  http://localhost:6060/pkg/github.com/zylisp/gisp/cmd/zylisp/"
 	@echo
 	@echo "Starting docs HTTP server ..."
-	@GOPATH=`pwd` godoc -http=:6060 -goroot=`pwd` -links=true -notes="BUG|TODO|XXX|ISSUE"
+	@GOPATH=`pwd` godoc -http=:6060 -goroot=`pwd`/doc -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 
