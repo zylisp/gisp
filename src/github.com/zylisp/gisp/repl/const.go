@@ -1,6 +1,6 @@
 package repl
 
-const ReplBanner string = `Okay, 3, 2, 1 - Let's jam!
+const ReplBannerGreeting string = `Okay, 3, 2, 1 - Let's jam!
 
 Welcome to
 

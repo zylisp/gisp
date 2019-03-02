@@ -4,24 +4,24 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/generator"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
 	"go/printer"
 	"go/token"
 	"os"
-	"runtime"
 )
 
 func AstMain() {
-	r := bufio.NewReader(os.Stdin)
+	banner := Banner {
+		commonHelp: CommonReplHelp,
+		greeting: ReplBannerGreeting,
+		modeHelp: AstReplHelp,
+		replMode: "AST",
+	}
+	banner.printBanner()
 
-  fmt.Println(ReplBanner)
-  fmt.Printf("ZYLISP version: %s [AST mode]\n", gisp.Version())
-  fmt.Printf("Go version: %s\n", runtime.Version())
-  fmt.Print(CommonReplHelp)
-  fmt.Println(AstReplHelp)
+	r := bufio.NewReader(os.Stdin)
 
 	for {
 		fmt.Print(AstPrompt)
