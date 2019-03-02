@@ -19,13 +19,18 @@ func AstMain() {
 		modeHelp: AstReplHelp,
 		replMode: "AST",
 	}
-	banner.printBanner()
 
+	banner.printBanner()
 	r := bufio.NewReader(os.Stdin)
 
 	for {
 		fmt.Print(AstPrompt)
 		line, _, _ := r.ReadLine()
+		// XXX we should explore REPL-based packages ... that would allow for a
+		//     more Go-like experience in the REPL, with the ability to declare a
+		//     new package in the REPL, and then refer to work done in the same
+		//     session, but in a different REPL package ... I guess this applies
+		//     more to the Lisp REPL
 		p := parser.ParseFromString("<REPL>", string(line)+"\n")
 		fmt.Printf("Parsed:\n%s\n", p)
 
@@ -40,3 +45,23 @@ func AstMain() {
 		fmt.Printf("%s\n", buf.String())
 	}
 }
+
+// func GoGenMain() {
+// 	banner := Banner {
+// 		commonHelp: CommonReplHelp,
+// 		greeting: ReplBannerGreeting,
+// 		modeHelp: GoGenReplHelp,
+// 		replMode: "Go-gen",
+// 	}
+// 	banner.printBanner()
+// }
+
+// func LispMain() {
+// 	banner := Banner {
+// 		commonHelp: CommonReplHelp,
+// 		greeting: ReplBannerGreeting,
+// 		modeHelp: LispReplHelp,
+// 		replMode: "Lisp",
+// 	}
+// 	banner.printBanner()
+// }

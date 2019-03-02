@@ -22,16 +22,27 @@ build: deps
 		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
 	@go install github.com/zylisp/gisp/cmd/zylisp
 
-lint: lint-deps
+lint-all: lint-deps
 	golangci-lint run
+
+lint-cmd:
+	cd src/github.com/zylisp/gisp/cmd/zylisp && \
+	golangci-lint run
+
+lint-repl:
+	cd src/github.com/zylisp/gisp/repl && \
+	golangci-lint run
+
+lint: lint-repl lint-cmd
 
 vet:
 	go vet github.com/zylisp/gisp/
-	# go vet github.com/zylisp/gisp/cmd
+	go vet github.com/zylisp/gisp/cmd/zylisp
 	# go vet github.com/zylisp/gisp/core
 	# go vet github.com/zylisp/gisp/generator
 	# go vet github.com/zylisp/gisp/lexer
 	# go vet github.com/zylisp/gisp/parser
+	go vet github.com/zylisp/gisp/repl
 
 
 test: test-deps
