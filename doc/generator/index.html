@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>generator - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+<link rel="search" type="application/opensearchdescription+xml" title="godoc" href="/opensearch.xml" />
+
+
+<script>window.initFuncs = [];</script>
+
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.12";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/">Go</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="/search">
+<div id="menu">
+<a href="/doc/">Documents</a>
+<a href="/pkg/">Packages</a>
+<a href="/project/">The Project</a>
+<a href="/help/">Help</a>
+
+<a href="/blog/">Blog</a>
+
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package generator
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/zylisp/gisp/generator"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+				<dd><a href="#pkg-subdirectories">Subdirectories</a></dd>
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#CamelCase">func CamelCase(src string, capit bool) string</a></dd>
+			
+				
+				<dd><a href="#EvalExpr">func EvalExpr(node parser.Node) ast.Expr</a></dd>
+			
+				
+				<dd><a href="#EvalExprs">func EvalExprs(nodes []parser.Node) []ast.Expr</a></dd>
+			
+				
+				<dd><a href="#GenerateAST">func GenerateAST(tree []parser.Node) *ast.File</a></dd>
+			
+				
+				<dd><a href="#GenerateASTFromLispFile">func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File)</a></dd>
+			
+				
+				<dd><a href="#PrintGeneratedAst">func PrintGeneratedAst(filename string)</a></dd>
+			
+				
+				<dd><a href="#PrintGeneratedGo">func PrintGeneratedGo(filename string)</a></dd>
+			
+				
+				<dd><a href="#WriteGeneratedGo">func WriteGeneratedGo(filename string)</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/github.com/zylisp/gisp/generator/eval.go">eval.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/funcs.go">funcs.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/generator.go">generator.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/idents.go">idents.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/imports.go">imports.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/literals.go">literals.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/makers.go">makers.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/operators.go">operators.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/generator/statements.go">statements.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="CamelCase">func <a href="/src/github.com/zylisp/gisp/generator/idents.go?s=890:935#L36">CamelCase</a>
+				<a class="permalink" href="#CamelCase">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CamelCase(src <a href="/pkg/builtin/#string">string</a>, capit <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=248:288#L9">EvalExpr</a>
+				<a class="permalink" href="#EvalExpr">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func EvalExpr(node <a href="/pkg/github.com/zylisp/gisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/gisp/parser/#Node">Node</a>) <a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=86:132#L1">EvalExprs</a>
+				<a class="permalink" href="#EvalExprs">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func EvalExprs(nodes []<a href="/pkg/github.com/zylisp/gisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/gisp/parser/#Node">Node</a>) []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=204:250#L5">GenerateAST</a>
+				<a class="permalink" href="#GenerateAST">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GenerateAST(tree []<a href="/pkg/github.com/zylisp/gisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/gisp/parser/#Node">Node</a>) *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2657:2730#L122">GenerateASTFromLispFile</a>
+				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GenerateASTFromLispFile(filename <a href="/pkg/builtin/#string">string</a>) (*<a href="/pkg/go/token/">token</a>.<a href="/pkg/go/token/#FileSet">FileSet</a>, *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="PrintGeneratedAst">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2979:3018#L137">PrintGeneratedAst</a>
+				<a class="permalink" href="#PrintGeneratedAst">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func PrintGeneratedAst(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="PrintGeneratedGo">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3530:3568#L158">PrintGeneratedGo</a>
+				<a class="permalink" href="#PrintGeneratedGo">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func PrintGeneratedGo(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="WriteGeneratedGo">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3098:3136#L143">WriteGeneratedGo</a>
+				<a class="permalink" href="#WriteGeneratedGo">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func WriteGeneratedGo(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+	
+	
+		<h2 id="pkg-subdirectories">Subdirectories</h2>
+	
+	<div class="pkg-dir">
+		<table>
+			<tr>
+				<th class="pkg-name">Name</th>
+				<th class="pkg-synopsis">Synopsis</th>
+			</tr>
+
+			
+			<tr>
+				<td colspan="2"><a href="..">..</a></td>
+			</tr>
+			
+
+			
+				<tr>
+				
+					<td class="pkg-name" style="padding-left: 0px;">
+						<a href="helpers/">helpers</a>
+					</td>
+				
+					<td class="pkg-synopsis">
+						
+					</td>
+				</tr>
+			
+		</table>
+	</div>
+
+
+
+<div id="footer">
+Build version go1.12.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="/LICENSE">BSD license</a>.<br>
+<a href="/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+</body>
+</html>
+

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>core - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+<link rel="search" type="application/opensearchdescription+xml" title="godoc" href="/opensearch.xml" />
+
+
+<script>window.initFuncs = [];</script>
+
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.12";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/">Go</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="/search">
+<div id="menu">
+<a href="/doc/">Documents</a>
+<a href="/pkg/">Packages</a>
+<a href="/project/">The Project</a>
+<a href="/help/">Help</a>
+
+<a href="/blog/">Blog</a>
+
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package core
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/zylisp/gisp/core"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#ADD">func ADD(args ...Any) float64</a></dd>
+			
+				
+				<dd><a href="#DIV">func DIV()</a></dd>
+			
+				
+				<dd><a href="#EQ">func EQ(args ...Any) bool</a></dd>
+			
+				
+				<dd><a href="#GT">func GT(args ...Any) bool</a></dd>
+			
+				
+				<dd><a href="#GTEQ">func GTEQ(args ...Any) bool</a></dd>
+			
+				
+				<dd><a href="#LT">func LT(args ...Any) bool</a></dd>
+			
+				
+				<dd><a href="#LTEQ">func LTEQ(args ...Any) bool</a></dd>
+			
+				
+				<dd><a href="#MOD">func MOD(a, b Any) int</a></dd>
+			
+				
+				<dd><a href="#MUL">func MUL(args ...Any) float64</a></dd>
+			
+				
+				<dd><a href="#SUB">func SUB(args ...Any) float64</a></dd>
+			
+			
+				
+				<dd><a href="#Any">type Any</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Get">func Get(args ...Any) Any</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Number">type Number</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AddNumbers">func AddNumbers(args ...Number) (newNum Number, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Number.IsFloat">func (n Number) IsFloat() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Number.IsInt">func (n Number) IsInt() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Number.ToFloat">func (n Number) ToFloat() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Number.ToInt">func (n Number) ToInt() int</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/github.com/zylisp/gisp/core/core.go">core.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/core/number.go">number.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="ADD">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=571:600#L27">ADD</a>
+				<a class="permalink" href="#ADD">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ADD(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#float64">float64</a></pre>
+			<p>
+ADD any number of int or float64 args
+ALWAYS returns a float64
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="DIV">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1635:1645#L83">DIV</a>
+				<a class="permalink" href="#DIV">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DIV()</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="EQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2854:2879#L151">EQ</a>
+				<a class="permalink" href="#EQ">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func EQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="GT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2307:2332#L119">GT</a>
+				<a class="permalink" href="#GT">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GT(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+TODO: can only compare ints and slice lens for now.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3426:3453#L184">GTEQ</a>
+				<a class="permalink" href="#GTEQ">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GTEQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+greater than or equal
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="LT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1705:1730#L86">LT</a>
+				<a class="permalink" href="#LT">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func LT(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+TODO: can only compare ints and slice lens for now.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3546:3573#L193">LTEQ</a>
+				<a class="permalink" href="#LTEQ">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func LTEQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+less than or equal
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="MOD">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=66:88#L1">MOD</a>
+				<a class="permalink" href="#MOD">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func MOD(a, b <a href="#Any">Any</a>) <a href="/pkg/builtin/#int">int</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="MUL">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1411:1440#L69">MUL</a>
+				<a class="permalink" href="#MUL">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func MUL(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#float64">float64</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="SUB">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1021:1050#L47">SUB</a>
+				<a class="permalink" href="#SUB">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func SUB(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#float64">float64</a></pre>
+			
+			
+			
+
+		
+		
+			
+			
+			<h2 id="Any">type <a href="/src/github.com/zylisp/gisp/core/core.go?s=44:64#L1">Any</a>
+				<a class="permalink" href="#Any">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type Any interface{}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="Get">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=4117:4142#L232">Get</a>
+					<a class="permalink" href="#Get">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func Get(args ...<a href="#Any">Any</a>) <a href="#Any">Any</a></pre>
+				
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="Number">type <a href="/src/github.com/zylisp/gisp/core/number.go?s=36:69#L1">Number</a>
+				<a class="permalink" href="#Number">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type Number struct {
+<span id="Number.Value"></span>    Value <a href="#Any">Any</a>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="AddNumbers">func <a href="/src/github.com/zylisp/gisp/core/number.go?s=431:489#L23">AddNumbers</a>
+					<a class="permalink" href="#AddNumbers">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func AddNumbers(args ...<a href="#Number">Number</a>) (newNum <a href="#Number">Number</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
+				
+				
+				
+			
+
+			
+				
+				<h3 id="Number.IsFloat">func (Number) <a href="/src/github.com/zylisp/gisp/core/number.go?s=127:157#L4">IsFloat</a>
+					<a class="permalink" href="#Number.IsFloat">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (n <a href="#Number">Number</a>) IsFloat() <a href="/pkg/builtin/#bool">bool</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="Number.IsInt">func (Number) <a href="/src/github.com/zylisp/gisp/core/number.go?s=71:99#L1">IsInt</a>
+					<a class="permalink" href="#Number.IsInt">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (n <a href="#Number">Number</a>) IsInt() <a href="/pkg/builtin/#bool">bool</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="Number.ToFloat">func (Number) <a href="/src/github.com/zylisp/gisp/core/number.go?s=305:338#L16">ToFloat</a>
+					<a class="permalink" href="#Number.ToFloat">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (n <a href="#Number">Number</a>) ToFloat() <a href="/pkg/builtin/#float64">float64</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="Number.ToInt">func (Number) <a href="/src/github.com/zylisp/gisp/core/number.go?s=188:215#L8">ToInt</a>
+					<a class="permalink" href="#Number.ToInt">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (n <a href="#Number">Number</a>) ToInt() <a href="/pkg/builtin/#int">int</a></pre>
+				
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.12.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="/LICENSE">BSD license</a>.<br>
+<a href="/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+</body>
+</html>
+
