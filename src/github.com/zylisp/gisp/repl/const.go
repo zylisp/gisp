@@ -26,13 +26,19 @@ const LispReplHelp string = `
       Exit: <CONTROL><D> or (exit) or (quit)
 `
 
-const ReplExitMsg string =`^D
-
+const ReplCommonExitMsg string =`
 See you space cowboy ...
 `
 
+const RepCtlDlExitMsg string =`^D
+`
+
+const RepCtlClExitMsg string =`^C
+`
 const AstPrompt string = "AST> "
 
 const GoPrompt string = "GO> "
 
 const LispPrompt string = "𝛌> "
+
+const LispDefaultPackage string = "user"
