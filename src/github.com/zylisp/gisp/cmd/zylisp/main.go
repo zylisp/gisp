@@ -1,3 +1,19 @@
+/*
+The ZYLISP command line and multi-REPL tool
+
+Overview
+
+TBD
+
+CLI Mode
+
+TBD
+
+REPL Mode
+
+TBD
+
+*/
 package main
 
 import (
