@@ -1,10 +1,13 @@
 package generator
 
 import (
-	"github.com/zylisp/gisp/parser"
+	"bytes"
 	"fmt"
+	"github.com/zylisp/gisp/parser"
 	"go/ast"
+	"go/printer"
 	"go/token"
+	"io/ioutil"
 )
 
 var anyType = makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent("Any"))
@@ -124,4 +127,39 @@ func checkNSArgs(node *parser.CallNode) bool {
 	}
 
 	return true
+}
+
+func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
+	b, err := ioutil.ReadFile(filename)
+
+	// XXX let's improve the error handling here ...
+	if err != nil {
+		panic(err)
+	}
+
+	fset := token.NewFileSet()
+	p := parser.ParseFromString(filename, string(b)+"\n")
+	a := GenerateAST(p)
+
+	return fset, a
+}
+
+func WriteGenerated(filename string) {
+	var buf bytes.Buffer
+	fset, a := GenerateASTFromLispFile(filename)
+	printer.Fprint(&buf, fset, a)
+	err := ioutil.WriteFile(filename, buf.Bytes(), 0644)
+
+	// XXX let's improve the error handling here ...
+	if err != nil {
+		panic(err)
+	}
+}
+
+func PrintGenerated(filename string) {
+	var buf bytes.Buffer
+	fset, a := GenerateASTFromLispFile(filename)
+	printer.Fprint(&buf, fset, a)
+	fmt.Printf("%s\n", buf.String())
+	return
 }

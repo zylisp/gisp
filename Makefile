@@ -7,7 +7,6 @@ LAST_COMMIT = $(shell git rev-parse --short HEAD)
 all: build test build-examples
 
 deps:
-	@echo
 
 lint-deps:
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \

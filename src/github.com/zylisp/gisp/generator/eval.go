@@ -40,6 +40,8 @@ func EvalExpr(node parser.Node) ast.Expr {
 
 	default:
 		println(t)
+		// XXX let's not panic here, but instead log a warning of some sort ...
+		//     whatever Go does for warnings
 		panic("not implemented yet!")
 	}
 }
