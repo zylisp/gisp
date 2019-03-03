@@ -16,7 +16,7 @@ func MOD(a, b Any) int {
 	case isFloat(a):
 		n = int(a.(float64))
 	default:
-		panic("need int/float argument to mod. Received " +
+		panic( +
 			fmt.Sprintf("%v", reflect.TypeOf(a)))
 	}
 
@@ -26,8 +26,7 @@ func MOD(a, b Any) int {
 	case isFloat(b):
 		m = int(b.(float64))
 	default:
-		panic("need int/float argument to mod. Received " +
-			fmt.Sprintf("%v", reflect.TypeOf(b)))
+		panic(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(b)))
 	}
 	return n % m
 }
@@ -44,7 +43,7 @@ func ADD(args ...Any) float64 {
 		case isFloat(n):
 			nums[i] = Number{Value: n.(float64)}
 		default:
-			panic("ADD requires int and/or float64 objects")
+			panic(AddArgTypeError)
 		}
 	}
 	sumNum, err := AddNumbers(nums...)
@@ -61,7 +60,7 @@ func SUB(args ...Any) float64 {
 	} else if isFloat(args[0]) {
 		result = args[0].(float64)
 	} else {
-		panic("need int/float for SUB")
+		panic(SubArgTypeError)
 	}
 
 	for i := 1; i < len(args); i++ {
@@ -95,7 +94,7 @@ func DIV() {}
 // TODO: can only compare ints and slice lens for now.
 func LT(args ...Any) bool {
 	if len(args) < 2 {
-		panic("can't compare less than 2 values!")
+		panic(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -105,7 +104,7 @@ func LT(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -114,7 +113,7 @@ func LT(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		if n >= m {
@@ -128,7 +127,7 @@ func LT(args ...Any) bool {
 // TODO: can only compare ints and slice lens for now.
 func GT(args ...Any) bool {
 	if len(args) < 2 {
-		panic("can't compare less than 2 values!")
+		panic(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -138,7 +137,7 @@ func GT(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -147,7 +146,7 @@ func GT(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		if n <= m {
@@ -160,7 +159,7 @@ func GT(args ...Any) bool {
 
 func EQ(args ...Any) bool {
 	if len(args) < 2 {
-		panic("can't compare less than 2 values!")
+		panic(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -170,7 +169,7 @@ func EQ(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -179,7 +178,7 @@ func EQ(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic("you can't compare that!")
+			panic(IncompatibleCompareTypesError)
 		}
 
 		if n != m {
@@ -241,7 +240,7 @@ func isInt(n Any) bool {
 
 func Get(args ...Any) Any {
 	if len(args) != 2 && len(args) != 3 {
-		panic(fmt.Sprintf("get needs 2 or 3 arguments %d given.", len(args)))
+		panic(fmt.Sprintf(GetNot2Or3ArgsError, len(args)))
 	}
 
 	if len(args) == 2 {
@@ -250,7 +249,7 @@ func Get(args ...Any) Any {
 		} else if a, ok := args[1].(string); ok {
 			return a[args[0].(int)]
 		} else {
-			panic("arguments to get must include slice/vector/string")
+			panic(GetArgsTypesError)
 		}
 	} else {
 		if a, ok := args[2].([]Any); ok {
@@ -266,7 +265,7 @@ func Get(args ...Any) Any {
 
 			return a[args[0].(int):args[1].(int)]
 		} else {
-			panic("arguments to get must include slice/vector/string")
+			panic(GetArgsTypesError)
 		}
 	}
 }
