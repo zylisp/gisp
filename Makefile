@@ -98,4 +98,7 @@ view-docs: docs
 	@echo "Starting docs HTTP server ..."
 	@GOPATH=`pwd` $(GODOC) -http=:6060 -goroot=`pwd`/doc
 
-
+publish-docs: docs
+	@cd doc && \
+	git commit -am "Regen'ed docs." && \
+	git push origin gh-pages
