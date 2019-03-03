@@ -41,5 +41,5 @@ func (s *CoreSuite) Test_ADD(c *C) {
 	// NOTE ADD always returns a float
 	// adding floats
 	c.Assert(ADD(3.0, 4.1), Equals, 7.1)
-	c.Assert(func() { ADD("foo", 3) }, Panics, "ADD requires int and/or float64 objects")
+	c.Assert(func() { ADD("foo", 3) }, Panics, AddArgTypeError)
 }
