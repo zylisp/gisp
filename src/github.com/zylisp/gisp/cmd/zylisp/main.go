@@ -134,7 +134,6 @@ output for multiple files at once:
 
 	$ zylisp -cli -go examples/*.gsp
 
-
 */
 package main
 
@@ -146,21 +145,44 @@ import (
 	"os"
 )
 
-func dispatchLisp(isCli bool) {
-	if isCli {
+type Modes struct {
+	cli bool
+	ast bool
+	gogen bool
+	lisp bool
+}
+
+type Inputs struct {
+	all []string
+	multiple bool
+	one bool
+	first string
+}
+
+type Outputs struct {
+	dir string
+	file string
+	isDir bool
+	isFile bool
+	useDir bool
+	useFile bool
+}
+
+func dispatchLisp(modes Modes) {
+	if modes.cli {
 		// LISP CLI
-		fmt.Println("The Lisp CLI is currently not supported")
+		fmt.Println(repl.LispCLIUnsupportedError)
 	} else {
 		// LISP REPL
-		fmt.Println("Lisp mode is currently not supported")
+		fmt.Println(repl.LispREPLUnsupportedError)
 		// repl.LispMain()
 	}
 }
 
-func dispatchAST(isCli bool, files []string) {
-	if isCli {
+func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
+	if modes.cli {
 		// AST CLI
-		for _, file := range files {
+		for _, file := range inputs.all {
 			// XXX check to see if printing or saving to file; currently
 			generator.PrintASTFromFile(file)
 		}
@@ -170,10 +192,10 @@ func dispatchAST(isCli bool, files []string) {
 	}
 }
 
-func dispatchGoGen(isCli bool, files []string) {
-	if isCli {
+func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
+	if modes.cli {
 		// Go-generator CLI
-		for _, file := range files {
+		for _, file := range inputs.all {
 			// XXX check to see if printing or saving to file
 			generator.PrintGoFromFile(file)
 		}
@@ -183,27 +205,130 @@ func dispatchGoGen(isCli bool, files []string) {
 	}
 }
 
+func removeExtension(filename string) string {
+	// XXX remove extension
+	return filename
+}
+
+func extensionFromMode(modes Modes) string {
+	var extension string
+	if modes.lisp {
+		extension = "zsp"
+	} else if modes.ast {
+		extension = "ast"
+	} else if modes.gogen {
+		extension = "go"
+	} else {
+		fmt.Println(repl.ModeNeededError)
+		os.Exit(1)
+	}
+	return extension
+}
+
+func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
+	if modes.lisp {
+		dispatchLisp(modes)
+	} else if modes.ast {
+		dispatchAST(modes, inputs, outputs)
+	} else if modes.gogen {
+		dispatchGoGen(modes, inputs, outputs)
+	} else {
+		fmt.Println(repl.ModeNeededError)
+		os.Exit(1)
+	}
+}
+
+func getUseDir (dir bool) bool {
+	if dir {
+		return true
+	} else {
+		return false
+	}
+}
+
+func getFirstFile (files []string) string {
+	if len(files) > 0 {
+		return files[0]
+	} else {
+		return ""
+	}
+
+}
+
+func prepareOutputDir(dir string) {
+
+}
+
 func main() {
 	astPtr := flag.Bool("ast", false, "Enable AST mode")
 	cliPtr := flag.Bool("cli", false, "Run as a CLI tool")
-	// dirPtr := flag.String("dir", "/tmp", "Default directory for writing operations")
+	dirPtr := flag.String("dir", "", "Default directory for writing operations")
 	goPtr := flag.Bool("go", false, "Enable Go code-generation mode")
 	lispPtr := flag.Bool("lisp", false, "Enable LISP mode")
-	// outPtr := flag.String("o", "output", "Default filename for writing operations")
+	outPtr := flag.String("o", "", "Default filename for writing operations")
 
 	flag.Parse()
-	files := flag.Args()
-	if *cliPtr && len(files) < 1 {
-		fmt.Println("You need to provide at least one file upon which to operate")
-		os.Exit(1)
+	inputFiles := flag.Args()
+	isDir := len(*dirPtr) > 0
+
+	modes := Modes {
+		cli: *cliPtr,
+		ast: *astPtr,
+		gogen: *goPtr,
+		lisp: *lispPtr,
 	}
-	if *lispPtr {
-		dispatchLisp(*cliPtr)
-	} else if *astPtr {
-		dispatchAST(*cliPtr, files)
-	} else if *goPtr {
-		dispatchGoGen(*cliPtr, files)
-	} else {
-		fmt.Println("You need to supply a mode")
+
+	inputs := Inputs {
+		all: inputFiles,
+		multiple: len(inputFiles) > 1,
+		one: len(inputFiles) == 1,
+		first: getFirstFile(inputFiles),
 	}
+
+	outputs := Outputs {
+		dir: *dirPtr,
+		file: *outPtr,
+		isDir: isDir,
+		isFile: len(*outPtr) > 0,
+		useDir: getUseDir(isDir),
+		useFile: false,
+	}
+
+	if modes.cli {
+		// Check for at least one file to operate upon, when in CLI mode
+		if inputs.multiple {
+			fmt.Println(repl.FilesNeededError)
+			os.Exit(1)
+		} else if outputs.isDir {
+			// If more than one file is given, ignore output file and only use dir
+			if outputs.isDir {
+				// Since we're going to be using the dir, make sure it exists/create
+				// if necessary
+				prepareOutputDir(outputs.dir)
+			} else {
+				fmt.Println(repl.DirNeededError)
+				os.Exit(1)
+			}
+
+		} else if inputs.one {
+			// if only one file is given and dir is given, then set the output file to
+			// be the dir/infile.updated-extension
+			outputs.useDir = false
+			outputs.useFile = true
+			if outputs.isDir {
+				prepareOutputDir(outputs.dir)
+				outputs.file = fmt.Sprintf("%s/%s.%s", outputs.dir, removeExtension(inputs.first), extensionFromMode(modes))
+			// if only one file is given but no output file is set, just set the
+			// output file to infile.updated-extension
+			} else if outputs.isFile == false {
+				outputs.file = fmt.Sprintf("%s.%s", removeExtension(inputs.first), extensionFromMode(modes))
+			// Note that if only one file is given, and the output file is set,
+			// no adjustments are necessary -- we'll just use that
+			}
+		} else {
+			fmt.Println(repl.UnexpectedFilesOrDirError)
+			os.Exit(1)
+		}
+	}
+	dispatch(modes, inputs, outputs)
 }
