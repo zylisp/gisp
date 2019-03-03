@@ -1,6 +1,6 @@
 package repl
 
-const ReplBannerGreeting string = `Okay, 3, 2, 1 - Let's jam!
+const REPLBannerGreeting string = `Okay, 3, 2, 1 - Let's jam!
 
 Welcome to
 
@@ -13,32 +13,34 @@ Welcome to
 /^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
 `
 
-const CommonReplHelp string = `
+const CommonREPLHelp string = `
         Docs: https://zylisp.github.io/zylisp/
      Project: https://github.com/zylisp/zylisp`
 
-const AstReplHelp string = `
+const ASTREPLHelp string = `
 Instructions: Simply type any form to view the generated Go AST.
         Exit: <CONTROL><C>
 `
 
-const LispReplHelp string = `
+const GoGenREPLHelp string = ASTREPLHelp
+
+const LispREPLHelp string = `
       Exit: <CONTROL><D> or (exit) or (quit)
 `
 
-const ReplCommonExitMsg string =`
+const REPLCommonExitMsg string =`
 See you space cowboy ...
 `
 
-const RepCtlDlExitMsg string =`^D
+const REPLCtlDExitMsg string =`^D
 `
 
-const RepCtlClExitMsg string =`^C
+const REPLCtlCExitMsg string =`^C
 `
-const AstPrompt string = "AST> "
+const ASTPrompt string = "AST> "
 
-const GoPrompt string = "GO> "
+const GoGenPrompt string = "GOGEN> "
 
-const LispPrompt string = "𝛌> "
+const LispPrompt string = "ZY𝛌ISP> "
 
 const LispDefaultPackage string = "user"

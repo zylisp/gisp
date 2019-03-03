@@ -144,13 +144,27 @@ func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	return fset, a
 }
 
-func PrintGeneratedAst(filename string) {
+func GenerateASTFromLispString(data string) (*token.FileSet, []ast.Expr) {
+	fset := token.NewFileSet()
+	p := parser.ParseFromString("<REPL>", data+"\n")
+	a := EvalExprs(p)
+
+	return fset, a
+}
+
+func PrintASTFromFile(filename string) {
 	fset, a := GenerateASTFromLispFile(filename)
 	ast.Print(fset, a)
 	return
 }
 
-func WriteGeneratedGo(filename string) {
+func PrintASTFromLispString(data string) {
+	fset, a := GenerateASTFromLispString(data)
+	ast.Print(fset, a)
+	return
+}
+
+func WriteGoFromFile(filename string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(filename)
 	printer.Fprint(&buf, fset, a)
@@ -165,9 +179,17 @@ func WriteGeneratedGo(filename string) {
 	}
 }
 
-func PrintGeneratedGo(filename string) {
+func PrintGoFromFile(filename string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(filename)
+	printer.Fprint(&buf, fset, a)
+	fmt.Printf("%s\n", buf.String())
+	return
+}
+
+func PrintGoFromLispString(data string) {
+	var buf bytes.Buffer
+	fset, a := GenerateASTFromLispString(data)
 	printer.Fprint(&buf, fset, a)
 	fmt.Printf("%s\n", buf.String())
 	return
