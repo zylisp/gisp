@@ -58,10 +58,10 @@ func evalFuncCall(node *parser.CallNode) ast.Expr {
 		return makeFuncLit(fnType, body)
 
 	case checkDefArgs(node):
-		panic("you can't have a def within an expression!")
+		panic(DefInExpressionError)
 
 	case checkNSArgs(node):
-		panic("you can't define a namespace in an expression!")
+		panic(NSInExpressionError)
 	}
 
 	callee := EvalExpr(node.Callee)
@@ -280,7 +280,7 @@ func isLoop(node *parser.CallNode) bool {
 	}
 
 	if !searchForRecur(node.Args[1:]) {
-		panic("no recur found in loop!")
+		panic(LoopWithoutRecurError)
 	}
 
 	return true
@@ -425,11 +425,11 @@ func isAssert(node *parser.CallNode) bool {
 	}
 
 	if len(node.Args) != 2 {
-		panic("assert needs 2 arguments")
+		panic(AssertArgsCountError)
 	}
 
 	if _, ok := node.Args[0].(*parser.IdentNode); !ok {
-		panic("assert's first argument needs to be a type")
+		panic(AssrtArgTypeError)
 	}
 
 	return true

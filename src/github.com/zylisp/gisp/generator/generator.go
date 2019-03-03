@@ -43,7 +43,7 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 
 	for i, node := range tree {
 		if node.Type() != parser.NodeCall {
-			panic("expected call node in root scope!")
+			panic(MissingCallNodeError)
 		}
 
 		decls[i] = evalDeclNode(node.(*parser.CallNode))
@@ -55,7 +55,7 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 func evalDeclNode(node *parser.CallNode) ast.Decl {
 	// Let's just assume that all top-level functions called will be "def"
 	if node.Callee.Type() != parser.NodeIdent {
-		panic("expecting call to identifier (i.e. def, defconst, etc.)")
+		panic(CalleeIndentifierMismatchError)
 	}
 
 	callee := node.Callee.(*parser.IdentNode)
@@ -69,7 +69,7 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 
 func evalDef(node *parser.CallNode) ast.Decl {
 	if len(node.Args) < 2 {
-		panic(fmt.Sprintf("expecting expression to be assigned to variable: %q", node.Args[0]))
+		panic(fmt.Sprintf(MissingAssgnmentArgsError, node.Args[0]))
 	}
 
 	val := EvalExpr(node.Args[1])
@@ -111,7 +111,7 @@ func getNamespace(node *parser.CallNode) (*ast.Ident, ast.Decl) {
 
 func getPackageName(node *parser.CallNode) *ast.Ident {
 	if node.Args[0].Type() != parser.NodeIdent {
-		panic("ns package name is not an identifier!")
+		panic(NSPackageTypeMismatch)
 	}
 
 	return ast.NewIdent(node.Args[0].(*parser.IdentNode).Ident)

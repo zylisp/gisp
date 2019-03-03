@@ -74,7 +74,7 @@ func isLogicOperator(node *parser.CallNode) bool {
 	_, ok := logicOperatorMap[node.Callee.(*parser.IdentNode).Ident]
 
 	if len(node.Args) < 2 && ok {
-		panic("can't use binary operator with only one argument!")
+		panic(BinaryArgsCountError)
 	}
 
 	return ok
@@ -108,7 +108,7 @@ func isUnaryOperator(node *parser.CallNode) bool {
 	_, ok := unaryOperatorMap[node.Callee.(*parser.IdentNode).Ident]
 
 	if len(node.Args) != 1 && ok {
-		panic("unary expression takes, exactly, one argument!")
+		panic(UnaryArgsCountError)
 	}
 
 	return ok

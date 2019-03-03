@@ -1,0 +1,16 @@
+package generator
+
+const DefInExpressionError string = "A def within an expression is not allowed"
+const NSInExpressionError string = "A namespace defined in an expression is not allowed"
+const LoopWithoutRecurError string = "There was no recur found in the loop"
+const AssertArgsCountError string = "The assert function requires two arguments"
+const AssrtArgTypeError string = "The assert function's first argument must be a type"
+const MissingCallNodeError string = "Expected call node is missing in root scope"
+const CalleeIndentifierMismatchError string = "Expecting call to identifier (i.e. def, defconst, etc.)"
+const MissingAssgnmentArgsError string = "Expecting expression to be assigned to variable: %q"
+const NSPackageTypeMismatch string = "ns package name needs to be an identifier"
+const InvalidImportError string = "Import declaration is invalid"
+const InvalidImportUseError string = "Use of import is invalid"
+const ExpectingAsInImportError string = "Use of import is invalid; expecting: \":as\""
+const BinaryArgsCountError string = "Use of binary operator with only one argument is not allowed"
+const UnaryArgsCountError string = "Use of unary operator requires exactly on argument"
