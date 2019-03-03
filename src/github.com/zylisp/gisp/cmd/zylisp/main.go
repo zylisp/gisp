@@ -129,6 +129,11 @@ In Go-generation mode, the output is instead compilable Go code:
 		}()
 	}
 
+As mentioned above, file globbing is also supported, allowing you to generate
+output for multiple files at once:
+
+	$ zylisp -cli -go examples/*.gsp
+
 
 */
 package main
