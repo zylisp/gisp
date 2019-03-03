@@ -140,13 +140,22 @@
 				<dd><a href="#GenerateASTFromLispFile">func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File)</a></dd>
 			
 				
-				<dd><a href="#PrintGeneratedAst">func PrintGeneratedAst(filename string)</a></dd>
+				<dd><a href="#GenerateASTFromLispString">func GenerateASTFromLispString(data string) (*token.FileSet, []ast.Expr)</a></dd>
 			
 				
-				<dd><a href="#PrintGeneratedGo">func PrintGeneratedGo(filename string)</a></dd>
+				<dd><a href="#PrintASTFromFile">func PrintASTFromFile(filename string)</a></dd>
 			
 				
-				<dd><a href="#WriteGeneratedGo">func WriteGeneratedGo(filename string)</a></dd>
+				<dd><a href="#PrintASTFromLispString">func PrintASTFromLispString(data string)</a></dd>
+			
+				
+				<dd><a href="#PrintGoFromFile">func PrintGoFromFile(filename string)</a></dd>
+			
+				
+				<dd><a href="#PrintGoFromLispString">func PrintGoFromLispString(data string)</a></dd>
+			
+				
+				<dd><a href="#WriteGoFromFile">func WriteGoFromFile(filename string)</a></dd>
 			
 			
 			
@@ -256,12 +265,12 @@
 		
 			
 			
-			<h2 id="PrintGeneratedAst">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2979:3018#L137">PrintGeneratedAst</a>
-				<a class="permalink" href="#PrintGeneratedAst">&#xb6;</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2979:3051#L137">GenerateASTFromLispString</a>
+				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func PrintGeneratedAst(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			<pre>func GenerateASTFromLispString(data <a href="/pkg/builtin/#string">string</a>) (*<a href="/pkg/go/token/">token</a>.<a href="/pkg/go/token/#FileSet">FileSet</a>, []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a>)</pre>
 			
 			
 			
@@ -269,12 +278,12 @@
 		
 			
 			
-			<h2 id="PrintGeneratedGo">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3530:3568#L158">PrintGeneratedGo</a>
-				<a class="permalink" href="#PrintGeneratedGo">&#xb6;</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3171:3209#L145">PrintASTFromFile</a>
+				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func PrintGeneratedGo(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			<pre>func PrintASTFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
 			
 			
 			
@@ -282,12 +291,51 @@
 		
 			
 			
-			<h2 id="WriteGeneratedGo">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3098:3136#L143">WriteGeneratedGo</a>
-				<a class="permalink" href="#WriteGeneratedGo">&#xb6;</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3289:3329#L151">PrintASTFromLispString</a>
+				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func WriteGeneratedGo(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			<pre>func PrintASTFromLispString(data <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3838:3875#L172">PrintGoFromFile</a>
+				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func PrintGoFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4022:4061#L180">PrintGoFromLispString</a>
+				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func PrintGoFromLispString(data <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3407:3444#L157">WriteGoFromFile</a>
+				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func WriteGoFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
 			
 			
 			

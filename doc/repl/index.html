@@ -125,7 +125,10 @@
 			
 			
 				
-				<dd><a href="#AstMain">func AstMain()</a></dd>
+				<dd><a href="#ASTMain">func ASTMain()</a></dd>
+			
+				
+				<dd><a href="#GoGenMain">func GoGenMain()</a></dd>
 			
 			
 				
@@ -144,11 +147,11 @@
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/src/github.com/zylisp/gisp/repl/ast.go">ast.go</a>
-			
 				<a href="/src/github.com/zylisp/gisp/repl/banner.go">banner.go</a>
 			
 				<a href="/src/github.com/zylisp/gisp/repl/const.go">const.go</a>
+			
+				<a href="/src/github.com/zylisp/gisp/repl/repl.go">repl.go</a>
 			
 			</span>
 			</p>
@@ -162,43 +165,38 @@
 			<h2 id="pkg-constants">Constants</h2>
 			
 				
-				<pre>const <span id="AstPrompt">AstPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;AST&gt; &#34;</pre>
+				<pre>const <span id="ASTPrompt">ASTPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;AST&gt; &#34;</pre>
 			
 				
-				<pre>const <span id="AstReplHelp">AstReplHelp</span> <a href="/pkg/builtin/#string">string</a> = `
+				<pre>const <span id="ASTREPLHelp">ASTREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
 Instructions: Simply type any form to view the generated Go AST.
         Exit: &lt;CONTROL&gt;&lt;C&gt;
 `</pre>
 			
 				
-				<pre>const <span id="CommonReplHelp">CommonReplHelp</span> <a href="/pkg/builtin/#string">string</a> = `
+				<pre>const <span id="CommonREPLHelp">CommonREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
         Docs: https://zylisp.github.io/zylisp/
      Project: https://github.com/zylisp/zylisp`</pre>
 			
 				
-				<pre>const <span id="GoPrompt">GoPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;GO&gt; &#34;</pre>
+				<pre>const <span id="GoGenPrompt">GoGenPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;GOGEN&gt; &#34;</pre>
+			
+				
+				<pre>const <span id="GoGenREPLHelp">GoGenREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = <a href="#ASTREPLHelp">ASTREPLHelp</a></pre>
 			
 				
 				<pre>const <span id="LispDefaultPackage">LispDefaultPackage</span> <a href="/pkg/builtin/#string">string</a> = &#34;user&#34;</pre>
 			
 				
-				<pre>const <span id="LispPrompt">LispPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;𝛌&gt; &#34;</pre>
+				<pre>const <span id="LispPrompt">LispPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;ZY𝛌ISP&gt; &#34;</pre>
 			
 				
-				<pre>const <span id="LispReplHelp">LispReplHelp</span> <a href="/pkg/builtin/#string">string</a> = `
+				<pre>const <span id="LispREPLHelp">LispREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
       Exit: &lt;CONTROL&gt;&lt;D&gt; or (exit) or (quit)
 `</pre>
 			
 				
-				<pre>const <span id="RepCtlClExitMsg">RepCtlClExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^C
-`</pre>
-			
-				
-				<pre>const <span id="RepCtlDlExitMsg">RepCtlDlExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^D
-`</pre>
-			
-				
-				<pre>const <span id="ReplBannerGreeting">ReplBannerGreeting</span> <a href="/pkg/builtin/#string">string</a> = `Okay, 3, 2, 1 - Let&#39;s jam!
+				<pre>const <span id="REPLBannerGreeting">REPLBannerGreeting</span> <a href="/pkg/builtin/#string">string</a> = `Okay, 3, 2, 1 - Let&#39;s jam!
 
 Welcome to
 
@@ -212,8 +210,16 @@ Welcome to
 `</pre>
 			
 				
-				<pre>const <span id="ReplCommonExitMsg">ReplCommonExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `
+				<pre>const <span id="REPLCommonExitMsg">REPLCommonExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `
 See you space cowboy ...
+`</pre>
+			
+				
+				<pre>const <span id="REPLCtlCExitMsg">REPLCtlCExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^C
+`</pre>
+			
+				
+				<pre>const <span id="REPLCtlDExitMsg">REPLCtlDExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^D
 `</pre>
 			
 		
@@ -221,12 +227,25 @@ See you space cowboy ...
 		
 			
 			
-			<h2 id="AstMain">func <a href="/src/github.com/zylisp/gisp/repl/ast.go?s=162:176#L5">AstMain</a>
-				<a class="permalink" href="#AstMain">&#xb6;</a>
+			<h2 id="ASTMain">func <a href="/src/github.com/zylisp/gisp/repl/repl.go?s=162:176#L5">ASTMain</a>
+				<a class="permalink" href="#ASTMain">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func AstMain()</pre>
+			<pre>func ASTMain()</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="GoGenMain">func <a href="/src/github.com/zylisp/gisp/repl/repl.go?s=750:766#L34">GoGenMain</a>
+				<a class="permalink" href="#GoGenMain">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func GoGenMain()</pre>
 			
 			
 			
