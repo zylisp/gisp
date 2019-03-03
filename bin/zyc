@@ -99,13 +99,13 @@ for FILE in "${ARGS[@]}"; do
     if [ -f "$FILENAME_GO" ]; then
         if [ "$FORCE" = true ]; then
             debug "Overwriting previously generated Go file ..."
-            zylisp $FILE > $FILENAME_GO
+            zylisp -cli -go $FILE > $FILENAME_GO
         else
             echo "Go file exists; skipping"
         fi
     else
         debug "Creating new Go file ..."
-        zylisp $FILE > $FILENAME_GO
+        zylisp -cli -go $FILE > $FILENAME_GO
     fi
     if [ "$ARG_COUNT" -gt 1 ]; then
         debug "Number of sources to compile is greater than 1"
