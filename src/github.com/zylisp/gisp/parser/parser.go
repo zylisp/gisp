@@ -41,18 +41,18 @@ func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
 			tree = append(tree, newVectNode(parser(l, make([]Node, 0), ']')))
 		case lexer.AtomRightParen:
 			if lookingFor != ')' {
-				panic(fmt.Sprintf("unexpected \")\" [%d]", item.Pos))
+				panic(fmt.Sprintf(RightCurvedBracketError, item.Pos))
 			}
 			return tree
 		case lexer.AtomRightVect:
 			if lookingFor != ']' {
-				panic(fmt.Sprintf("unexpected \"]\" [%d]", item.Pos))
+				panic(fmt.Sprintf(RightSquareBracketError, item.Pos))
 			}
 			return tree
 		case lexer.AtomError:
 			println(item.Value)
 		default:
-			panic("Bad Atom type")
+			panic(AtomTypeError)
 		}
 		item = l.NextAtom()
 	}
