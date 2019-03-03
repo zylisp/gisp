@@ -28,14 +28,14 @@ const LispREPLHelp string = `
       Exit: <CONTROL><D> or (exit) or (quit)
 `
 
-const REPLCommonExitMsg string =`
+const REPLCommonExitMsg string = `
 See you space cowboy ...
 `
 
-const REPLCtlDExitMsg string =`^D
+const REPLCtlDExitMsg string = `^D
 `
 
-const REPLCtlCExitMsg string =`^C
+const REPLCtlCExitMsg string = `^C
 `
 const ASTPrompt string = "AST> "
 
