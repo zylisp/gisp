@@ -16,8 +16,7 @@ func MOD(a, b Any) int {
 	case isFloat(a):
 		n = int(a.(float64))
 	default:
-		panic( +
-			fmt.Sprintf("%v", reflect.TypeOf(a)))
+		panic(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(a)))
 	}
 
 	switch {
