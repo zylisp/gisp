@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
 	"go/token"
@@ -42,6 +43,6 @@ func EvalExpr(node parser.Node) ast.Expr {
 		println(t)
 		// XXX let's not panic here, but instead log a warning of some sort ...
 		//     whatever Go does for warnings
-		panic("not implemented yet!")
+		panic(gisp.NotImplementedError)
 	}
 }
