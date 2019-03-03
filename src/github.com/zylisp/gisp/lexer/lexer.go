@@ -196,7 +196,7 @@ func lexWhitespace(l *Lexer) stateFn {
 	case isAlphaNumeric(r):
 		return lexIdentifier
 	default:
-		panic(fmt.Sprintf("don't know what to do with: %q", r))
+		panic(fmt.Sprintf(UnsupportedRuneError, r))
 	}
 }
 
@@ -206,7 +206,7 @@ func lexString(l *Lexer) stateFn {
 			r = l.next()
 		}
 		if r == EOF {
-			return l.errorf("unterminated quoted string")
+			return l.errorf(UnterminatedQuotedStringError)
 		}
 	}
 	l.emit(AtomString)
@@ -217,7 +217,6 @@ func lexIdentifier(l *Lexer) stateFn {
 	for r := l.next(); isAlphaNumeric(r); r = l.next() {
 	}
 	l.backup()
-
 	l.emit(AtomIdent)
 	return lexWhitespace
 }
@@ -239,7 +238,7 @@ func lexComment(l *Lexer) stateFn {
 
 func lexNumber(l *Lexer) stateFn {
 	if !l.scanNumber() {
-		return l.errorf("bad number syntax: %q", l.input[l.start:l.pos])
+		return l.errorf(BadNumberSyntax, l.input[l.start:l.pos])
 	}
 
 	if l.start+1 == l.pos {
@@ -249,7 +248,7 @@ func lexNumber(l *Lexer) stateFn {
 	if sign := l.peek(); sign == '+' || sign == '-' {
 		// Complex: 1+2i. No spaces, must end in 'i'.
 		if !l.scanNumber() || l.input[l.pos-1] != 'i' {
-			return l.errorf("bad number syntax: %q", l.input[l.start:l.pos])
+			return l.errorf(BadNumberSyntax, l.input[l.start:l.pos])
 		}
 		l.emit(AtomComplex)
 	} else if strings.ContainsRune(l.input[l.start:l.pos], '.') {
