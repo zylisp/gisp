@@ -138,8 +138,11 @@ output for multiple files at once:
 package main
 
 import (
+  "path/filepath"
   "flag"
   "fmt"
+  "github.com/op/go-logging"
+  "github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/generator"
 	"github.com/zylisp/gisp/repl"
 	"os"
@@ -153,19 +156,39 @@ type Modes struct {
 }
 
 type Inputs struct {
-	all []string
-	multiple bool
-	one bool
-	first string
+	files []string
+	hasFiles bool
 }
 
 type Outputs struct {
 	dir string
-	file string
+	files []string
 	isDir bool
 	isFile bool
 	useDir bool
 	useFile bool
+}
+
+func RemoveExtension(filename string) string {
+	extension := filepath.Ext(filename)
+	return filename[0:len(filename)-len(extension)]
+}
+
+func PrepareOutputDir(dir string) {
+	log := logging.MustGetLogger(gisp.ApplicationName)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		log.Debug("Directory '%s' does not exist; creating ...", dir)
+		os.MkdirAll(dir, os.ModePerm)
+	}
+}
+
+func MakeOutputFilename(prefix string, inputFile string, extension string) string {
+	return fmt.Sprintf(
+		"%s%s%s.%s",
+		prefix,
+		string(os.PathSeparator),
+		filepath.Base(RemoveExtension(inputFile)),
+		extension)
 }
 
 func dispatchLisp(modes Modes) {
@@ -180,11 +203,17 @@ func dispatchLisp(modes Modes) {
 }
 
 func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
+	log := logging.MustGetLogger(gisp.ApplicationName)
 	if modes.cli {
 		// AST CLI
-		for _, file := range inputs.all {
-			// XXX check to see if printing or saving to file; currently
-			generator.PrintASTFromFile(file)
+		for i, inputFile := range inputs.files {
+			log.Debugf("Processing file '%s' for AST output '%s' ...",
+				inputFile, outputs.files[i])
+			if outputs.useFile {
+				generator.WriteASTFromFile(inputFile, outputs.files[i])
+			} else {
+				generator.PrintASTFromFile(inputFile)
+			}
 		}
 	} else {
 		// AST REPL
@@ -193,11 +222,17 @@ func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
 }
 
 func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
+	log := logging.MustGetLogger(gisp.ApplicationName)
 	if modes.cli {
 		// Go-generator CLI
-		for _, file := range inputs.all {
-			// XXX check to see if printing or saving to file
-			generator.PrintGoFromFile(file)
+		for i, inputFile := range inputs.files {
+			log.Debugf("Processing file '%s' for Go output '%s' ...",
+				inputFile, outputs.files[i])
+			if outputs.useFile {
+				generator.WriteGoFromFile(inputFile, outputs.files[i])
+			} else {
+				generator.PrintGoFromFile(inputFile)
+			}
 		}
 	} else {
 		// GOGEN REPL
@@ -205,9 +240,21 @@ func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
 	}
 }
 
-func removeExtension(filename string) string {
-	// XXX remove extension
-	return filename
+func getUseDir (dir bool) bool {
+	if dir {
+		return true
+	} else {
+		return false
+	}
+}
+
+func getHasFiles (files []string) bool {
+	if len(files) > 0 {
+		return true
+	} else {
+		return false
+	}
+
 }
 
 func extensionFromMode(modes Modes) string {
@@ -226,6 +273,10 @@ func extensionFromMode(modes Modes) string {
 }
 
 func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
+	log := logging.MustGetLogger(gisp.ApplicationName)
+	log.Debug("Got modes:", modes)
+	log.Debug("Got inputs:", inputs)
+	log.Debug("Got outputs:", outputs)
 	if modes.lisp {
 		dispatchLisp(modes)
 	} else if modes.ast {
@@ -238,25 +289,20 @@ func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 	}
 }
 
-func getUseDir (dir bool) bool {
-	if dir {
-		return true
-	} else {
-		return false
+func setupLogging (stringLogLevel string) {
+	format := logging.MustStringFormatter(
+		`%{color}%{time:15:04:05.000} %{shortfile}, %{shortfunc} ▶ {level:.4s} %{id:03x}%{color:reset} %{message}`,)
+	backend := logging.NewLogBackend(os.Stderr, "", 0)
+	backendFormatter := logging.NewBackendFormatter(backend, format)
+	backendLeveled := logging.AddModuleLevel(backendFormatter)
+	logLevel, err := logging.LogLevel(stringLogLevel)
+	if err != nil {
+		panic(gisp.LogLevelUnsupportedError)
 	}
-}
-
-func getFirstFile (files []string) string {
-	if len(files) > 0 {
-		return files[0]
-	} else {
-		return ""
-	}
-
-}
-
-func prepareOutputDir(dir string) {
-
+	backendLeveled.SetLevel(logLevel, "")
+	logging.SetBackend(backendLeveled)
+	log := logging.MustGetLogger(gisp.ApplicationName)
+	log.Debug("Set up logging")
 }
 
 func main() {
@@ -265,10 +311,17 @@ func main() {
 	dirPtr := flag.String("dir", "", "Default directory for writing operations")
 	goPtr := flag.Bool("go", false, "Enable Go code-generation mode")
 	lispPtr := flag.Bool("lisp", false, "Enable LISP mode")
+	logLevelPtr := flag.String("loglevel", "warning", "Set the logging level")
 	outPtr := flag.String("o", "", "Default filename for writing operations")
 
 	flag.Parse()
+
+
+	log := logging.MustGetLogger(gisp.ApplicationName)
+	setupLogging(*logLevelPtr)
+
 	inputFiles := flag.Args()
+	hasFiles := getHasFiles(inputFiles)
 	isDir := len(*dirPtr) > 0
 
 	modes := Modes {
@@ -279,54 +332,55 @@ func main() {
 	}
 
 	inputs := Inputs {
-		all: inputFiles,
-		multiple: len(inputFiles) > 1,
-		one: len(inputFiles) == 1,
-		first: getFirstFile(inputFiles),
+		files: inputFiles,
+		hasFiles: hasFiles,
 	}
 
 	outputs := Outputs {
 		dir: *dirPtr,
-		file: *outPtr,
 		isDir: isDir,
 		isFile: len(*outPtr) > 0,
-		useDir: getUseDir(isDir),
+		useDir: isDir,
 		useFile: false,
 	}
 
 	if modes.cli {
 		// Check for at least one file to operate upon, when in CLI mode
-		if inputs.multiple {
-			fmt.Println(repl.FilesNeededError)
-			os.Exit(1)
-		} else if outputs.isDir {
-			// If more than one file is given, ignore output file and only use dir
-			if outputs.isDir {
-				// Since we're going to be using the dir, make sure it exists/create
-				// if necessary
-				prepareOutputDir(outputs.dir)
+		if inputs.hasFiles {
+			if len(inputs.files) > 1 {
+				log.Debug("Got multiple input files")
+				// If more than one file is given, ignore output file and only use dir
+				if outputs.isDir {
+					log.Debug("Output dir is defined: using it ...")
+					outputs.files = []string{}
+					// Since we're going to be using the dir, make sure it exists/create
+					// if necessary
+					PrepareOutputDir(outputs.dir)
+					log.Debug("Input files:", inputs.files)
+					for _, file := range inputs.files {
+						outputs.files = append(outputs.files, MakeOutputFilename(
+							outputs.dir, file, extensionFromMode(modes)))
+					}
+					outputs.useFile = true
+				} else {
+					log.Error(repl.DirNeededError)
+					os.Exit(1)
+				}
 			} else {
-				fmt.Println(repl.DirNeededError)
-				os.Exit(1)
+				// if only one file is given and dir is given, then set the output file to
+				// be the dir/infile.updated-extension
+				if outputs.isDir {
+					PrepareOutputDir(outputs.dir)
+					outputs.files = append(outputs.files, MakeOutputFilename(
+						outputs.dir, inputs.files[0], extensionFromMode(modes)))
+					outputs.useFile = true
+				// Note that if only one file is given, and the output file is set,
+				// no adjustments are necessary -- we'll just use that
+				}
 			}
 
-		} else if inputs.one {
-			// if only one file is given and dir is given, then set the output file to
-			// be the dir/infile.updated-extension
-			outputs.useDir = false
-			outputs.useFile = true
-			if outputs.isDir {
-				prepareOutputDir(outputs.dir)
-				outputs.file = fmt.Sprintf("%s/%s.%s", outputs.dir, removeExtension(inputs.first), extensionFromMode(modes))
-			// if only one file is given but no output file is set, just set the
-			// output file to infile.updated-extension
-			} else if outputs.isFile == false {
-				outputs.file = fmt.Sprintf("%s.%s", removeExtension(inputs.first), extensionFromMode(modes))
-			// Note that if only one file is given, and the output file is set,
-			// no adjustments are necessary -- we'll just use that
-			}
 		} else {
-			fmt.Println(repl.UnexpectedFilesOrDirError)
+			log.Error(repl.FilesNeededError)
 			os.Exit(1)
 		}
 	}

@@ -9,6 +9,7 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 all: build test build-examples
 
 deps:
+	go get github.com/op/go-logging
 
 lint-deps:
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
