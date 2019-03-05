@@ -56,8 +56,15 @@ test: test-deps
 	cd src/github.com/zylisp/gisp/lexer && \
 	go test -v
 
-build-examples:
-	zyc -o ./bin/examples examples/*.gsp
+gogen-examples:
+	zylisp -cli -go -dir ./bin/examples examples/*.gsp
+
+bin/examples/%: bin/examples/%.go
+	go build -o $@ $<
+
+build-examples: gogen-examples
+	@$(MAKE) $(basename $(wildcard ./bin/examples/*.go))
+	rm ./bin/examples/*.go
 
 clean-examples:
 	rm -rf ./bin/examples
