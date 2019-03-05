@@ -3,6 +3,8 @@ package generator
 import (
 	"bytes"
 	"fmt"
+	"github.com/op/go-logging"
+	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
 	"go/printer"
@@ -134,6 +136,8 @@ func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
+		log := logging.MustGetLogger(gisp.ApplicationName)
+		log.Error(err)
 		panic(err)
 	}
 
@@ -158,23 +162,38 @@ func PrintASTFromFile(filename string) {
 	return
 }
 
+func WriteASTFromFile(fromFile string, toFile string) {
+	var buf bytes.Buffer
+	fset, a := GenerateASTFromLispFile(fromFile)
+	ast.Fprint(&buf, fset, a, nil)
+	err := ioutil.WriteFile(toFile, buf.Bytes(), 0644)
+
+	// XXX let's improve the error handling here ...
+	if err != nil {
+		log := logging.MustGetLogger(gisp.ApplicationName)
+		log.Error(err)
+		panic(err)
+	}
+	return
+}
+
 func PrintASTFromLispString(data string) {
 	fset, a := GenerateASTFromLispString(data)
 	ast.Print(fset, a)
 	return
 }
 
-func WriteGoFromFile(filename string) {
+func WriteGoFromFile(fromFile string, toFile string) {
 	var buf bytes.Buffer
-	fset, a := GenerateASTFromLispFile(filename)
+	fset, a := GenerateASTFromLispFile(fromFile)
 	printer.Fprint(&buf, fset, a)
-	// XXX change filename: remove extension, add .go ... also, allow for
-	//     an output file to be provided
-	outfile := fmt.Sprintf("%s.go", filename)
-	err := ioutil.WriteFile(outfile, buf.Bytes(), 0644)
+	err := ioutil.WriteFile(toFile, buf.Bytes(), 0644)
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
+		log := logging.MustGetLogger(gisp.ApplicationName)
+		log.Error(err)
+		log.Debug("Tried writing to file:", toFile)
 		panic(err)
 	}
 }
