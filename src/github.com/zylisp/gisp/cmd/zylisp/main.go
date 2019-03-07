@@ -138,14 +138,14 @@ output for multiple files at once:
 package main
 
 import (
-  "path/filepath"
   "flag"
   "fmt"
   "github.com/op/go-logging"
   "github.com/zylisp/gisp"
-	"github.com/zylisp/gisp/generator"
-	"github.com/zylisp/gisp/repl"
-	"os"
+  "github.com/zylisp/gisp/generator"
+  "github.com/zylisp/gisp/repl"
+  "os"
+  "path/filepath"
 )
 
 type Modes struct {
@@ -177,9 +177,17 @@ func RemoveExtension(filename string) string {
 func PrepareOutputDir(dir string) {
 	log := logging.MustGetLogger(gisp.ApplicationName)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		log.Debug("Directory '%s' does not exist; creating ...", dir)
+		log.Info("Directory '%s' does not exist; creating ...", dir)
 		os.MkdirAll(dir, os.ModePerm)
 	}
+}
+
+func PrepareOutputFile(filename string) {
+  log := logging.MustGetLogger(gisp.ApplicationName)
+  log.Debug("Preparing output file:", filename)
+  basename := filepath.Dir(filename)
+  log.Debug("Got basename:", basename)
+  PrepareOutputDir(basename)
 }
 
 func MakeOutputFilename(prefix string, inputFile string, extension string) string {
@@ -189,6 +197,20 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 		string(os.PathSeparator),
 		filepath.Base(RemoveExtension(inputFile)),
 		extension)
+}
+
+func isDir(filename string) bool {
+  log := logging.MustGetLogger(gisp.ApplicationName)
+  file, err := os.Stat(filename)
+  if err != nil {
+      log.Debugf(gisp.DirectoryError, filename, err.Error())
+      return false
+  }
+  if file.Mode().IsDir() {
+    return true
+  } else {
+    return false
+  }
 }
 
 func dispatchLisp(modes Modes) {
@@ -207,8 +229,10 @@ func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
 	if modes.cli {
 		// AST CLI
 		for i, inputFile := range inputs.files {
-			log.Debugf("Processing file '%s' for AST output '%s' ...",
+			log.Infof("Processing file '%s' for AST output '%s' ...",
 				inputFile, outputs.files[i])
+      log.Debug("Use file for output?", outputs.useFile)
+      log.Debug("Use directory for output?", outputs.useDir)
 			if outputs.useFile {
 				generator.WriteASTFromFile(inputFile, outputs.files[i])
 			} else {
@@ -226,7 +250,7 @@ func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
 	if modes.cli {
 		// Go-generator CLI
 		for i, inputFile := range inputs.files {
-			log.Debugf("Processing file '%s' for Go output '%s' ...",
+			log.Infof("Processing file '%s' for Go output '%s' ...",
 				inputFile, outputs.files[i])
 			if outputs.useFile {
 				generator.WriteGoFromFile(inputFile, outputs.files[i])
@@ -274,6 +298,7 @@ func extensionFromMode(modes Modes) string {
 
 func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 	log := logging.MustGetLogger(gisp.ApplicationName)
+	log.Debug("Dispatched")
 	log.Debug("Got modes:", modes)
 	log.Debug("Got inputs:", inputs)
 	log.Debug("Got outputs:", outputs)
@@ -302,7 +327,7 @@ func setupLogging (stringLogLevel string) {
 	backendLeveled.SetLevel(logLevel, "")
 	logging.SetBackend(backendLeveled)
 	log := logging.MustGetLogger(gisp.ApplicationName)
-	log.Debug("Set up logging")
+	log.Info("Set up logging")
 }
 
 func main() {
@@ -367,22 +392,34 @@ func main() {
 					os.Exit(1)
 				}
 			} else {
+				log.Debug("Got a single input file")
+				log.Debug("Original output files:", outputs.files)
+				log.Debug("Original input files:", inputs.files)
 				// if only one file is given and dir is given, then set the output file to
 				// be the dir/infile.updated-extension
 				if outputs.isDir {
+					log.Debug("Outputs is a directory, using it ...")
 					PrepareOutputDir(outputs.dir)
 					outputs.files = append(outputs.files, MakeOutputFilename(
 						outputs.dir, inputs.files[0], extensionFromMode(modes)))
 					outputs.useFile = true
-				// Note that if only one file is given, and the output file is set,
-				// no adjustments are necessary -- we'll just use that
+					log.Debug("Modified output files:", outputs.files)
+					log.Debug("Modified input files:", inputs.files)
+				// If only one file is given, and the output file is set
+				} else {
+					log.Debug("Outputs is not a directory.")
+          PrepareOutputFile(*outPtr)
+					outputs.files = append(outputs.files, *outPtr)
+          outputs.useFile = true
+					log.Debug("Modified output files:", outputs.files)
+					log.Debug("Modified input files:", inputs.files)
 				}
 			}
-
 		} else {
 			log.Error(repl.FilesNeededError)
 			os.Exit(1)
 		}
 	}
+	log.Debug("Preparing to dispatch ...")
 	dispatch(modes, inputs, outputs)
 }

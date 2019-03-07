@@ -6,7 +6,7 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 .PHONY: build test all
 
-all: build test build-examples
+all: build test build-examples test-cli
 
 deps:
 	go get github.com/op/go-logging
@@ -59,15 +59,22 @@ test: test-deps
 gogen-examples:
 	zylisp -cli -go -dir ./bin/examples examples/*.gsp
 
+ast-examples:
+	zylisp -cli -ast -dir ./examples examples/*.gsp
+
 bin/examples/%: bin/examples/%.go
 	go build -o $@ $<
 
-build-examples: gogen-examples
+build-examples: gogen-examples ast-examples
 	@$(MAKE) $(basename $(wildcard ./bin/examples/*.go))
 	rm ./bin/examples/*.go
 
 clean-examples:
 	rm -rf ./bin/examples
+	rm ./examples/*.ast
+
+test-cli:
+	./tests/test-zylisp-cli.sh
 
 bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
