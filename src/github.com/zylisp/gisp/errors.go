@@ -1,5 +1,7 @@
 package gisp
 
+// Files and Directories Errors
+const DirectoryError string = "There was a problem accessing directory %s: %s"
 // Implementation Errors
 const NotImplementedError string = "Not implemented yet"
 
