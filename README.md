@@ -48,6 +48,7 @@ For usage as a REPL as well as a CLI, see the command documentation here:
 General package reference documentation is available here:
  * https://zylisp.github.io/zylisp/doc/
 
+
 ## Example Code
 
 This is from the examples (all of which successfully compile from Lisp to both
@@ -70,14 +71,22 @@ Go source as well as bytecode):
                   float64 (factorial 10))))))
 ```
 
+See [examples](examples) for some more examples (they are Project Euler
+solutions).
+
 
 ## Supported Lisp Functions
 
-```
-+, -, *, mod, let, if, ns, def, fn, all pre-existing Go functions
-```
-
-See [examples](examples) for some Project Euler solutions
+* `+`
+* `-`
+* `*`
+* `mod`
+* `let`
+* `if`
+* `ns`
+* `def`
+* `fn`
+* All pre-existing Go functions
 
 
 ## Credits

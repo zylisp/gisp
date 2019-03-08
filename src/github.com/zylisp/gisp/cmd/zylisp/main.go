@@ -157,8 +157,8 @@ For convenience, the 'zyc' bash wrapper is provided for
   $ zyc -dir bin/examples examples/*.gsp
 
 Note that since 'zyc' is not a compiled command, it will not be installed by
-Go. A 'make' target is provided, however, that will install `zyc` into
-'~/go/bin'.
+Go. A 'make install-zyc' target is provided, however, that will install `zyc`
+into '~/go/bin'.
 
 */
 package main
