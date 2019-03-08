@@ -145,6 +145,7 @@ import (
   "github.com/zylisp/gisp/generator"
   "github.com/zylisp/gisp/repl"
   "os"
+  "os/exec"
   "path/filepath"
 )
 
@@ -152,6 +153,7 @@ type Modes struct {
 	cli bool
 	ast bool
 	gogen bool
+  bytecode bool
 	lisp bool
 }
 
@@ -191,8 +193,14 @@ func PrepareOutputFile(filename string) {
 }
 
 func MakeOutputFilename(prefix string, inputFile string, extension string) string {
-	return fmt.Sprintf(
-		"%s%s%s.%s",
+	var template string
+  if extension == "" {
+    template = "%s%s%s%s"
+  } else {
+    template = "%s%s%s.%s"
+  }
+  return fmt.Sprintf(
+		template,
 		prefix,
 		string(os.PathSeparator),
 		filepath.Base(RemoveExtension(inputFile)),
@@ -210,6 +218,16 @@ func isDir(filename string) bool {
     return true
   } else {
     return false
+  }
+}
+
+func compileGo(infile string, outfile string) {
+  log := logging.MustGetLogger(gisp.ApplicationName)
+  log.Noticef("Compiling %s ...", outfile)
+  cmd := exec.Command("go", "build", "-o", outfile, infile)
+  _, err := cmd.Output()
+  if err != nil {
+    log.Errorf(repl.CompileError, err.Error())
   }
 }
 
@@ -264,6 +282,29 @@ func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
 	}
 }
 
+func dispatchByteCode(modes Modes, inputs Inputs, outputs Outputs) {
+  log := logging.MustGetLogger(gisp.ApplicationName)
+  if modes.cli {
+    // Go-compiler CLI
+    for i, inputFile := range inputs.files {
+      outputFile := outputs.files[i]
+      goOutputFile := outputFile + ".go"
+      log.Infof("Processing file '%s' for Go output '%s' ...",
+        inputFile, goOutputFile)
+      if outputs.useFile {
+        generator.WriteGoFromFile(inputFile, goOutputFile)
+      } else {
+        log.Error(repl.CompileWithoutFileError)
+      }
+      log.Infof("Processing file '%s' for byte-code output '%s' ...",
+        goOutputFile, outputFile)
+      compileGo(goOutputFile, outputFile)
+    }
+  } else {
+    log.Error(repl.CompoileWithoutCLIError)
+  }
+}
+
 func getUseDir (dir bool) bool {
 	if dir {
 		return true
@@ -289,6 +330,8 @@ func extensionFromMode(modes Modes) string {
 		extension = "ast"
 	} else if modes.gogen {
 		extension = "go"
+  } else if modes.bytecode {
+    extension = ""
 	} else {
 		fmt.Println(repl.ModeNeededError)
 		os.Exit(1)
@@ -308,6 +351,8 @@ func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 		dispatchAST(modes, inputs, outputs)
 	} else if modes.gogen {
 		dispatchGoGen(modes, inputs, outputs)
+  } else if modes.bytecode {
+    dispatchByteCode(modes, inputs, outputs)
 	} else {
 		fmt.Println(repl.ModeNeededError)
 		os.Exit(1)
@@ -335,6 +380,7 @@ func main() {
 	cliPtr := flag.Bool("cli", false, "Run as a CLI tool")
 	dirPtr := flag.String("dir", "", "Default directory for writing operations")
 	goPtr := flag.Bool("go", false, "Enable Go code-generation mode")
+  byteCodePtr := flag.Bool("bytecode", false, "Enable byte-code compilation from generated Go")
 	lispPtr := flag.Bool("lisp", false, "Enable LISP mode")
 	logLevelPtr := flag.String("loglevel", "warning", "Set the logging level")
 	outPtr := flag.String("o", "", "Default filename for writing operations")
@@ -353,6 +399,7 @@ func main() {
 		cli: *cliPtr,
 		ast: *astPtr,
 		gogen: *goPtr,
+    bytecode: *byteCodePtr,
 		lisp: *lispPtr,
 	}
 

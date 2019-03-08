@@ -5,42 +5,27 @@ FAILURES=0
 PASSES=0
 BASE_OUTDIR=/tmp/zylisp
 
-function create-tmp-dir () {
-	TMPDIR="$BASE_OUTDIR/cli/$1/`date|sed 's/[ :]/_/g'`"
-	mkdir -p "$TMPDIR"
-	echo "$TMPDIR"
-}
-
-function count-files () {
-	echo $(find $1 -type f -name $2 |wc -l)
-}
-
-function num-equals () {
-	if [ ! -z "$1" ] && [ ! -z "$1" ] && [ "$1" -eq "$2" ]; then
-		echo "  PASS"
-		PASSES=$((PASSES+1))
-	else
-		echo "  FAIL: ($1 != $2)"
-		FAIL_SUITE=1
-		FAILURES=$((FAILURES+1))
-	fi
-}
-
-EXAMPLES_COUNT=$(count-files examples/ "*.gsp")
-echo
+. ./tests/common.sh
 
 echo "Batch AST multiple file creation"
-	OUTDIR=$(create-tmp-dir "ASTs")
+	OUTDIR=$(create-tmp-dir "ASTs_dir")
 	zylisp -cli -ast -dir $OUTDIR examples/*.gsp
 	AST_COUNT=$(count-files $OUTDIR "*.ast")
 	num-equals $AST_COUNT $EXAMPLES_COUNT
 	echo
 
 echo "Batch Go multiple file creation"
-	OUTDIR=$(create-tmp-dir "GOs")
+	OUTDIR=$(create-tmp-dir "GOs_dir")
 	zylisp -cli -go -dir $OUTDIR examples/*.gsp
 	GO_COUNT=$(count-files $OUTDIR "*.go")
 	num-equals $GO_COUNT $EXAMPLES_COUNT
+	echo
+
+echo "Batch byte-code multiple file creation"
+	OUTDIR=$(create-tmp-dir "Bytecodes_dir")
+	zylisp -cli -bytecode -dir $OUTDIR examples/*.gsp
+	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
+	num-equals $BYTECODE_COUNT $EXAMPLES_COUNT
 	echo
 
 echo "Batch AST explicit output file creation"
@@ -57,6 +42,13 @@ echo "Batch Go explicit output file creation"
 	num-equals $GO_COUNT 1
 	echo
 
+echo "Batch byte-code explicit output file creation"
+	OUTDIR=$(create-tmp-dir "Bytecode_file")
+	zylisp -cli -bytecode -o $OUTDIR/factorial examples/factorial.gsp
+	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
+	num-equals $BYTECODE_COUNT 1
+	echo
+
 echo "Batch AST implicit output file (using dir) creation"
 	OUTDIR=$(create-tmp-dir "AST_dir")
 	zylisp -cli -ast -dir $OUTDIR examples/factorial.gsp
@@ -64,15 +56,23 @@ echo "Batch AST implicit output file (using dir) creation"
 	num-equals $AST_COUNT 1
 	echo
 
-echo "Batch Go explicit output file (using dir) creation"
+echo "Batch Go implicit output file (using dir) creation"
 	OUTDIR=$(create-tmp-dir "GO_dir")
 	zylisp -cli -go -dir $OUTDIR examples/factorial.gsp
 	GO_COUNT=$(count-files $OUTDIR "*.go")
 	num-equals $GO_COUNT 1
 	echo
 
+echo "Batch byte-code implicit output file (using dir) creation"
+	OUTDIR=$(create-tmp-dir "Bytecode_dir")
+	zylisp -cli -bytecode -dir $OUTDIR examples/factorial.gsp
+	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
+	num-equals $BYTECODE_COUNT 1
+	echo
+
 echo "Tests passed: $PASSES"
 echo "Tests failed: $FAILURES"
+echo
 
 if [ ! -z "$BASE_OUTDIR" ]; then
 	rm -rf $BASE_OUTDIR
