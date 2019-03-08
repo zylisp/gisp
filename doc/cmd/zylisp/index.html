@@ -122,7 +122,7 @@ You may view this with the usual -h option:
 </pre>
 <h3 id="hdr-Logging">Logging</h3>
 <p>
-The `zylisp` executable supports passing a `-loglevel` option with one of the
+The zylisp executable supports passing a -loglevel option with one of the
 following a legal associated value:
 </p>
 <pre>* debug
@@ -238,13 +238,24 @@ func factorial(n core.Any) core.Any {
 </pre>
 <p>
 In byte-code compilation mode, Go is generated under the hood, and then it is
-compiled to byte code using `go build`:
+compiled to byte code using &#39;go build&#39;:
 </p>
 <pre>$ zylisp -cli -bytecode -dir bin/examples examples/*.gsp
 </pre>
 <p>
 This also demonstrate support for file globbing, allowing you to generate
 output for multiple files at once.
+</p>
+<p>
+For convenience, the &#39;zyc&#39; bash wrapper is provided for
+&#39;zylisp -cli -bytecode&#39;:
+</p>
+<pre>$ zyc -dir bin/examples examples/*.gsp
+</pre>
+<p>
+Note that since &#39;zyc&#39; is not a compiled command, it will not be installed by
+Go. A &#39;make&#39; target is provided, however, that will install `zyc` into
+&#39;~/go/bin&#39;.
 </p>
 
 	
