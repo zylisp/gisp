@@ -6,7 +6,7 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 .PHONY: build test all
 
-all: build test build-examples test-cli test-examples
+all: build test build-examples test-cli test-examples test-zyc
 
 deps:
 	go get github.com/op/go-logging
@@ -79,6 +79,9 @@ test-cli:
 test-examples:
 	./tests/test-compiled-examples.sh
 
+test-zyc:
+	./tests/test-zyc.sh
+
 bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
 
@@ -120,3 +123,12 @@ publish-docs: docs
 	@cd doc && \
 	git commit -am "Regen'ed docs." && \
 	git push origin gh-pages
+
+install-zyc:
+	@mkdir -p ~/go/bin
+	@cp bin/zyc ~/go/bin
+
+install-zylisp:
+	@go get github.com/zylisp/gisp/cmd/zylisp
+
+install: install-zylisp install-zyc

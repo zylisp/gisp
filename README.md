@@ -48,41 +48,27 @@ For usage as a REPL as well as a CLI, see the command documentation here:
 General package reference documentation is available here:
  * https://zylisp.github.io/zylisp/doc/
 
+## Example Code
 
-### Compiler
+This is from the examples (all of which successfully compile from Lisp to both
+Go source as well as bytecode):
 
-To compile:
+```clj
+(ns main
+  "fmt"
+  "github.com/zylisp/gisp/core")
 
+(def factorial (fn [n]
+  (if (< n 2)
+    1
+    (* n (factorial (+ n -1))))))
+
+(def main (fn []
+  (fmt/printf "10! = %d\n"
+              (int
+                (assert
+                  float64 (factorial 10))))))
 ```
-$ zyc examples/even_fib_terms.gsp
-```
-
-By default, this will create the executable binary file `even_fib_terms` in
-the current working directory. You also have the option of specifying the
-filename/path of the output:
-
-```
-$ zyc -o bin/examples/fib-even-terms examples/even_fib_terms.gsp
-```
-
-Or, if you prefer, you can compile all the `.gsp` files in a directory, in
-which case the output option is interpreted as a directory:
-
-```
-$ zyc -o bin/examples examples/*.gsp
-```
-
-Then you can run them on your system as any compiled Go:
-
-```
-$ ./bin/examples/sum-fib-terms
-Sum of all even fibonacci terms below 4000000: 4613732
-```
-
-To see the other compiler options available, run `zyc -h`.
-
-Note that the compilation process involves parsing, generating an AST,
-generating Go code, and finally, compiling that Go code.
 
 
 ## Supported Lisp Functions

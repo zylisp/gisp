@@ -151,6 +151,15 @@ compiled to byte code using 'go build':
 This also demonstrate support for file globbing, allowing you to generate
 output for multiple files at once.
 
+For convenience, the 'zyc' bash wrapper is provided for
+'zylisp -cli -bytecode':
+
+  $ zyc -dir bin/examples examples/*.gsp
+
+Note that since 'zyc' is not a compiled command, it will not be installed by
+Go. A 'make' target is provided, however, that will install `zyc` into
+'~/go/bin'.
+
 */
 package main
 
