@@ -31,7 +31,7 @@ You may view this with the usual -h option:
 
 Logging
 
-The `zylisp` executable supports passing a `-loglevel` option with one of the
+The zylisp executable supports passing a -loglevel option with one of the
 following a legal associated value:
 
   * debug
@@ -144,7 +144,7 @@ In Go-generation mode, the output is instead compilable Go code:
 	}
 
 In byte-code compilation mode, Go is generated under the hood, and then it is
-compiled to byte code using `go build`:
+compiled to byte code using 'go build':
 
   $ zylisp -cli -bytecode -dir bin/examples examples/*.gsp
 
