@@ -7,9 +7,10 @@ The ZYLISP project's zylisp command is a tool for both performing command line
 actions (i.e., batch jobs) as well as interactive programming (REPLs). In both
 cases, there are three modes:
 
- * AST
- * Go code generation
- * Lisp (the actual, classic REPL)
+   * AST
+   * Go code generation
+   * Byte-code compilation (no REPL; just CLI support)
+   * Lisp (the actual, classic REPL)
 
 Each of these is covered in more detail below.
 
@@ -27,6 +28,19 @@ Since the zylisp command makes use of Go flags, it has a generated help output.
 You may view this with the usual -h option:
 
 	$ zylisp -h
+
+Logging
+
+The `zylisp` executable supports passing a `-loglevel` option with one of the
+following a legal associated value:
+
+  * debug
+  * info
+  * notice
+  * warning
+  * error
+  * failure
+
 
 REPL
 
@@ -129,10 +143,13 @@ In Go-generation mode, the output is instead compilable Go code:
 		}()
 	}
 
-As mentioned above, file globbing is also supported, allowing you to generate
-output for multiple files at once:
+In byte-code compilation mode, Go is generated under the hood, and then it is
+compiled to byte code using `go build`:
 
-	$ zylisp -cli -go examples/*.gsp
+  $ zylisp -cli -bytecode -dir bin/examples examples/*.gsp
+
+This also demonstrate support for file globbing, allowing you to generate
+output for multiple files at once.
 
 */
 package main
