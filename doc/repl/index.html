@@ -151,6 +151,8 @@
 			
 				<a href="/src/github.com/zylisp/gisp/repl/const.go">const.go</a>
 			
+				<a href="/src/github.com/zylisp/gisp/repl/errors.go">errors.go</a>
+			
 				<a href="/src/github.com/zylisp/gisp/repl/repl.go">repl.go</a>
 			
 			</span>
@@ -178,11 +180,38 @@ Instructions: Simply type any form to view the generated Go AST.
         Docs: https://zylisp.github.io/zylisp/
      Project: https://github.com/zylisp/zylisp`</pre>
 			
+				<p>
+Compile Errors
+</p>
+
+				<pre>const <span id="CompileError">CompileError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Couldn&#39;t compile file: %s&#34;</pre>
+			
+				
+				<pre>const <span id="CompileWithoutFileError">CompileWithoutFileError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Cannot compile file(s) without file(s) defined&#34;</pre>
+			
+				
+				<pre>const <span id="CompoileWithoutCLIError">CompoileWithoutCLIError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Can only compile to bytecode in CLI mode&#34;</pre>
+			
+				
+				<pre>const <span id="DirNeededError">DirNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You must define an output directory when processing multiple files&#34;</pre>
+			
+				<p>
+Files and Directories Errors
+</p>
+
+				<pre>const <span id="FilesNeededError">FilesNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You need to provide at least one file upon which to operate&#34;</pre>
+			
 				
 				<pre>const <span id="GoGenPrompt">GoGenPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;GOGEN&gt; &#34;</pre>
 			
 				
 				<pre>const <span id="GoGenREPLHelp">GoGenREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = <a href="#ASTREPLHelp">ASTREPLHelp</a></pre>
+			
+				<p>
+Unsupported Errors
+</p>
+
+				<pre>const <span id="LispCLIUnsupportedError">LispCLIUnsupportedError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The Lisp CLI is currently not supported&#34;</pre>
 			
 				
 				<pre>const <span id="LispDefaultPackage">LispDefaultPackage</span> <a href="/pkg/builtin/#string">string</a> = &#34;user&#34;</pre>
@@ -194,6 +223,15 @@ Instructions: Simply type any form to view the generated Go AST.
 				<pre>const <span id="LispREPLHelp">LispREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
       Exit: &lt;CONTROL&gt;&lt;D&gt; or (exit) or (quit)
 `</pre>
+			
+				
+				<pre>const <span id="LispREPLUnsupportedError">LispREPLUnsupportedError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Lisp mode is currently not supported&#34;</pre>
+			
+				<p>
+Mode Errors
+</p>
+
+				<pre>const <span id="ModeNeededError">ModeNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You need to supply a mode&#34;</pre>
 			
 				
 				<pre>const <span id="REPLBannerGreeting">REPLBannerGreeting</span> <a href="/pkg/builtin/#string">string</a> = `Okay, 3, 2, 1 - Let&#39;s jam!
@@ -221,6 +259,12 @@ See you space cowboy ...
 				
 				<pre>const <span id="REPLCtlDExitMsg">REPLCtlDExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^D
 `</pre>
+			
+				
+				<pre>const <span id="UnexpectedFileOrDirError">UnexpectedFileOrDirError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected error with CLI and output file or directory&#34;</pre>
+			
+				
+				<pre>const <span id="UnexpectedFilesOrDirError">UnexpectedFilesOrDirError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected error with CLI and output files or directory&#34;</pre>
 			
 		
 		

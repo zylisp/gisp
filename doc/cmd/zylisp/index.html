@@ -97,6 +97,7 @@ cases, there are three modes:
 </p>
 <pre>* AST
 * Go code generation
+* Byte-code compilation (no REPL; just CLI support)
 * Lisp (the actual, classic REPL)
 </pre>
 <p>
@@ -119,6 +120,21 @@ You may view this with the usual -h option:
 </p>
 <pre>$ zylisp -h
 </pre>
+<h3 id="hdr-Logging">Logging</h3>
+<p>
+The `zylisp` executable supports passing a `-loglevel` option with one of the
+following a legal associated value:
+</p>
+<p>
+&ldquo;`
+* debug
+* info
+* notice
+* warning
+* error
+* failure
+&ldquo;`
+</p>
 <h3 id="hdr-REPL">REPL</h3>
 <p>
 The ZYLISP REPL is designed for interactive programming.
@@ -224,11 +240,15 @@ func factorial(n core.Any) core.Any {
 }
 </pre>
 <p>
-As mentioned above, file globbing is also supported, allowing you to generate
-output for multiple files at once:
+In byte-code compilation mode, Go is generated under the hood, and then it is
+compiled to byte code using `go build`:
 </p>
-<pre>$ zylisp -cli -go examples/*.gsp
+<pre>$ zylisp -cli -bytecode -dir bin/examples examples/*.gsp
 </pre>
+<p>
+This also demonstrate support for file globbing, allowing you to generate
+output for multiple files at once.
+</p>
 
 	
 

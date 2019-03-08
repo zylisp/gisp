@@ -120,6 +120,8 @@
 			<div id="manual-nav">
 			<dl>
 			
+				<dd><a href="#pkg-constants">Constants</a></dd>
+			
 			
 			
 				
@@ -194,6 +196,8 @@
 			
 				<a href="/src/github.com/zylisp/gisp/core/core.go">core.go</a>
 			
+				<a href="/src/github.com/zylisp/gisp/core/errors.go">errors.go</a>
+			
 				<a href="/src/github.com/zylisp/gisp/core/number.go">number.go</a>
 			
 			</span>
@@ -205,11 +209,35 @@
 		
 
 		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				
+				<pre>const <span id="AddArgTypeError">AddArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;add function requires int and/or float64 objects&#34;</pre>
+			
+				
+				<pre>const <span id="CompareArgsCountError">CompareArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You cannot compare less than two values&#34;</pre>
+			
+				
+				<pre>const <span id="GetArgsTypesError">GetArgsTypesError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Arguments to the get function must include slice/vector/string&#34;</pre>
+			
+				
+				<pre>const <span id="GetNot2Or3ArgsError">GetNot2Or3ArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The get function needs 2 or 3 arguments %d given.&#34;</pre>
+			
+				
+				<pre>const <span id="IncompatibleCompareTypesError">IncompatibleCompareTypesError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The comparison of types of args provided is not allowed&#34;</pre>
+			
+				
+				<pre>const <span id="ModArgTypeError">ModArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;mod function requires need int/float argument; received incorrect type: &#34;</pre>
+			
+				
+				<pre>const <span id="SubArgTypeError">SubArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;sub function requires need int/float argument&#34;</pre>
+			
+		
 		
 		
 			
 			
-			<h2 id="ADD">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=571:600#L27">ADD</a>
+			<h2 id="ADD">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=509:538#L25">ADD</a>
 				<a class="permalink" href="#ADD">&#xb6;</a>
 				
 				
@@ -226,7 +254,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="DIV">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1635:1645#L83">DIV</a>
+			<h2 id="DIV">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1538:1548#L81">DIV</a>
 				<a class="permalink" href="#DIV">&#xb6;</a>
 				
 				
@@ -239,7 +267,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="EQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2854:2879#L151">EQ</a>
+			<h2 id="EQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2745:2770#L149">EQ</a>
 				<a class="permalink" href="#EQ">&#xb6;</a>
 				
 				
@@ -252,7 +280,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="GT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2307:2332#L119">GT</a>
+			<h2 id="GT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=2204:2229#L117">GT</a>
 				<a class="permalink" href="#GT">&#xb6;</a>
 				
 				
@@ -268,7 +296,7 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3426:3453#L184">GTEQ</a>
+			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3311:3338#L182">GTEQ</a>
 				<a class="permalink" href="#GTEQ">&#xb6;</a>
 				
 				
@@ -284,7 +312,7 @@ greater than or equal
 		
 			
 			
-			<h2 id="LT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1705:1730#L86">LT</a>
+			<h2 id="LT">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1608:1633#L84">LT</a>
 				<a class="permalink" href="#LT">&#xb6;</a>
 				
 				
@@ -300,7 +328,7 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3546:3573#L193">LTEQ</a>
+			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=3431:3458#L191">LTEQ</a>
 				<a class="permalink" href="#LTEQ">&#xb6;</a>
 				
 				
@@ -329,7 +357,7 @@ less than or equal
 		
 			
 			
-			<h2 id="MUL">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1411:1440#L69">MUL</a>
+			<h2 id="MUL">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1314:1343#L67">MUL</a>
 				<a class="permalink" href="#MUL">&#xb6;</a>
 				
 				
@@ -342,7 +370,7 @@ less than or equal
 		
 			
 			
-			<h2 id="SUB">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=1021:1050#L47">SUB</a>
+			<h2 id="SUB">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=933:962#L45">SUB</a>
 				<a class="permalink" href="#SUB">&#xb6;</a>
 				
 				
@@ -374,7 +402,7 @@ less than or equal
 
 			
 				
-				<h3 id="Get">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=4117:4142#L232">Get</a>
+				<h3 id="Get">func <a href="/src/github.com/zylisp/gisp/core/core.go?s=4002:4027#L230">Get</a>
 					<a class="permalink" href="#Get">&#xb6;</a>
 					
 					

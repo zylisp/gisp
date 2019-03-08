@@ -122,6 +122,8 @@
 			<div id="manual-nav">
 			<dl>
 			
+				<dd><a href="#pkg-constants">Constants</a></dd>
+			
 			
 			
 				
@@ -155,7 +157,10 @@
 				<dd><a href="#PrintGoFromLispString">func PrintGoFromLispString(data string)</a></dd>
 			
 				
-				<dd><a href="#WriteGoFromFile">func WriteGoFromFile(filename string)</a></dd>
+				<dd><a href="#WriteASTFromFile">func WriteASTFromFile(fromFile string, toFile string)</a></dd>
+			
+				
+				<dd><a href="#WriteGoFromFile">func WriteGoFromFile(fromFile string, toFile string)</a></dd>
 			
 			
 			
@@ -168,6 +173,8 @@
 			<h3>Package files</h3>
 			<p>
 			<span style="font-size:90%">
+			
+				<a href="/src/github.com/zylisp/gisp/generator/errors.go">errors.go</a>
 			
 				<a href="/src/github.com/zylisp/gisp/generator/eval.go">eval.go</a>
 			
@@ -196,6 +203,51 @@
 		
 
 		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				
+				<pre>const <span id="AssertArgsCountError">AssertArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The assert function requires two arguments&#34;</pre>
+			
+				
+				<pre>const <span id="AssrtArgTypeError">AssrtArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The assert function&#39;s first argument must be a type&#34;</pre>
+			
+				
+				<pre>const <span id="BinaryArgsCountError">BinaryArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of binary operator with only one argument is not allowed&#34;</pre>
+			
+				
+				<pre>const <span id="CalleeIndentifierMismatchError">CalleeIndentifierMismatchError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expecting call to identifier (i.e. def, defconst, etc.)&#34;</pre>
+			
+				
+				<pre>const <span id="DefInExpressionError">DefInExpressionError</span> <a href="/pkg/builtin/#string">string</a> = &#34;A def within an expression is not allowed&#34;</pre>
+			
+				
+				<pre>const <span id="ExpectingAsInImportError">ExpectingAsInImportError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid; expecting: \&#34;:as\&#34;&#34;</pre>
+			
+				
+				<pre>const <span id="InvalidImportError">InvalidImportError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Import declaration is invalid&#34;</pre>
+			
+				
+				<pre>const <span id="InvalidImportUseError">InvalidImportUseError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid&#34;</pre>
+			
+				
+				<pre>const <span id="LoopWithoutRecurError">LoopWithoutRecurError</span> <a href="/pkg/builtin/#string">string</a> = &#34;There was no recur found in the loop&#34;</pre>
+			
+				
+				<pre>const <span id="MissingAssgnmentArgsError">MissingAssgnmentArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expecting expression to be assigned to variable: %q&#34;</pre>
+			
+				
+				<pre>const <span id="MissingCallNodeError">MissingCallNodeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expected call node is missing in root scope&#34;</pre>
+			
+				
+				<pre>const <span id="NSInExpressionError">NSInExpressionError</span> <a href="/pkg/builtin/#string">string</a> = &#34;A namespace defined in an expression is not allowed&#34;</pre>
+			
+				
+				<pre>const <span id="NSPackageTypeMismatch">NSPackageTypeMismatch</span> <a href="/pkg/builtin/#string">string</a> = &#34;ns package name needs to be an identifier&#34;</pre>
+			
+				
+				<pre>const <span id="UnaryArgsCountError">UnaryArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of unary operator requires exactly on argument&#34;</pre>
+			
+		
 		
 		
 			
@@ -213,7 +265,7 @@
 		
 			
 			
-			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=248:288#L9">EvalExpr</a>
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=274:314#L10">EvalExpr</a>
 				<a class="permalink" href="#EvalExpr">&#xb6;</a>
 				
 				
@@ -226,7 +278,7 @@
 		
 			
 			
-			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=86:132#L1">EvalExprs</a>
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=112:158#L1">EvalExprs</a>
 				<a class="permalink" href="#EvalExprs">&#xb6;</a>
 				
 				
@@ -239,7 +291,7 @@
 		
 			
 			
-			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=204:250#L5">GenerateAST</a>
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=258:304#L7">GenerateAST</a>
 				<a class="permalink" href="#GenerateAST">&#xb6;</a>
 				
 				
@@ -252,7 +304,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2657:2730#L122">GenerateASTFromLispFile</a>
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2623:2696#L124">GenerateASTFromLispFile</a>
 				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
 				
 				
@@ -265,7 +317,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2979:3051#L137">GenerateASTFromLispString</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3015:3087#L141">GenerateASTFromLispString</a>
 				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
@@ -278,7 +330,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3171:3209#L145">PrintASTFromFile</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3207:3245#L149">PrintASTFromFile</a>
 				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
@@ -291,7 +343,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3289:3329#L151">PrintASTFromLispString</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3698:3738#L170">PrintASTFromLispString</a>
 				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
@@ -304,7 +356,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3838:3875#L172">PrintGoFromFile</a>
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4225:4262#L191">PrintGoFromFile</a>
 				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
 				
 				
@@ -317,7 +369,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4022:4061#L180">PrintGoFromLispString</a>
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4409:4448#L199">PrintGoFromLispString</a>
 				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
 				
 				
@@ -330,12 +382,25 @@
 		
 			
 			
-			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3407:3444#L157">WriteGoFromFile</a>
+			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3325:3378#L155">WriteASTFromFile</a>
+				<a class="permalink" href="#WriteASTFromFile">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func WriteASTFromFile(fromFile <a href="/pkg/builtin/#string">string</a>, toFile <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3816:3868#L176">WriteGoFromFile</a>
 				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func WriteGoFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
+			<pre>func WriteGoFromFile(fromFile <a href="/pkg/builtin/#string">string</a>, toFile <a href="/pkg/builtin/#string">string</a>)</pre>
 			
 			
 			
