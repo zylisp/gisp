@@ -6,7 +6,7 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 .PHONY: build test all
 
-all: build test build-examples test-cli
+all: build test build-examples test-cli test-examples
 
 deps:
 	go get github.com/op/go-logging
@@ -75,6 +75,9 @@ clean-examples:
 
 test-cli:
 	./tests/test-zylisp-cli.sh
+
+test-examples:
+	./tests/test-compiled-examples.sh
 
 bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
