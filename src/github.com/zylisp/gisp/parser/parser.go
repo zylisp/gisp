@@ -1,10 +1,14 @@
 package parser
 
 import (
-	"fmt"
+  "fmt"
+	"github.com/op/go-logging"
+	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/lexer"
 	"go/token"
 )
+
+var log = logging.MustGetLogger(gisp.ApplicationName)
 
 type Pos int
 
@@ -41,22 +45,24 @@ func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
 			tree = append(tree, newVectNode(parser(l, make([]Node, 0), ']')))
 		case lexer.AtomRightParen:
 			if lookingFor != ')' {
-				panic(fmt.Sprintf(RightCurvedBracketError, item.Pos))
+				log.Criticalf(RightCurvedBracketError, item.Pos)
 			}
 			return tree
 		case lexer.AtomRightVect:
 			if lookingFor != ']' {
-				panic(fmt.Sprintf(RightSquareBracketError, item.Pos))
+				log.Criticalf(RightSquareBracketError, item.Pos)
 			}
 			return tree
 		case lexer.AtomError:
-			println(item.Value)
+			msg := fmt.Sprintf(UnspecifiedAtomError, lexer.AtomError, item.Pos)
+			log.Errorf(msg)
+			panic(msg)
 		default:
+			log.Critical(AtomTypeError)
 			panic(AtomTypeError)
 		}
 		item = l.NextAtom()
 	}
-
 	return tree
 }
 

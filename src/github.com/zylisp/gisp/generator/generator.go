@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 )
 
+var log = logging.MustGetLogger(gisp.ApplicationName)
 var anyType = makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent("Any"))
 
 func GenerateAST(tree []parser.Node) *ast.File {
@@ -45,6 +46,7 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 
 	for i, node := range tree {
 		if node.Type() != parser.NodeCall {
+			log.Critical(MissingCallNodeError)
 			panic(MissingCallNodeError)
 		}
 
@@ -57,6 +59,7 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 func evalDeclNode(node *parser.CallNode) ast.Decl {
 	// Let's just assume that all top-level functions called will be "def"
 	if node.Callee.Type() != parser.NodeIdent {
+		log.Critical(CalleeIndentifierMismatchError)
 		panic(CalleeIndentifierMismatchError)
 	}
 
@@ -71,7 +74,9 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 
 func evalDef(node *parser.CallNode) ast.Decl {
 	if len(node.Args) < 2 {
-		panic(fmt.Sprintf(MissingAssgnmentArgsError, node.Args[0]))
+		msg := fmt.Sprintf(MissingAssgnmentArgsError, node.Args[0])
+		log.Critical(msg)
+		panic(msg)
 	}
 
 	val := EvalExpr(node.Args[1])
@@ -113,6 +118,7 @@ func getNamespace(node *parser.CallNode) (*ast.Ident, ast.Decl) {
 
 func getPackageName(node *parser.CallNode) *ast.Ident {
 	if node.Args[0].Type() != parser.NodeIdent {
+		log.Critical(NSPackageTypeMismatch)
 		panic(NSPackageTypeMismatch)
 	}
 
@@ -136,8 +142,7 @@ func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
-		log := logging.MustGetLogger(gisp.ApplicationName)
-		log.Error(err)
+		log.Critical(err)
 		panic(err)
 	}
 
@@ -170,8 +175,7 @@ func WriteASTFromFile(fromFile string, toFile string) {
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
-		log := logging.MustGetLogger(gisp.ApplicationName)
-		log.Error(err)
+		log.Critical(err)
 		panic(err)
 	}
 	return
@@ -191,8 +195,7 @@ func WriteGoFromFile(fromFile string, toFile string) {
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
-		log := logging.MustGetLogger(gisp.ApplicationName)
-		log.Error(err)
+		log.Critical(err)
 		log.Debug("Tried writing to file:", toFile)
 		panic(err)
 	}

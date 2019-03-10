@@ -175,6 +175,8 @@ import (
   "path/filepath"
 )
 
+var log = logging.MustGetLogger(gisp.ApplicationName)
+
 type Modes struct {
 	cli bool
 	ast bool
@@ -203,7 +205,6 @@ func RemoveExtension(filename string) string {
 }
 
 func PrepareOutputDir(dir string) {
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		log.Info("Directory '%s' does not exist; creating ...", dir)
 		os.MkdirAll(dir, os.ModePerm)
@@ -211,7 +212,6 @@ func PrepareOutputDir(dir string) {
 }
 
 func PrepareOutputFile(filename string) {
-  log := logging.MustGetLogger(gisp.ApplicationName)
   log.Debug("Preparing output file:", filename)
   basename := filepath.Dir(filename)
   log.Debug("Got basename:", basename)
@@ -234,7 +234,6 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 }
 
 func isDir(filename string) bool {
-  log := logging.MustGetLogger(gisp.ApplicationName)
   file, err := os.Stat(filename)
   if err != nil {
       log.Debugf(gisp.DirectoryError, filename, err.Error())
@@ -248,7 +247,6 @@ func isDir(filename string) bool {
 }
 
 func compileGo(infile string, outfile string) {
-  log := logging.MustGetLogger(gisp.ApplicationName)
   log.Noticef("Compiling %s ...", outfile)
   cmd := exec.Command("go", "build", "-o", outfile, infile)
   _, err := cmd.Output()
@@ -269,7 +267,6 @@ func dispatchLisp(modes Modes) {
 }
 
 func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	if modes.cli {
 		// AST CLI
 		for i, inputFile := range inputs.files {
@@ -290,7 +287,6 @@ func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
 }
 
 func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	if modes.cli {
 		// Go-generator CLI
 		for i, inputFile := range inputs.files {
@@ -309,7 +305,6 @@ func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
 }
 
 func dispatchByteCode(modes Modes, inputs Inputs, outputs Outputs) {
-  log := logging.MustGetLogger(gisp.ApplicationName)
   if modes.cli {
     // Go-compiler CLI
     for i, inputFile := range inputs.files {
@@ -366,7 +361,6 @@ func extensionFromMode(modes Modes) string {
 }
 
 func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	log.Debug("Dispatched")
 	log.Debug("Got modes:", modes)
 	log.Debug("Got inputs:", inputs)
@@ -397,7 +391,6 @@ func setupLogging (stringLogLevel string) {
 	}
 	backendLeveled.SetLevel(logLevel, "")
 	logging.SetBackend(backendLeveled)
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	log.Info("Set up logging")
 }
 
@@ -412,11 +405,7 @@ func main() {
 	outPtr := flag.String("o", "", "Default filename for writing operations")
 
 	flag.Parse()
-
-
-	log := logging.MustGetLogger(gisp.ApplicationName)
 	setupLogging(*logLevelPtr)
-
 	inputFiles := flag.Args()
 	hasFiles := getHasFiles(inputFiles)
 	isDir := len(*dirPtr) > 0

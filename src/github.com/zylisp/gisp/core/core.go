@@ -2,8 +2,12 @@ package core
 
 import (
 	"fmt"
+	"github.com/op/go-logging"
+	"github.com/zylisp/gisp"
 	"reflect"
 )
+
+var log = logging.MustGetLogger(gisp.ApplicationName)
 
 type Any interface{}
 
@@ -16,7 +20,7 @@ func MOD(a, b Any) int {
 	case isFloat(a):
 		n = int(a.(float64))
 	default:
-		panic(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(a)))
+		log.Error(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(a)))
 	}
 
 	switch {
@@ -25,7 +29,7 @@ func MOD(a, b Any) int {
 	case isFloat(b):
 		m = int(b.(float64))
 	default:
-		panic(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(b)))
+		log.Error(ModArgTypeError + fmt.Sprintf("%v", reflect.TypeOf(b)))
 	}
 	return n % m
 }
@@ -42,12 +46,12 @@ func ADD(args ...Any) float64 {
 		case isFloat(n):
 			nums[i] = Number{Value: n.(float64)}
 		default:
-			panic(AddArgTypeError)
+			log.Error(AddArgTypeError)
 		}
 	}
 	sumNum, err := AddNumbers(nums...)
 	if err != nil {
-		panic(fmt.Sprintf("%v", err))
+		log.Errorf("%v", err)
 	}
 	return sumNum.ToFloat()
 }
@@ -59,7 +63,7 @@ func SUB(args ...Any) float64 {
 	} else if isFloat(args[0]) {
 		result = args[0].(float64)
 	} else {
-		panic(SubArgTypeError)
+		log.Error(SubArgTypeError)
 	}
 
 	for i := 1; i < len(args); i++ {
@@ -93,7 +97,7 @@ func DIV() {}
 // TODO: can only compare ints and slice lens for now.
 func LT(args ...Any) bool {
 	if len(args) < 2 {
-		panic(CompareArgsCountError)
+		log.Error(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -103,7 +107,7 @@ func LT(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -112,7 +116,7 @@ func LT(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		if n >= m {
@@ -126,7 +130,7 @@ func LT(args ...Any) bool {
 // TODO: can only compare ints and slice lens for now.
 func GT(args ...Any) bool {
 	if len(args) < 2 {
-		panic(CompareArgsCountError)
+		log.Error(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -136,7 +140,7 @@ func GT(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -145,7 +149,7 @@ func GT(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		if n <= m {
@@ -158,7 +162,7 @@ func GT(args ...Any) bool {
 
 func EQ(args ...Any) bool {
 	if len(args) < 2 {
-		panic(CompareArgsCountError)
+		log.Error(CompareArgsCountError)
 	}
 
 	for i := 0; i < len(args)-1; i++ {
@@ -168,7 +172,7 @@ func EQ(args ...Any) bool {
 		} else if isFloat(args[i]) {
 			n = args[i].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		var m float64
@@ -177,7 +181,7 @@ func EQ(args ...Any) bool {
 		} else if isFloat(args[i+1]) {
 			m = args[i+1].(float64)
 		} else {
-			panic(IncompatibleCompareTypesError)
+			log.Error(IncompatibleCompareTypesError)
 		}
 
 		if n != m {
@@ -239,7 +243,8 @@ func isInt(n Any) bool {
 
 func Get(args ...Any) Any {
 	if len(args) != 2 && len(args) != 3 {
-		panic(fmt.Sprintf(GetNot2Or3ArgsError, len(args)))
+		log.Errorf(GetNot2Or3ArgsError, len(args))
+		return nil
 	}
 
 	if len(args) == 2 {
@@ -248,7 +253,8 @@ func Get(args ...Any) Any {
 		} else if a, ok := args[1].(string); ok {
 			return a[args[0].(int)]
 		} else {
-			panic(GetArgsTypesError)
+			log.Error(GetArgsTypesError)
+			return nil
 		}
 	} else {
 		if a, ok := args[2].([]Any); ok {
@@ -264,7 +270,8 @@ func Get(args ...Any) Any {
 
 			return a[args[0].(int):args[1].(int)]
 		} else {
-			panic(GetArgsTypesError)
+			log.Error(GetArgsTypesError)
+			return nil
 		}
 	}
 }

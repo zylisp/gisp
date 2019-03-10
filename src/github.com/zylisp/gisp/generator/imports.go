@@ -21,6 +21,7 @@ func getImports(node *parser.CallNode) ast.Decl {
 			path := makeBasicLit(token.STRING, imp.(*parser.StringNode).Value)
 			specs[i] = makeImportSpec(path, nil)
 		} else {
+			log.Critical(InvalidImportError)
 			panic(InvalidImportError)
 		}
 	}
@@ -32,10 +33,12 @@ func getImports(node *parser.CallNode) ast.Decl {
 
 func makeImportSpecFromVector(vect *parser.VectorNode) *ast.ImportSpec {
 	if len(vect.Nodes) < 3 {
+		log.Critical(InvalidImportUseError)
 		panic(InvalidImportUseError)
 	}
 
 	if vect.Nodes[0].Type() != parser.NodeString {
+		log.Critical(InvalidImportUseError)
 		panic(InvalidImportUseError)
 	}
 
@@ -43,6 +46,7 @@ func makeImportSpecFromVector(vect *parser.VectorNode) *ast.ImportSpec {
 	path := makeBasicLit(token.STRING, pathString)
 
 	if vect.Nodes[1].Type() != parser.NodeIdent || vect.Nodes[1].(*parser.IdentNode).Ident != ":as" {
+		log.Critical(ExpectingAsInImportError)
 		panic(ExpectingAsInImportError)
 	}
 	name := ast.NewIdent(vect.Nodes[2].(*parser.IdentNode).Ident)
