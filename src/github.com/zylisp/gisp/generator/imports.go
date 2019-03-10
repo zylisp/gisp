@@ -21,8 +21,10 @@ func getImports(node *parser.CallNode) ast.Decl {
 			path := makeBasicLit(token.STRING, imp.(*parser.StringNode).Value)
 			specs[i] = makeImportSpec(path, nil)
 		} else {
-			log.Critical(InvalidImportError)
-			panic(InvalidImportError)
+			log.Error(InvalidImportError)
+			// panic(InvalidImportError)
+			// XXX Does returning nil here break something?
+			return nil
 		}
 	}
 

@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"fmt"
 	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
@@ -18,7 +19,10 @@ func EvalExprs(nodes []parser.Node) []ast.Expr {
 }
 
 func EvalExpr(node parser.Node) ast.Expr {
-	switch t := node.Type(); t {
+	t := node.Type()
+	log.Debug("Evaluating node:", node, "of type:", t)
+	log.Debug("Node data:", node)
+	switch t {
 	case parser.NodeCall:
 		node := node.(*parser.CallNode)
 		return evalFuncCall(node)
@@ -40,9 +44,8 @@ func EvalExpr(node parser.Node) ast.Expr {
 		return makeIdomaticSelector(node.Ident)
 
 	default:
-		println(t)
-		// XXX let's not panic here, but instead log a warning of some sort ...
-		//     whatever Go does for warnings
-		panic(gisp.NotImplementedError)
+		msg := fmt.Sprintf("%s: %s", gisp.NotImplementedError, t)
+		log.Notice(msg)
+		panic(msg)
 	}
 }
