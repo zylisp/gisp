@@ -47,6 +47,8 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 	for i, node := range tree {
 		if node.Type() != parser.NodeCall {
 			log.Critical(MissingCallNodeError)
+			// XXX Can we log an error and return an emptuy decls? What would that
+			//     mean ...?
 			panic(MissingCallNodeError)
 		}
 
@@ -59,8 +61,10 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 func evalDeclNode(node *parser.CallNode) ast.Decl {
 	// Let's just assume that all top-level functions called will be "def"
 	if node.Callee.Type() != parser.NodeIdent {
-		log.Critical(CalleeIndentifierMismatchError)
-		panic(CalleeIndentifierMismatchError)
+		log.Error(CalleeIndentifierMismatchError)
+		// panic(CalleeIndentifierMismatchError)
+		// XXX will not panic'ing here break something?
+		return nil
 	}
 
 	callee := node.Callee.(*parser.IdentNode)
@@ -76,6 +80,7 @@ func evalDef(node *parser.CallNode) ast.Decl {
 	if len(node.Args) < 2 {
 		msg := fmt.Sprintf(MissingAssgnmentArgsError, node.Args[0])
 		log.Critical(msg)
+		// XXX Could we log an error and return a custom decl?
 		panic(msg)
 	}
 
@@ -119,6 +124,9 @@ func getNamespace(node *parser.CallNode) (*ast.Ident, ast.Decl) {
 func getPackageName(node *parser.CallNode) *ast.Ident {
 	if node.Args[0].Type() != parser.NodeIdent {
 		log.Critical(NSPackageTypeMismatch)
+		// XXX How does a type mismatch between these two occur? Could we return an
+		//     error here instead? Or maybe return some sort of fallback/default
+		//     package?
 		panic(NSPackageTypeMismatch)
 	}
 
@@ -140,9 +148,11 @@ func checkNSArgs(node *parser.CallNode) bool {
 func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	b, err := ioutil.ReadFile(filename)
 
-	// XXX let's improve the error handling here ...
+
 	if err != nil {
 		log.Critical(err)
+		// XXX let's improve the error handling here ... maybe an empty fset? and
+		//     nil a (AST)?
 		panic(err)
 	}
 
@@ -173,10 +183,8 @@ func WriteASTFromFile(fromFile string, toFile string) {
 	ast.Fprint(&buf, fset, a, nil)
 	err := ioutil.WriteFile(toFile, buf.Bytes(), 0644)
 
-	// XXX let's improve the error handling here ...
 	if err != nil {
 		log.Critical(err)
-		panic(err)
 	}
 	return
 }
@@ -195,9 +203,8 @@ func WriteGoFromFile(fromFile string, toFile string) {
 
 	// XXX let's improve the error handling here ...
 	if err != nil {
-		log.Critical(err)
+		log.Error(err)
 		log.Debug("Tried writing to file:", toFile)
-		panic(err)
 	}
 }
 

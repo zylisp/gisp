@@ -58,9 +58,11 @@ func evalFuncCall(node *parser.CallNode) ast.Expr {
 		return makeFuncLit(fnType, body)
 
 	case checkDefArgs(node):
+		log.Critical(DefInExpressionError)
 		panic(DefInExpressionError)
 
 	case checkNSArgs(node):
+		log.Critical(NSInExpressionError)
 		panic(NSInExpressionError)
 	}
 
@@ -280,6 +282,7 @@ func isLoop(node *parser.CallNode) bool {
 	}
 
 	if !searchForRecur(node.Args[1:]) {
+		log.Critical(LoopWithoutRecurError)
 		panic(LoopWithoutRecurError)
 	}
 
@@ -425,10 +428,12 @@ func isAssert(node *parser.CallNode) bool {
 	}
 
 	if len(node.Args) != 2 {
+		log.Critical(AssertArgsCountError)
 		panic(AssertArgsCountError)
 	}
 
 	if _, ok := node.Args[0].(*parser.IdentNode); !ok {
+		log.Critical(AssrtArgTypeError)
 		panic(AssrtArgTypeError)
 	}
 
