@@ -57,12 +57,13 @@ func makeNAryCallableExpr(node *parser.CallNode) *ast.CallExpr {
 	case "/":
 		selector = "DIV"
 	case "mod":
-		if len(node.Args) > 2 {
-			panic("can't calculate modulo with more than 2 arguments!")
+		argsCount := len(node.Args)
+		requiredCount := 2
+		if argsCount > requiredCount {
+			log.Error(TooManyArgsError, "mod", requiredCount)
 		}
 		selector = "MOD"
 	}
-
 	return makeFuncCall(makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent(selector)), args)
 }
 
@@ -72,11 +73,11 @@ func isLogicOperator(node *parser.CallNode) bool {
 	}
 
 	_, ok := logicOperatorMap[node.Callee.(*parser.IdentNode).Ident]
-
-	if len(node.Args) < 2 && ok {
-		panic(BinaryArgsCountError)
+	argsCount := len(node.Args)
+	requiredCount := 2
+	if argsCount < requiredCount && ok {
+		log.Error(TooManyArgsError, "a logical operator", requiredCount)
 	}
-
 	return ok
 }
 
@@ -88,7 +89,6 @@ func makeNAryLogicExpr(node *parser.CallNode) *ast.BinaryExpr {
 	for i := 2; i < len(node.Args); i++ {
 		outer = makeBinaryExpr(op, outer, EvalExpr(node.Args[i]))
 	}
-
 	return outer
 }
 
@@ -108,7 +108,7 @@ func isUnaryOperator(node *parser.CallNode) bool {
 	_, ok := unaryOperatorMap[node.Callee.(*parser.IdentNode).Ident]
 
 	if len(node.Args) != 1 && ok {
-		panic(UnaryArgsCountError)
+		log.Error(UnaryArgsCountError)
 	}
 
 	return ok

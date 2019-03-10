@@ -2,10 +2,14 @@ package lexer
 
 import (
 	"fmt"
+	"github.com/op/go-logging"
+	"github.com/zylisp/gisp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 )
+
+var log = logging.MustGetLogger(gisp.ApplicationName)
 
 type Pos int
 
@@ -196,7 +200,9 @@ func lexWhitespace(l *Lexer) stateFn {
 	case isAlphaNumeric(r):
 		return lexIdentifier
 	default:
-		panic(fmt.Sprintf(UnsupportedRuneError, r))
+		msg := fmt.Sprintf(UnsupportedRuneError, r)
+		log.Critical(msg)
+		panic(msg)
 	}
 }
 
@@ -299,8 +305,4 @@ func isEndOfLine(r rune) bool {
 // isAlphaNumeric reports whether r is a valid rune for an identifier.
 func isAlphaNumeric(r rune) bool {
 	return AdditionalAlphaNumRunes[r] == true || unicode.IsLetter(r) || unicode.IsDigit(r)
-}
-
-func debug(msg string) {
-	fmt.Println(msg)
 }
