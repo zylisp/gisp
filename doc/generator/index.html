@@ -245,6 +245,12 @@
 				<pre>const <span id="NSPackageTypeMismatch">NSPackageTypeMismatch</span> <a href="/pkg/builtin/#string">string</a> = &#34;ns package name needs to be an identifier&#34;</pre>
 			
 				
+				<pre>const <span id="TooFewArgsError">TooFewArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Too few args (%d) were passed to %s; expected %d&#34;</pre>
+			
+				
+				<pre>const <span id="TooManyArgsError">TooManyArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Too many args (%d) were passed to %s; expected %d&#34;</pre>
+			
+				
 				<pre>const <span id="UnaryArgsCountError">UnaryArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of unary operator requires exactly on argument&#34;</pre>
 			
 		
@@ -265,7 +271,7 @@
 		
 			
 			
-			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=274:314#L10">EvalExpr</a>
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=281:321#L11">EvalExpr</a>
 				<a class="permalink" href="#EvalExpr">&#xb6;</a>
 				
 				
@@ -278,7 +284,7 @@
 		
 			
 			
-			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=112:158#L1">EvalExprs</a>
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/gisp/generator/eval.go?s=119:165#L1">EvalExprs</a>
 				<a class="permalink" href="#EvalExprs">&#xb6;</a>
 				
 				
@@ -291,7 +297,7 @@
 		
 			
 			
-			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=258:304#L7">GenerateAST</a>
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=312:358#L8">GenerateAST</a>
 				<a class="permalink" href="#GenerateAST">&#xb6;</a>
 				
 				
@@ -304,7 +310,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=2623:2696#L124">GenerateASTFromLispFile</a>
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3218:3291#L138">GenerateASTFromLispFile</a>
 				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
 				
 				
@@ -317,7 +323,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3015:3087#L141">GenerateASTFromLispString</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3609:3681#L156">GenerateASTFromLispString</a>
 				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
@@ -330,7 +336,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3207:3245#L149">PrintASTFromFile</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3801:3839#L164">PrintASTFromFile</a>
 				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
@@ -343,7 +349,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3698:3738#L170">PrintASTFromLispString</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4179:4219#L182">PrintASTFromLispString</a>
 				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
@@ -356,7 +362,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4225:4262#L191">PrintGoFromFile</a>
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4640:4677#L201">PrintGoFromFile</a>
 				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
 				
 				
@@ -369,7 +375,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4409:4448#L199">PrintGoFromLispString</a>
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4824:4863#L209">PrintGoFromLispString</a>
 				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
 				
 				
@@ -382,7 +388,7 @@
 		
 			
 			
-			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3325:3378#L155">WriteASTFromFile</a>
+			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3919:3972#L170">WriteASTFromFile</a>
 				<a class="permalink" href="#WriteASTFromFile">&#xb6;</a>
 				
 				
@@ -395,7 +401,7 @@
 		
 			
 			
-			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=3816:3868#L176">WriteGoFromFile</a>
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/gisp/generator/generator.go?s=4297:4349#L188">WriteGoFromFile</a>
 				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
 				
 				
