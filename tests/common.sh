@@ -25,5 +25,5 @@ function num-equals () {
 	fi
 }
 
-EXAMPLES_COUNT=$(count-files examples/ "*.gsp")
+EXAMPLES_COUNT=$(count-files examples/ "*.zsp")
 echo
