@@ -82,6 +82,7 @@ func (l *Lexer) next() rune {
 		return EOF
 	}
 	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
+	log.Debugf("Lexed rune %s at position %d", r, l.pos)
 	l.width = Pos(w)
 	l.pos += l.width
 	return r
