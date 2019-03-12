@@ -9,7 +9,7 @@ BASE_OUTDIR=/tmp/zylisp
 
 echo "Batch byte-code multiple file creation"
 	OUTDIR=$(create-tmp-dir "Bytecodes_dir")
-	zylisp -cli -bytecode -dir $OUTDIR examples/*.gsp
+	zylisp -cli -bytecode -dir $OUTDIR examples/*.zsp
 	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
 	num-equals $BYTECODE_COUNT $EXAMPLES_COUNT
 

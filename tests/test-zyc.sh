@@ -9,7 +9,7 @@ BASE_OUTDIR=/tmp/zylisp
 
 echo "Batch byte-code multiple file creation for zyc"
 	OUTDIR=$(create-tmp-dir "Bytecodes_dir")
-	zyc -dir $OUTDIR examples/*.gsp
+	zyc -dir $OUTDIR examples/*.zsp
 	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
 	num-equals $BYTECODE_COUNT $EXAMPLES_COUNT
 
@@ -30,14 +30,14 @@ echo "Batch byte-code multiple file creation for zyc"
 
 echo "Batch byte-code explicit output file creation for zyc"
 	OUTDIR=$(create-tmp-dir "Bytecode_file")
-	zyc -o $OUTDIR/factorial examples/factorial.gsp
+	zyc -o $OUTDIR/factorial examples/factorial.zsp
 	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
 	num-equals $BYTECODE_COUNT 1
 	echo
 
 echo "Batch byte-code implicit output file (using dir) creation for zyc"
 	OUTDIR=$(create-tmp-dir "Bytecode_dir")
-	zyc -dir $OUTDIR examples/factorial.gsp
+	zyc -dir $OUTDIR examples/factorial.zsp
 	BYTECODE_COUNT=$(count-files-without-extension $OUTDIR)
 	num-equals $BYTECODE_COUNT 1
 	echo

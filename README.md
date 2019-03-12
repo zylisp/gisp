@@ -24,11 +24,18 @@ and cleanups. More to come ...
 - AST generating REPL included
 
 
+## Installation
+
+```bash
+$ go get github.com/zylisp/zylisp/cmd/zylisp
+```
+
+
 ## Development
 
 ```bash
-$ git clone git@github.com:zylisp/gisp.git
-$ cd gisp
+$ git clone git@github.com:zylisp/zylisp.git
+$ cd zylisp
 $ export GOPATH=$GOPATH:`pwd`
 $ export PATH=$PATH:`pwd`/bin
 $ make
@@ -57,7 +64,7 @@ Go source as well as bytecode):
 ```clj
 (ns main
   "fmt"
-  "github.com/zylisp/gisp/core")
+  "github.com/zylisp/zylisp/core")
 
 (def factorial (fn [n]
   (if (< n 2)
