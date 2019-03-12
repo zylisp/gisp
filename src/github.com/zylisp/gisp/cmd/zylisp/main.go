@@ -381,7 +381,7 @@ func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 
 func setupLogging (stringLogLevel string) {
 	format := logging.MustStringFormatter(
-		`%{color}%{time:15:04:05.000} %{shortfile}, %{shortfunc} ▶ {level:.4s} %{id:03x}%{color:reset} %{message}`,)
+		`%{color}%{time:2006-01-02T15:04:05.999Z-07:00} %{level} %{shortpkg}/%{shortfile}, %{shortfunc} %{id:03x} ▶ %{color:reset}%{message}`,)
 	backend := logging.NewLogBackend(os.Stderr, "", 0)
 	backendFormatter := logging.NewBackendFormatter(backend, format)
 	backendLeveled := logging.AddModuleLevel(backendFormatter)
