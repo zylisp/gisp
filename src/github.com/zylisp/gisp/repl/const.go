@@ -41,6 +41,6 @@ const ASTPrompt string = "AST> "
 
 const GoGenPrompt string = "GOGEN> "
 
-const LispPrompt string = "ZY𝛌ISP> "
+const LispPrompt string = "Zy𝛌ISP> "
 
 const LispDefaultPackage string = "user"
