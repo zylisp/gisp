@@ -1,4 +1,4 @@
-package gisp
+package common
 
 // Files and Directories Errors
 const DirectoryError string = "There was a problem accessing directory %s: %s"

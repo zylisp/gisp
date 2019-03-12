@@ -2,13 +2,12 @@ package parser
 
 import (
   "fmt"
-	"github.com/op/go-logging"
-	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/lexer"
+	"github.com/zylisp/gisp/util"
 	"go/token"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 
 type Pos int
 

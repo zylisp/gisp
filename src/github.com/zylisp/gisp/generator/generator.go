@@ -3,16 +3,15 @@ package generator
 import (
 	"bytes"
 	"fmt"
-	"github.com/op/go-logging"
-	"github.com/zylisp/gisp"
 	"github.com/zylisp/gisp/parser"
+	"github.com/zylisp/gisp/util"
 	"go/ast"
 	"go/printer"
 	"go/token"
 	"io/ioutil"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 var anyType = makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent("Any"))
 
 func GenerateAST(tree []parser.Node) *ast.File {

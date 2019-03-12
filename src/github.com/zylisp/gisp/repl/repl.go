@@ -4,8 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/op/go-logging"
-	"github.com/zylisp/gisp"
+	"github.com/zylisp/gisp/util"
 	"github.com/zylisp/gisp/generator"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
@@ -14,7 +13,7 @@ import (
 	"os"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 
 func ASTMain() {
 	banner := Banner {

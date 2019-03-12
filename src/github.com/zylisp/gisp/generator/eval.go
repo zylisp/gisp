@@ -2,7 +2,7 @@ package generator
 
 import (
 	"fmt"
-	"github.com/zylisp/gisp"
+	"github.com/zylisp/gisp/common"
 	"github.com/zylisp/gisp/parser"
 	"go/ast"
 	"go/token"
@@ -44,7 +44,7 @@ func EvalExpr(node parser.Node) ast.Expr {
 		return makeIdomaticSelector(node.Ident)
 
 	default:
-		msg := fmt.Sprintf("%s: %s", gisp.NotImplementedError, t)
+		msg := fmt.Sprintf("%s: %s", common.NotImplementedError, t)
 		log.Notice(msg)
 		panic(msg)
 	}

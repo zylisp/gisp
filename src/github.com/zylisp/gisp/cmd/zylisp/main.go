@@ -166,16 +166,16 @@ package main
 import (
   "flag"
   "fmt"
-  "github.com/op/go-logging"
-  "github.com/zylisp/gisp"
+  "github.com/zylisp/gisp/common"
   "github.com/zylisp/gisp/generator"
   "github.com/zylisp/gisp/repl"
+  "github.com/zylisp/gisp/util"
   "os"
   "os/exec"
   "path/filepath"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 
 type Modes struct {
 	cli bool
@@ -236,7 +236,7 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 func isDir(filename string) bool {
   file, err := os.Stat(filename)
   if err != nil {
-      log.Debugf(gisp.DirectoryError, filename, err.Error())
+      log.Debugf(common.DirectoryError, filename, err.Error())
       return false
   }
   if file.Mode().IsDir() {
@@ -379,21 +379,6 @@ func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 	}
 }
 
-func setupLogging (stringLogLevel string) {
-	format := logging.MustStringFormatter(
-		`%{color}%{time:2006-01-02T15:04:05.999Z-07:00} %{level} %{shortpkg}/%{shortfile}, %{shortfunc} %{id:03x} ▶ %{color:reset}%{message}`,)
-	backend := logging.NewLogBackend(os.Stderr, "", 0)
-	backendFormatter := logging.NewBackendFormatter(backend, format)
-	backendLeveled := logging.AddModuleLevel(backendFormatter)
-	logLevel, err := logging.LogLevel(stringLogLevel)
-	if err != nil {
-		panic(gisp.LogLevelUnsupportedError)
-	}
-	backendLeveled.SetLevel(logLevel, "")
-	logging.SetBackend(backendLeveled)
-	log.Info("Set up logging")
-}
-
 func main() {
 	astPtr := flag.Bool("ast", false, "Enable AST mode")
 	cliPtr := flag.Bool("cli", false, "Run as a CLI tool")
@@ -405,7 +390,7 @@ func main() {
 	outPtr := flag.String("o", "", "Default filename for writing operations")
 
 	flag.Parse()
-	setupLogging(*logLevelPtr)
+	util.SetupLogging(*logLevelPtr)
 	inputFiles := flag.Args()
 	hasFiles := getHasFiles(inputFiles)
 	isDir := len(*dirPtr) > 0
