@@ -1,3 +1,3 @@
-package gisp
+package common
 
 const ApplicationName string = "zylisp"

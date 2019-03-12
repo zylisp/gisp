@@ -2,12 +2,11 @@ package core
 
 import (
 	"fmt"
-	"github.com/op/go-logging"
-	"github.com/zylisp/gisp"
+	"github.com/zylisp/gisp/util"
 	"reflect"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 
 type Any interface{}
 

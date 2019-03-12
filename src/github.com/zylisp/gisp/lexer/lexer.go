@@ -2,14 +2,13 @@ package lexer
 
 import (
 	"fmt"
-	"github.com/op/go-logging"
-	"github.com/zylisp/gisp"
+	"github.com/zylisp/gisp/util"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 )
 
-var log = logging.MustGetLogger(gisp.ApplicationName)
+var log = util.GetLogger()
 
 type Pos int
 
