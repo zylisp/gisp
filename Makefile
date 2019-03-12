@@ -48,7 +48,7 @@ vet:
 	go vet github.com/zylisp/gisp/repl
 
 test: test-deps
-	echo "running 'go test' for core ..." && \
+	@echo "running 'go test' for core ..." && \
 	cd src/github.com/zylisp/gisp/core && \
 	go test -v && \
 	cd - && \
