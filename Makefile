@@ -1,4 +1,4 @@
-VERSION_SRC = src/github.com/zylisp/gisp/gitcommit.go
+VERSION_SRC = src/github.com/zylisp/zylisp/gitcommit.go
 LAST_TAG = $(shell git describe --abbrev=0 --tags)
 LAST_COMMIT = $(shell git rev-parse --short HEAD)
 DOC_DIR = doc/doc
@@ -19,48 +19,48 @@ test-deps:
 	go get github.com/masukomi/check
 
 build: deps
-	@echo "package gisp" > $(VERSION_SRC)
+	@echo "package zylisp" > $(VERSION_SRC)
 	@echo "" >> $(VERSION_SRC)
 	@echo "func init() { GITLASTTAG = \"$(LAST_TAG)\"; \
 		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
-	@go install github.com/zylisp/gisp/cmd/zylisp
+	@go install github.com/zylisp/zylisp/cmd/zylisp
 
 lint-all: lint-deps
 	golangci-lint run
 
 lint-cmd:
-	cd src/github.com/zylisp/gisp/cmd/zylisp && \
+	cd src/github.com/zylisp/zylisp/cmd/zylisp && \
 	golangci-lint run
 
 lint-repl:
-	cd src/github.com/zylisp/gisp/repl && \
+	cd src/github.com/zylisp/zylisp/repl && \
 	golangci-lint run
 
 lint: lint-repl lint-cmd
 
 vet:
-	go vet github.com/zylisp/gisp/
-	go vet github.com/zylisp/gisp/cmd/zylisp
-	# go vet github.com/zylisp/gisp/core
-	# go vet github.com/zylisp/gisp/generator
-	# go vet github.com/zylisp/gisp/lexer
-	# go vet github.com/zylisp/gisp/parser
-	go vet github.com/zylisp/gisp/repl
+	go vet github.com/zylisp/zylisp/
+	go vet github.com/zylisp/zylisp/cmd/zylisp
+	# go vet github.com/zylisp/zylisp/core
+	# go vet github.com/zylisp/zylisp/generator
+	# go vet github.com/zylisp/zylisp/lexer
+	# go vet github.com/zylisp/zylisp/parser
+	go vet github.com/zylisp/zylisp/repl
 
 test: test-deps
 	@echo "running 'go test' for core ..." && \
-	cd src/github.com/zylisp/gisp/core && \
+	cd src/github.com/zylisp/zylisp/core && \
 	go test -v && \
 	cd - && \
 	echo "running 'go test' for lexer ..." && \
-	cd src/github.com/zylisp/gisp/lexer && \
+	cd src/github.com/zylisp/zylisp/lexer && \
 	go test -v
 
 gogen-examples:
-	zylisp -cli -go -dir ./bin/examples examples/*.gsp
+	zylisp -cli -go -dir ./bin/examples examples/*.zsp
 
 ast-examples:
-	zylisp -cli -ast -dir ./examples examples/*.gsp
+	zylisp -cli -ast -dir ./examples examples/*.zsp
 
 bin/examples/%: bin/examples/%.go
 	go build -o $@ $<
@@ -90,31 +90,36 @@ docs:
 	@echo
 	@mkdir -p $(DOC_DIR)/cmd/zylisp $(DOC_DIR)/core $(DOC_DIR)/generator \
 					 $(DOC_DIR)/generator/helpers $(DOC_DIR)/lexer \
-					 $(DOC_DIR)/parser $(DOC_DIR)/repl
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp > \
+					 $(DOC_DIR)/parser $(DOC_DIR)/repl $(DOC_DIR)/common \
+					 $(DOC_DIR)/util
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp > \
 		$(DOC_DIR)/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/cmd/ > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/cmd/ > \
 		$(DOC_DIR)/cmd/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/cmd/zylisp > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/cmd/zylisp > \
 		$(DOC_DIR)/cmd/zylisp/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/core > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/core > \
 		$(DOC_DIR)/core/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/generator > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/generator > \
 		$(DOC_DIR)/generator/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/generator/helpers > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/generator/helpers > \
 		$(DOC_DIR)/generator/helpers/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/lexer > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/lexer > \
 		$(DOC_DIR)/lexer/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/parser > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/parser > \
 		$(DOC_DIR)/parser/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/gisp/repl > \
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/repl > \
+		$(DOC_DIR)/repl/index.html
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/common > \
+		$(DOC_DIR)/repl/index.html
+	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/util > \
 		$(DOC_DIR)/repl/index.html
 
 view-docs: docs
 	@echo "View project docs in a browser at:"
 	@echo "  http://localhost:6060/pkg/"
 	@echo "In particular, the zylisp command docs are here:"
-	@echo "  http://localhost:6060/pkg/github.com/zylisp/gisp/cmd/zylisp/"
+	@echo "  http://localhost:6060/pkg/github.com/zylisp/zylisp/cmd/zylisp/"
 	@echo
 	@echo "Starting docs HTTP server ..."
 	@GOPATH=`pwd` $(GODOC) -http=:6060 -goroot=`pwd`/doc
@@ -129,6 +134,6 @@ install-zyc:
 	@cp bin/zyc ~/go/bin
 
 install-zylisp:
-	@go get github.com/zylisp/gisp/cmd/zylisp
+	@go get github.com/zylisp/zylisp/cmd/zylisp
 
 install: install-zylisp install-zyc
