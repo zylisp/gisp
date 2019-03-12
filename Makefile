@@ -55,6 +55,7 @@ test: test-deps
 	echo "running 'go test' for lexer ..." && \
 	cd src/github.com/zylisp/zylisp/lexer && \
 	go test -v
+	@$(MAKE) clean-examples
 
 gogen-examples:
 	zylisp -cli -go -dir ./bin/examples examples/*.zsp
@@ -71,7 +72,7 @@ build-examples: gogen-examples ast-examples
 
 clean-examples:
 	rm -rf ./bin/examples
-	rm ./examples/*.ast
+	rm -f ./examples/*.ast
 
 test-cli:
 	./tests/test-zylisp-cli.sh

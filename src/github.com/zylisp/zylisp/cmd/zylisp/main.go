@@ -148,7 +148,7 @@ compiled to byte code using 'go build':
 
   $ zylisp -cli -bytecode -dir bin/examples examples/*.zsp
 
-This also demonstrate support for file globbing, allowing you to generate
+This also demonstrates support for file globbing, allowing you to generate
 output for multiple files at once.
 
 For convenience, the 'zyc' bash wrapper is provided for
