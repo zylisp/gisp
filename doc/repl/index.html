@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#375EAB">
 
-  <title>repl - The Go Programming Language</title>
+  <title>util - The Go Programming Language</title>
 
 <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
 
@@ -54,7 +54,7 @@
 
 
   <h1>
-    Package repl
+    Package util
     <span class="text-muted"></span>
   </h1>
 
@@ -88,7 +88,7 @@
 		
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "github.com/zylisp/gisp/repl"</code></dd>
+			<dd><code>import "github.com/zylisp/zylisp/util"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -120,24 +120,14 @@
 			<div id="manual-nav">
 			<dl>
 			
-				<dd><a href="#pkg-constants">Constants</a></dd>
-			
-			
-			
-				
-				<dd><a href="#ASTMain">func ASTMain()</a></dd>
-			
-				
-				<dd><a href="#GoGenMain">func GoGenMain()</a></dd>
-			
-				
-				<dd><a href="#LispMain">func LispMain()</a></dd>
 			
 			
 				
-				<dd><a href="#Banner">type Banner</a></dd>
+				<dd><a href="#GetLogger">func GetLogger() *logging.Logger</a></dd>
+			
 				
-				
+				<dd><a href="#SetupLogging">func SetupLogging(stringLogLevel string) *logging.Logger</a></dd>
+			
 			
 			
 			</dl>
@@ -150,13 +140,7 @@
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/src/github.com/zylisp/gisp/repl/banner.go">banner.go</a>
-			
-				<a href="/src/github.com/zylisp/gisp/repl/const.go">const.go</a>
-			
-				<a href="/src/github.com/zylisp/gisp/repl/errors.go">errors.go</a>
-			
-				<a href="/src/github.com/zylisp/gisp/repl/repl.go">repl.go</a>
+				<a href="/src/github.com/zylisp/zylisp/util/logging.go">logging.go</a>
 			
 			</span>
 			</p>
@@ -167,119 +151,16 @@
 		
 
 		
-			<h2 id="pkg-constants">Constants</h2>
-			
-				
-				<pre>const <span id="ASTPrompt">ASTPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;AST&gt; &#34;</pre>
-			
-				
-				<pre>const <span id="ASTREPLHelp">ASTREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
-Instructions: Simply type any form to view the generated Go AST.
-        Exit: &lt;CONTROL&gt;&lt;C&gt;
-`</pre>
-			
-				
-				<pre>const <span id="CommonREPLHelp">CommonREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
-        Docs: https://zylisp.github.io/zylisp/
-     Project: https://github.com/zylisp/zylisp`</pre>
-			
-				<p>
-Compile Errors
-</p>
-
-				<pre>const <span id="CompileError">CompileError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Couldn&#39;t compile file: %s&#34;</pre>
-			
-				
-				<pre>const <span id="CompileWithoutFileError">CompileWithoutFileError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Cannot compile file(s) without file(s) defined&#34;</pre>
-			
-				
-				<pre>const <span id="CompoileWithoutCLIError">CompoileWithoutCLIError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Can only compile to bytecode in CLI mode&#34;</pre>
-			
-				
-				<pre>const <span id="DirNeededError">DirNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You must define an output directory when processing multiple files&#34;</pre>
-			
-				<p>
-Files and Directories Errors
-</p>
-
-				<pre>const <span id="FilesNeededError">FilesNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You need to provide at least one file upon which to operate&#34;</pre>
-			
-				
-				<pre>const <span id="GoGenPrompt">GoGenPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;GOGEN&gt; &#34;</pre>
-			
-				
-				<pre>const <span id="GoGenREPLHelp">GoGenREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = <a href="#ASTREPLHelp">ASTREPLHelp</a></pre>
-			
-				<p>
-Unsupported Errors
-</p>
-
-				<pre>const <span id="LispCLIUnsupportedError">LispCLIUnsupportedError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The Lisp CLI is currently not supported&#34;</pre>
-			
-				
-				<pre>const <span id="LispDefaultPackage">LispDefaultPackage</span> <a href="/pkg/builtin/#string">string</a> = &#34;user&#34;</pre>
-			
-				
-				<pre>const <span id="LispPrompt">LispPrompt</span> <a href="/pkg/builtin/#string">string</a> = &#34;Zy𝛌ISP&gt; &#34;</pre>
-			
-				
-				<pre>const <span id="LispREPLHelp">LispREPLHelp</span> <a href="/pkg/builtin/#string">string</a> = `
-      Exit: &lt;CONTROL&gt;&lt;D&gt; or (exit) or (quit)
-`</pre>
-			
-				
-				<pre>const <span id="LispREPLUnsupportedError">LispREPLUnsupportedError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Lisp mode is currently not supported&#34;</pre>
-			
-				<p>
-Mode Errors
-</p>
-
-				<pre>const <span id="ModeNeededError">ModeNeededError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You need to supply a mode&#34;</pre>
-			
-				
-				<pre>const <span id="REPLBannerGreeting">REPLBannerGreeting</span> <a href="/pkg/builtin/#string">string</a> = `Okay, 3, 2, 1 - Let&#39;s jam!
-
-Welcome to
-
-/^^^^^^^^/^^ /^^      /^^ /^^       /^^ /^^^^^^^^ /^^^^^^^^^
-       /^^    /^^    /^^  /^^       /^^ /^^       /^^    /^^
-      /^^      /^^ /^^    /^^       /^^ /^^       /^^    /^^
-    /^^          /^^      /^^       /^^ /^^^^^^^^ /^^^^^^^^^
-   /^^           /^^      /^^       /^^       /^^ /^^
- /^^             /^^      /^^       /^^ /^^   /^^ /^^
-/^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
-`</pre>
-			
-				
-				<pre>const <span id="REPLCommonExitMsg">REPLCommonExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `
-See you space cowboy ...
-`</pre>
-			
-				
-				<pre>const <span id="REPLCtlCExitMsg">REPLCtlCExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^C
-`</pre>
-			
-				
-				<pre>const <span id="REPLCtlDExitMsg">REPLCtlDExitMsg</span> <a href="/pkg/builtin/#string">string</a> = `^D
-`</pre>
-			
-				
-				<pre>const <span id="UnexpectedFileOrDirError">UnexpectedFileOrDirError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected error with CLI and output file or directory&#34;</pre>
-			
-				
-				<pre>const <span id="UnexpectedFilesOrDirError">UnexpectedFilesOrDirError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected error with CLI and output files or directory&#34;</pre>
-			
-		
 		
 		
 			
 			
-			<h2 id="ASTMain">func <a href="/src/github.com/zylisp/gisp/repl/repl.go?s=221:235#L8">ASTMain</a>
-				<a class="permalink" href="#ASTMain">&#xb6;</a>
+			<h2 id="GetLogger">func <a href="/src/github.com/zylisp/zylisp/util/logging.go?s=1279:1311#L31">GetLogger</a>
+				<a class="permalink" href="#GetLogger">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ASTMain()</pre>
+			<pre>func GetLogger() *logging.<a href="#Logger">Logger</a></pre>
 			
 			
 			
@@ -287,55 +168,17 @@ See you space cowboy ...
 		
 			
 			
-			<h2 id="GoGenMain">func <a href="/src/github.com/zylisp/gisp/repl/repl.go?s=808:824#L37">GoGenMain</a>
-				<a class="permalink" href="#GoGenMain">&#xb6;</a>
+			<h2 id="SetupLogging">func <a href="/src/github.com/zylisp/zylisp/util/logging.go?s=1102:1158#L24">SetupLogging</a>
+				<a class="permalink" href="#SetupLogging">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func GoGenMain()</pre>
+			<pre>func SetupLogging(stringLogLevel <a href="/pkg/builtin/#string">string</a>) *logging.<a href="#Logger">Logger</a></pre>
 			
 			
 			
 
 		
-			
-			
-			<h2 id="LispMain">func <a href="/src/github.com/zylisp/gisp/repl/repl.go?s=1165:1180#L56">LispMain</a>
-				<a class="permalink" href="#LispMain">&#xb6;</a>
-				
-				
-			</h2>
-			<pre>func LispMain()</pre>
-			
-			
-			
-
-		
-		
-			
-			
-			<h2 id="Banner">type <a href="/src/github.com/zylisp/gisp/repl/banner.go?s=70:162#L1">Banner</a>
-				<a class="permalink" href="#Banner">&#xb6;</a>
-				
-				
-			</h2>
-			
-			<pre>type Banner struct {
-    <span class="comment">// contains filtered or unexported fields</span>
-}
-</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
 		
 	
 

@@ -112,7 +112,7 @@ Github page at <a href="https://github.com/zylisp/zylisp#development">https://gi
 If you would prefer to use ZYLISP without cloning the repo and setting up a
 development environment, you may install it with the following:
 </p>
-<pre>$ go get github.com/zylisp/gisp/cmd/zylisp
+<pre>$ go get github.com/zylisp/zylisp/cmd/zylisp
 </pre>
 <p>
 Since the zylisp command makes use of Go flags, it has a generated help output.
@@ -184,7 +184,7 @@ or more file names (file globbing allowed).
 In AST mode, the CLI will parse the given file and produce as output the
 corresponding Go AST for the Lisp code in the file provided:
 </p>
-<pre>$ zylisp -ast -cli examples/factorial.gsp
+<pre>$ zylisp -ast -cli examples/factorial.zsp
 </pre>
 <p>
 The output is a bit long (302 lines), but here are the first 20 lines:
@@ -214,13 +214,13 @@ The output is a bit long (302 lines), but here are the first 20 lines:
 <p>
 In Go-generation mode, the output is instead compilable Go code:
 </p>
-<pre>$ zylisp -cli -go examples/factorial.gsp
+<pre>$ zylisp -cli -go examples/factorial.zsp
 
 package main
 
 import (
 	&#34;fmt&#34;
-	&#34;github.com/zylisp/gisp/core&#34;
+	&#34;github.com/zylisp/zylisp/core&#34;
 )
 
 func main() {
@@ -240,7 +240,7 @@ func factorial(n core.Any) core.Any {
 In byte-code compilation mode, Go is generated under the hood, and then it is
 compiled to byte code using &#39;go build&#39;:
 </p>
-<pre>$ zylisp -cli -bytecode -dir bin/examples examples/*.gsp
+<pre>$ zylisp -cli -bytecode -dir bin/examples examples/*.zsp
 </pre>
 <p>
 This also demonstrate support for file globbing, allowing you to generate
@@ -250,7 +250,7 @@ output for multiple files at once.
 For convenience, the &#39;zyc&#39; bash wrapper is provided for
 &#39;zylisp -cli -bytecode&#39;:
 </p>
-<pre>$ zyc -dir bin/examples examples/*.gsp
+<pre>$ zyc -dir bin/examples examples/*.zsp
 </pre>
 <p>
 Note that since &#39;zyc&#39; is not a compiled command, it will not be installed by
