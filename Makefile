@@ -25,8 +25,8 @@ build: deps
 		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
 	@go install github.com/zylisp/zylisp/cmd/zylisp
 
-lint-all: lint-deps
-	golangci-lint run
+lint-all:
+	golangci-lint run ./...
 
 lint-cmd:
 	cd src/github.com/zylisp/zylisp/cmd/zylisp && \
