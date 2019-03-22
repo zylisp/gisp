@@ -1,6 +1,5 @@
-VERSION_SRC = src/github.com/zylisp/zylisp/gitcommit.go
-LAST_TAG = $(shell git describe --abbrev=0 --tags)
-LAST_COMMIT = $(shell git rev-parse --short HEAD)
+VERSION = 1.0.0-alpha2
+BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylisp -version $(VERSION))
 DOC_DIR = doc/doc
 GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
@@ -11,6 +10,7 @@ all: build lint-all test build-examples test-cli test-examples test-zyc
 travis: lint-deps test-deps all
 
 deps:
+	go get github.com/ahmetb/govvv
 	go get github.com/op/go-logging
 
 lint-deps:
@@ -21,11 +21,7 @@ test-deps:
 	go get github.com/masukomi/check
 
 build: deps
-	@echo "package zylisp" > $(VERSION_SRC)
-	@echo "" >> $(VERSION_SRC)
-	@echo "func init() { GITLASTTAG = \"$(LAST_TAG)\"; \
-		GITLASTCOMMIT = \"$(LAST_COMMIT)\" }" >> $(VERSION_SRC)
-	@go install github.com/zylisp/zylisp/cmd/zylisp
+	@go install -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylisp/cmd/zylisp
 
 lint-all:
 	golangci-lint run src/github.com/zylisp/zylisp/...

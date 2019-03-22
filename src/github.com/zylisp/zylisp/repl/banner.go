@@ -23,7 +23,9 @@ func (b Banner) printHelp() {
 }
 
 func (b Banner) printVersions() {
-	fmt.Printf("ZYLISP version: %s [%s mode]\n", zylisp.Version(), b.replMode)
+	fmt.Printf("ZYLISP version: %s\n", zylisp.VersionString())
+	fmt.Printf("Build: %s\n", zylisp.BuildString())
+  fmt.Printf("REPL Mode: %s\n", b.replMode)
   fmt.Printf("Go version: %s\n", runtime.Version())
 }
 
