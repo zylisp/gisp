@@ -6,7 +6,9 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 .PHONY: build test all
 
-all: build test build-examples test-cli test-examples test-zyc
+all: build lint-all test build-examples test-cli test-examples test-zyc
+
+travis: lint-deps test-deps all
 
 deps:
 	go get github.com/op/go-logging
@@ -26,7 +28,7 @@ build: deps
 	@go install github.com/zylisp/zylisp/cmd/zylisp
 
 lint-all:
-	golangci-lint run ./...
+	golangci-lint run src/github.com/zylisp/zylisp/...
 
 lint-cmd:
 	cd src/github.com/zylisp/zylisp/cmd/zylisp && \

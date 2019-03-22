@@ -37,7 +37,7 @@ func MOD(a, b Any) int {
 // ALWAYS returns a float64
 func ADD(args ...Any) float64 {
 	length := len(args)
-	nums := make([]Number, length, length)
+	nums := make([]Number, length)
 	for i := 0; i < len(args); i++ {
 		switch n := args[i]; {
 		case isInt(n):
