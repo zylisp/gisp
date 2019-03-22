@@ -238,18 +238,19 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 		extension)
 }
 
-func isDir(filename string) bool {
-  file, err := os.Stat(filename)
-  if err != nil {
-      log.Debugf(common.DirectoryError, filename, err.Error())
-      return false
-  }
-  if file.Mode().IsDir() {
-    return true
-  } else {
-    return false
-  }
-}
+// XXX Currently unused; remove?
+// func isDir(filename string) bool {
+//   file, err := os.Stat(filename)
+//   if err != nil {
+//       log.Debugf(common.DirectoryError, filename, err.Error())
+//       return false
+//   }
+//   if file.Mode().IsDir() {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 func compileGo(infile string, outfile string) {
   log.Noticef("Compiling %s ...", outfile)
@@ -331,13 +332,14 @@ func dispatchByteCode(modes Modes, inputs Inputs, outputs Outputs) {
   }
 }
 
-func getUseDir (dir bool) bool {
-	if dir {
-		return true
-	} else {
-		return false
-	}
-}
+// XXX Currently unused; remove?
+// func getUseDir (dir bool) bool {
+// 	if dir {
+// 		return true
+// 	} else {
+// 		return false
+// 	}
+// }
 
 func getHasFiles (files []string) bool {
 	if len(files) > 0 {

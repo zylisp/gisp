@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"github.com/zylisp/zylisp/parser"
+	// "github.com/zylisp/zylisp/parser"
 	"bytes"
 	"go/ast"
 	"regexp"
@@ -9,13 +9,14 @@ import (
 	"strings"
 )
 
-func makeIdentSlice(nodes []*parser.IdentNode) []*ast.Ident {
-	out := make([]*ast.Ident, len(nodes))
-	for i, node := range nodes {
-		out[i] = ast.NewIdent(node.Ident)
-	}
-	return out
-}
+// XXX Currently unused; remove?
+// func makeIdentSlice(nodes []*parser.IdentNode) []*ast.Ident {
+// 	out := make([]*ast.Ident, len(nodes))
+// 	for i, node := range nodes {
+// 		out[i] = ast.NewIdent(node.Ident)
+// 	}
+// 	return out
+// }
 
 func makeSelectorExpr(x ast.Expr, sel *ast.Ident) *ast.SelectorExpr {
 	return &ast.SelectorExpr{

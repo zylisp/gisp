@@ -341,7 +341,7 @@ func searchForRecur(nodes []parser.Node) bool {
 }
 
 func addNewValuesToBindings(bindingsVector *parser.VectorNode, vals []parser.Node) *parser.VectorNode {
-	for i, _ := range bindingsVector.Nodes {
+	for i := range bindingsVector.Nodes {
 		bind := bindingsVector.Nodes[i].(*parser.VectorNode).Nodes
 		bind[len(bind)-1] = vals[i]
 	}

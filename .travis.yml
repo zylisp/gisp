@@ -9,8 +9,8 @@ before_install:
   - mkdir -p $GOPATH/src/github.com/zylisp
 script:
   - export GOPATH=${TRAVIS_BUILD_DIR}:${GOPATH}
-  - export PATH=${TRAVIS_BUILD_DIR}/bin:${PATH}
-  - make
+  - export PATH=${TRAVIS_BUILD_DIR}/bin:~/go/bin:${PATH}
+  - make travis
 notifications:
   email:
       - oubiwann@gmail.com

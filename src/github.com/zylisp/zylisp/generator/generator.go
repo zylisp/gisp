@@ -173,7 +173,6 @@ func GenerateASTFromLispString(data string) (*token.FileSet, []ast.Expr) {
 func PrintASTFromFile(filename string) {
 	fset, a := GenerateASTFromLispFile(filename)
 	ast.Print(fset, a)
-	return
 }
 
 func WriteASTFromFile(fromFile string, toFile string) {
@@ -185,13 +184,11 @@ func WriteASTFromFile(fromFile string, toFile string) {
 	if err != nil {
 		log.Critical(err)
 	}
-	return
 }
 
 func PrintASTFromLispString(data string) {
 	fset, a := GenerateASTFromLispString(data)
 	ast.Print(fset, a)
-	return
 }
 
 func WriteGoFromFile(fromFile string, toFile string) {
@@ -212,7 +209,6 @@ func PrintGoFromFile(filename string) {
 	fset, a := GenerateASTFromLispFile(filename)
 	printer.Fprint(&buf, fset, a)
 	fmt.Printf("%s\n", buf.String())
-	return
 }
 
 func PrintGoFromLispString(data string) {
@@ -220,5 +216,4 @@ func PrintGoFromLispString(data string) {
 	fset, a := GenerateASTFromLispString(data)
 	printer.Fprint(&buf, fset, a)
 	fmt.Printf("%s\n", buf.String())
-	return
 }

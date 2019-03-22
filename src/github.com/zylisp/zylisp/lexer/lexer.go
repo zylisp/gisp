@@ -70,8 +70,9 @@ type Lexer struct {
 	lastPos Pos
 	items   chan Atom
 
-	parenDepth int
-	vectDepth  int
+	// XXX currently unused; remove? or keep for later?
+	// parenDepth int
+	// vectDepth  int
 }
 
 // next returns the next rune in the input.
@@ -111,7 +112,7 @@ func (l *Lexer) ignore() {
 
 // accept consumes the next rune if it's from the valid set.
 func (l *Lexer) accept(valid string) bool {
-	if strings.IndexRune(valid, l.next()) >= 0 {
+	if strings.ContainsRune(valid, l.next()) {
 		return true
 	}
 	l.backup()
@@ -120,7 +121,7 @@ func (l *Lexer) accept(valid string) bool {
 
 // acceptRuneRun consumes a run of runes from the valid set.
 func (l *Lexer) acceptRuneRun(valid string) {
-	for strings.IndexRune(valid, l.next()) >= 0 {
+	for strings.ContainsRune(valid, l.next()) {
 	}
 	l.backup()
 }
@@ -297,12 +298,13 @@ func isSpace(r rune) bool {
 	return r == ' ' || r == '\t'
 }
 
+// XXX Currently unused; remove?
 // isEndOfLine reports whether r is an end-of-line character.
-func isEndOfLine(r rune) bool {
-	return r == '\r' || r == '\n'
-}
+// func isEndOfLine(r rune) bool {
+// 	return r == '\r' || r == '\n'
+// }
 
 // isAlphaNumeric reports whether r is a valid rune for an identifier.
 func isAlphaNumeric(r rune) bool {
-	return AdditionalAlphaNumRunes[r] == true || unicode.IsLetter(r) || unicode.IsDigit(r)
+	return AdditionalAlphaNumRunes[r] || unicode.IsLetter(r) || unicode.IsDigit(r)
 }
