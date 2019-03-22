@@ -207,7 +207,12 @@ func RemoveExtension(filename string) string {
 func PrepareOutputDir(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		log.Info("Directory '%s' does not exist; creating ...", dir)
-		os.MkdirAll(dir, os.ModePerm)
+		err := os.MkdirAll(dir, os.ModePerm)
+		if err != nil {
+			msg := fmt.Sprintf(common.DirectoryError, dir, err.Error())
+			log.Error(msg)
+			panic(msg)
+		}
 	}
 }
 
