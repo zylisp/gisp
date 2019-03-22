@@ -44,7 +44,7 @@ func EvalExpr(node parser.Node) ast.Expr {
 		return makeIdomaticSelector(node.Ident)
 
 	default:
-		msg := fmt.Sprintf("%s: %s", common.NotImplementedError, t)
+		msg := fmt.Sprintf("%s: %#v", common.NotImplementedError, t)
 		log.Notice(msg)
 		panic(msg)
 	}
