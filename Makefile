@@ -112,9 +112,7 @@ docs:
 	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/repl > \
 		$(DOC_DIR)/repl/index.html
 	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/common > \
-		$(DOC_DIR)/repl/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/util > \
-		$(DOC_DIR)/repl/index.html
+		$(DOC_DIR)/common/index.html
 
 view-docs: docs
 	@echo "View project docs in a browser at:"
