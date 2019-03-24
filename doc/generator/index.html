@@ -206,59 +206,31 @@
 			<h2 id="pkg-constants">Constants</h2>
 			
 				
-				<pre>const <span id="AssertArgsCountError">AssertArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The assert function requires two arguments&#34;</pre>
-			
-				
-				<pre>const <span id="AssrtArgTypeError">AssrtArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The assert function&#39;s first argument must be a type&#34;</pre>
-			
-				
-				<pre>const <span id="BinaryArgsCountError">BinaryArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of binary operator with only one argument is not allowed&#34;</pre>
-			
-				
-				<pre>const <span id="CalleeIndentifierMismatchError">CalleeIndentifierMismatchError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expecting call to identifier (i.e. def, defconst, etc.)&#34;</pre>
-			
-				
-				<pre>const <span id="DefInExpressionError">DefInExpressionError</span> <a href="/pkg/builtin/#string">string</a> = &#34;A def within an expression is not allowed&#34;</pre>
-			
-				
-				<pre>const <span id="ExpectingAsInImportError">ExpectingAsInImportError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid; expecting: \&#34;:as\&#34;&#34;</pre>
-			
-				
-				<pre>const <span id="InvalidImportError">InvalidImportError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Import declaration is invalid&#34;</pre>
-			
-				
-				<pre>const <span id="InvalidImportUseError">InvalidImportUseError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid&#34;</pre>
-			
-				
-				<pre>const <span id="LoopWithoutRecurError">LoopWithoutRecurError</span> <a href="/pkg/builtin/#string">string</a> = &#34;There was no recur found in the loop&#34;</pre>
-			
-				
-				<pre>const <span id="MissingAssgnmentArgsError">MissingAssgnmentArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expecting expression to be assigned to variable: %q&#34;</pre>
-			
-				
-				<pre>const <span id="MissingCallNodeError">MissingCallNodeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expected call node is missing in root scope&#34;</pre>
-			
-				
-				<pre>const <span id="NSInExpressionError">NSInExpressionError</span> <a href="/pkg/builtin/#string">string</a> = &#34;A namespace defined in an expression is not allowed&#34;</pre>
-			
-				
-				<pre>const <span id="NSPackageTypeMismatch">NSPackageTypeMismatch</span> <a href="/pkg/builtin/#string">string</a> = &#34;ns package name needs to be an identifier&#34;</pre>
-			
-				
-				<pre>const <span id="TooFewArgsError">TooFewArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Too few args (%d) were passed to %s; expected %d&#34;</pre>
-			
-				
-				<pre>const <span id="TooManyArgsError">TooManyArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Too many args (%d) were passed to %s; expected %d&#34;</pre>
-			
-				
-				<pre>const <span id="UnaryArgsCountError">UnaryArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Use of unary operator requires exactly on argument&#34;</pre>
+				<pre>const (
+    <span id="DefInExpressionError">DefInExpressionError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;A def within an expression is not allowed&#34;
+    <span id="NSInExpressionError">NSInExpressionError</span>            <a href="/pkg/builtin/#string">string</a> = &#34;A namespace defined in an expression is not allowed&#34;
+    <span id="LoopWithoutRecurError">LoopWithoutRecurError</span>          <a href="/pkg/builtin/#string">string</a> = &#34;There was no recur found in the loop&#34;
+    <span id="AssertArgsCountError">AssertArgsCountError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;The assert function requires two arguments&#34;
+    <span id="AssrtArgTypeError">AssrtArgTypeError</span>              <a href="/pkg/builtin/#string">string</a> = &#34;The assert function&#39;s first argument must be a type&#34;
+    <span id="MissingCallNodeError">MissingCallNodeError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;Expected call node is missing in root scope&#34;
+    <span id="CalleeIndentifierMismatchError">CalleeIndentifierMismatchError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Expecting call to identifier (i.e. def, defconst, etc.)&#34;
+    <span id="MissingAssgnmentArgsError">MissingAssgnmentArgsError</span>      <a href="/pkg/builtin/#string">string</a> = &#34;Expecting expression to be assigned to variable: %q&#34;
+    <span id="NSPackageTypeMismatch">NSPackageTypeMismatch</span>          <a href="/pkg/builtin/#string">string</a> = &#34;ns package name needs to be an identifier&#34;
+    <span id="InvalidImportError">InvalidImportError</span>             <a href="/pkg/builtin/#string">string</a> = &#34;Import declaration is invalid&#34;
+    <span id="InvalidImportUseError">InvalidImportUseError</span>          <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid&#34;
+    <span id="ExpectingAsInImportError">ExpectingAsInImportError</span>       <a href="/pkg/builtin/#string">string</a> = &#34;Use of import is invalid; expecting: \&#34;:as\&#34;&#34;
+    <span id="BinaryArgsCountError">BinaryArgsCountError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;Use of binary operator with only one argument is not allowed&#34;
+    <span id="UnaryArgsCountError">UnaryArgsCountError</span>            <a href="/pkg/builtin/#string">string</a> = &#34;Use of unary operator requires exactly on argument&#34;
+    <span id="TooManyArgsError">TooManyArgsError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;Too many args (%d) were passed to %s; expected %d&#34;
+    <span id="TooFewArgsError">TooFewArgsError</span>                <a href="/pkg/builtin/#string">string</a> = &#34;Too few args (%d) were passed to %s; expected %d&#34;
+)</pre>
 			
 		
 		
 		
 			
 			
-			<h2 id="CamelCase">func <a href="/src/github.com/zylisp/zylisp/generator/idents.go?s=949:994#L37">CamelCase</a>
+			<h2 id="CamelCase">func <a href="/src/github.com/zylisp/zylisp/generator/idents.go?s=952:997#L39">CamelCase</a>
 				<a class="permalink" href="#CamelCase">&#xb6;</a>
 				
 				
@@ -271,7 +243,7 @@
 		
 			
 			
-			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=292:332#L11">EvalExpr</a>
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=320:360#L12">EvalExpr</a>
 				<a class="permalink" href="#EvalExpr">&#xb6;</a>
 				
 				
@@ -284,7 +256,7 @@
 		
 			
 			
-			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=130:176#L1">EvalExprs</a>
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=158:204#L2">EvalExprs</a>
 				<a class="permalink" href="#EvalExprs">&#xb6;</a>
 				
 				
@@ -297,7 +269,7 @@
 		
 			
 			
-			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=266:312#L7">GenerateAST</a>
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=241:287#L7">GenerateAST</a>
 				<a class="permalink" href="#GenerateAST">&#xb6;</a>
 				
 				
@@ -310,7 +282,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3172:3245#L137">GenerateASTFromLispFile</a>
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3038:3111#L133">GenerateASTFromLispFile</a>
 				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
 				
 				
@@ -323,7 +295,7 @@
 		
 			
 			
-			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3563:3635#L155">GenerateASTFromLispString</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3412:3484#L149">GenerateASTFromLispString</a>
 				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
@@ -336,7 +308,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3755:3793#L163">PrintASTFromFile</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3604:3642#L157">PrintASTFromFile</a>
 				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
@@ -349,7 +321,7 @@
 		
 			
 			
-			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4117:4157#L179">PrintASTFromLispString</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3963:4003#L173">PrintASTFromLispString</a>
 				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
@@ -362,7 +334,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4570:4607#L197">PrintGoFromFile</a>
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4416:4453#L191">PrintGoFromFile</a>
 				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
 				
 				
@@ -375,7 +347,7 @@
 		
 			
 			
-			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4746:4785#L204">PrintGoFromLispString</a>
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4592:4631#L198">PrintGoFromLispString</a>
 				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
 				
 				
@@ -388,7 +360,7 @@
 		
 			
 			
-			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3865:3918#L168">WriteASTFromFile</a>
+			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3714:3767#L162">WriteASTFromFile</a>
 				<a class="permalink" href="#WriteASTFromFile">&#xb6;</a>
 				
 				
@@ -401,7 +373,7 @@
 		
 			
 			
-			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4227:4279#L184">WriteGoFromFile</a>
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4073:4125#L178">WriteGoFromFile</a>
 				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
 				
 				

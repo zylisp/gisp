@@ -212,32 +212,22 @@
 			<h2 id="pkg-constants">Constants</h2>
 			
 				
-				<pre>const <span id="AddArgTypeError">AddArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;add function requires int and/or float64 objects&#34;</pre>
-			
-				
-				<pre>const <span id="CompareArgsCountError">CompareArgsCountError</span> <a href="/pkg/builtin/#string">string</a> = &#34;You cannot compare less than two values&#34;</pre>
-			
-				
-				<pre>const <span id="GetArgsTypesError">GetArgsTypesError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Arguments to the get function must include slice/vector/string&#34;</pre>
-			
-				
-				<pre>const <span id="GetNot2Or3ArgsError">GetNot2Or3ArgsError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The get function needs 2 or 3 arguments %d given.&#34;</pre>
-			
-				
-				<pre>const <span id="IncompatibleCompareTypesError">IncompatibleCompareTypesError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The comparison of types of args provided is not allowed&#34;</pre>
-			
-				
-				<pre>const <span id="ModArgTypeError">ModArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;mod function requires need int/float argument; received incorrect type: &#34;</pre>
-			
-				
-				<pre>const <span id="SubArgTypeError">SubArgTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;sub function requires need int/float argument&#34;</pre>
+				<pre>const (
+    <span id="ModArgTypeError">ModArgTypeError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;mod function requires need int/float argument; received incorrect type: &#34;
+    <span id="AddArgTypeError">AddArgTypeError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;add function requires int and/or float64 objects&#34;
+    <span id="SubArgTypeError">SubArgTypeError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;sub function requires need int/float argument&#34;
+    <span id="CompareArgsCountError">CompareArgsCountError</span>         <a href="/pkg/builtin/#string">string</a> = &#34;You cannot compare less than two values&#34;
+    <span id="IncompatibleCompareTypesError">IncompatibleCompareTypesError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The comparison of types of args provided is not allowed&#34;
+    <span id="GetNot2Or3ArgsError">GetNot2Or3ArgsError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;The get function needs 2 or 3 arguments %d given.&#34;
+    <span id="GetArgsTypesError">GetArgsTypesError</span>             <a href="/pkg/builtin/#string">string</a> = &#34;Arguments to the get function must include slice/vector/string&#34;
+)</pre>
 			
 		
 		
 		
 			
 			
-			<h2 id="ADD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=578:607#L28">ADD</a>
+			<h2 id="ADD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=552:581#L27">ADD</a>
 				<a class="permalink" href="#ADD">&#xb6;</a>
 				
 				
@@ -254,7 +244,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="DIV">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1599:1609#L84">DIV</a>
+			<h2 id="DIV">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1573:1583#L83">DIV</a>
 				<a class="permalink" href="#DIV">&#xb6;</a>
 				
 				
@@ -267,7 +257,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="EQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2830:2855#L152">EQ</a>
+			<h2 id="EQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2804:2829#L151">EQ</a>
 				<a class="permalink" href="#EQ">&#xb6;</a>
 				
 				
@@ -280,7 +270,7 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="GT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2277:2302#L120">GT</a>
+			<h2 id="GT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2251:2276#L119">GT</a>
 				<a class="permalink" href="#GT">&#xb6;</a>
 				
 				
@@ -296,7 +286,7 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3408:3435#L185">GTEQ</a>
+			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3382:3409#L184">GTEQ</a>
 				<a class="permalink" href="#GTEQ">&#xb6;</a>
 				
 				
@@ -312,7 +302,7 @@ greater than or equal
 		
 			
 			
-			<h2 id="LT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1669:1694#L87">LT</a>
+			<h2 id="LT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1643:1668#L86">LT</a>
 				<a class="permalink" href="#LT">&#xb6;</a>
 				
 				
@@ -328,7 +318,7 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3528:3555#L194">LTEQ</a>
+			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3502:3529#L193">LTEQ</a>
 				<a class="permalink" href="#LTEQ">&#xb6;</a>
 				
 				
@@ -344,7 +334,7 @@ less than or equal
 		
 			
 			
-			<h2 id="MOD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=127:149#L3">MOD</a>
+			<h2 id="MOD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=101:123#L2">MOD</a>
 				<a class="permalink" href="#MOD">&#xb6;</a>
 				
 				
@@ -357,7 +347,7 @@ less than or equal
 		
 			
 			
-			<h2 id="MUL">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1375:1404#L70">MUL</a>
+			<h2 id="MUL">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1349:1378#L69">MUL</a>
 				<a class="permalink" href="#MUL">&#xb6;</a>
 				
 				
@@ -370,7 +360,7 @@ less than or equal
 		
 			
 			
-			<h2 id="SUB">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=990:1019#L48">SUB</a>
+			<h2 id="SUB">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=964:993#L47">SUB</a>
 				<a class="permalink" href="#SUB">&#xb6;</a>
 				
 				
@@ -384,7 +374,7 @@ less than or equal
 		
 			
 			
-			<h2 id="Any">type <a href="/src/github.com/zylisp/zylisp/core/core.go?s=105:125#L1">Any</a>
+			<h2 id="Any">type <a href="/src/github.com/zylisp/zylisp/core/core.go?s=79:99#L1">Any</a>
 				<a class="permalink" href="#Any">&#xb6;</a>
 				
 				
@@ -402,7 +392,7 @@ less than or equal
 
 			
 				
-				<h3 id="Get">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4099:4124#L233">Get</a>
+				<h3 id="Get">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4073:4098#L232">Get</a>
 					<a class="permalink" href="#Get">&#xb6;</a>
 					
 					

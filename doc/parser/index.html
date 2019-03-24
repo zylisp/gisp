@@ -239,16 +239,12 @@
 			<h2 id="pkg-constants">Constants</h2>
 			
 				
-				<pre>const <span id="AtomTypeError">AtomTypeError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Bad Atom type&#34;</pre>
-			
-				
-				<pre>const <span id="RightCurvedBracketError">RightCurvedBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;)\&#34; [%d]&#34;</pre>
-			
-				
-				<pre>const <span id="RightSquareBracketError">RightSquareBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;]\&#34; [%d]&#34;</pre>
-			
-				
-				<pre>const <span id="UnspecifiedAtomError">UnspecifiedAtomError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unspecified Atom error %#v: %#v&#34;</pre>
+				<pre>const (
+    <span id="RightCurvedBracketError">RightCurvedBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;)\&#34; [%d]&#34;
+    <span id="RightSquareBracketError">RightSquareBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;]\&#34; [%d]&#34;
+    <span id="AtomTypeError">AtomTypeError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;Bad Atom type&#34;
+    <span id="UnspecifiedAtomError">UnspecifiedAtomError</span>    <a href="/pkg/builtin/#string">string</a> = &#34;Unspecified Atom error %#v: %#v&#34;
+)</pre>
 			
 		
 		
@@ -334,7 +330,7 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="NewIdentNode">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=1649:1690#L59">NewIdentNode</a>
+				<h3 id="NewIdentNode">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=1539:1580#L54">NewIdentNode</a>
 					<a class="permalink" href="#NewIdentNode">&#xb6;</a>
 					
 					
@@ -396,7 +392,7 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="Parse">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=330:363#L14">Parse</a>
+				<h3 id="Parse">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=296:329#L12">Parse</a>
 					<a class="permalink" href="#Parse">&#xb6;</a>
 					
 					
@@ -407,7 +403,7 @@ CALL NODE ----------------------------------
 				
 			
 				
-				<h3 id="ParseFromString">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=235:284#L10">ParseFromString</a>
+				<h3 id="ParseFromString">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=201:250#L8">ParseFromString</a>
 					<a class="permalink" href="#ParseFromString">&#xb6;</a>
 					
 					
@@ -520,7 +516,7 @@ NUMBER NODE ----------------------------------
 		
 			
 			
-			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=143:155#L2">Pos</a>
+			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=109:121#L1">Pos</a>
 				<a class="permalink" href="#Pos">&#xb6;</a>
 				
 				
@@ -540,7 +536,7 @@ NUMBER NODE ----------------------------------
 
 			
 				
-				<h3 id="Pos.Position">func (Pos) <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=157:184#L4">Position</a>
+				<h3 id="Pos.Position">func (Pos) <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=123:150#L2">Position</a>
 					<a class="permalink" href="#Pos.Position">&#xb6;</a>
 					
 					

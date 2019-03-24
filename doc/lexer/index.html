@@ -180,16 +180,14 @@
 			<h2 id="pkg-constants">Constants</h2>
 			
 				
-				<pre>const <span id="BadNumberSyntax">BadNumberSyntax</span> <a href="/pkg/builtin/#string">string</a> = &#34;Bad number syntax: %q&#34;</pre>
+				<pre>const (
+    <span id="UnsupportedRuneError">UnsupportedRuneError</span>          <a href="/pkg/builtin/#string">string</a> = &#34;Don&#39;t know what to do with rune: %q&#34;
+    <span id="UnterminatedQuotedStringError">UnterminatedQuotedStringError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unterminated quoted string&#34;
+    <span id="BadNumberSyntax">BadNumberSyntax</span>               <a href="/pkg/builtin/#string">string</a> = &#34;Bad number syntax: %q&#34;
+)</pre>
 			
 				
 				<pre>const <span id="EOF">EOF</span> = -1</pre>
-			
-				
-				<pre>const <span id="UnsupportedRuneError">UnsupportedRuneError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Don&#39;t know what to do with rune: %q&#34;</pre>
-			
-				
-				<pre>const <span id="UnterminatedQuotedStringError">UnterminatedQuotedStringError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unterminated quoted string&#34;</pre>
 			
 		
 		
@@ -214,7 +212,7 @@
 		
 			
 			
-			<h2 id="Atom">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=147:208#L5">Atom</a>
+			<h2 id="Atom">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=121:182#L4">Atom</a>
 				<a class="permalink" href="#Atom">&#xb6;</a>
 				
 				
@@ -241,7 +239,7 @@
 		
 			
 			
-			<h2 id="AtomType">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=210:227#L11">AtomType</a>
+			<h2 id="AtomType">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=184:201#L10">AtomType</a>
 				<a class="permalink" href="#AtomType">&#xb6;</a>
 				
 				
@@ -287,7 +285,7 @@
 		
 			
 			
-			<h2 id="Lexer">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=738:971#L53">Lexer</a>
+			<h2 id="Lexer">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=712:945#L52">Lexer</a>
 				<a class="permalink" href="#Lexer">&#xb6;</a>
 				
 				
@@ -308,7 +306,7 @@
 
 			
 				
-				<h3 id="Lex">func <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2324:2359#L130">Lex</a>
+				<h3 id="Lex">func <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2299:2334#L129">Lex</a>
 					<a class="permalink" href="#Lex">&#xb6;</a>
 					
 					
@@ -321,7 +319,7 @@
 
 			
 				
-				<h3 id="Lexer.NextAtom">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2233:2264#L124">NextAtom</a>
+				<h3 id="Lexer.NextAtom">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2208:2239#L123">NextAtom</a>
 					<a class="permalink" href="#Lexer.NextAtom">&#xb6;</a>
 					
 					
@@ -335,7 +333,7 @@
 		
 			
 			
-			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=133:145#L3">Pos</a>
+			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=107:119#L2">Pos</a>
 				<a class="permalink" href="#Pos">&#xb6;</a>
 				
 				
