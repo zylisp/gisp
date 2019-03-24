@@ -1,8 +1,9 @@
 package core
 
 import (
-	. "github.com/masukomi/check"
 	"testing"
+
+	. "github.com/masukomi/check"
 )
 
 // hook up gocheck into the "go test" runner

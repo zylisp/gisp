@@ -1,3 +1,5 @@
 package common
 
-const ApplicationName string = "zylisp"
+const (
+	ApplicationName string = "zylisp"
+)

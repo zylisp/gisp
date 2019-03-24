@@ -2,13 +2,12 @@ package lexer
 
 import (
 	"fmt"
-	"github.com/zylisp/zylisp/util"
 	"strings"
 	"unicode"
 	"unicode/utf8"
-)
 
-var log = util.GetLogger()
+	log "github.com/sirupsen/logrus"
+)
 
 type Pos int
 
@@ -82,7 +81,7 @@ func (l *Lexer) next() rune {
 		return EOF
 	}
 	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
-	log.Debugf("Lexed rune %s at position %d", r, l.pos)
+	log.Debugf("Lexed rune %#v at position %d", r, l.pos)
 	l.width = Pos(w)
 	l.pos += l.width
 	return r
@@ -201,9 +200,8 @@ func lexWhitespace(l *Lexer) stateFn {
 	case isAlphaNumeric(r):
 		return lexIdentifier
 	default:
-		msg := fmt.Sprintf(UnsupportedRuneError, r)
-		log.Critical(msg)
-		panic(msg)
+		log.Panic(fmt.Sprintf(UnsupportedRuneError, r))
+		return nil
 	}
 }
 

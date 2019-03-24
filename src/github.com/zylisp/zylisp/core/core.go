@@ -2,11 +2,10 @@ package core
 
 import (
 	"fmt"
-	"github.com/zylisp/zylisp/util"
 	"reflect"
-)
 
-var log = util.GetLogger()
+	log "github.com/sirupsen/logrus"
+)
 
 type Any interface{}
 
