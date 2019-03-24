@@ -11,11 +11,13 @@ travis: lint-deps test-deps all
 
 deps:
 	go get github.com/ahmetb/govvv
-	go get github.com/op/go-logging
+	go get github.com/zylisp/zylog/logger
+	go get github.com/sirupsen/logrus
 
 lint-deps:
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
 	sh -s -- -b ~/go/bin v1.15.0
+	go get golang.org/x/tools/cmd/goimports
 
 test-deps:
 	go get github.com/masukomi/check
@@ -136,3 +138,6 @@ install-zylisp:
 	@go get github.com/zylisp/zylisp/cmd/zylisp
 
 install: install-zylisp install-zyc
+
+goimports:
+	GO111MODULE=on goimports -v -w ./

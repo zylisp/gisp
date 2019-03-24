@@ -1,10 +1,11 @@
 package generator
 
 import (
-	h "github.com/zylisp/zylisp/generator/helpers"
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/token"
+
+	h "github.com/zylisp/zylisp/generator/helpers"
+	"github.com/zylisp/zylisp/parser"
 )
 
 func makeIfStmtFunc(node *parser.CallNode) ast.Expr {

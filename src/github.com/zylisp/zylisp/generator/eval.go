@@ -1,11 +1,12 @@
 package generator
 
 import (
-	"fmt"
-	"github.com/zylisp/zylisp/common"
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/token"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/common"
+	"github.com/zylisp/zylisp/parser"
 )
 
 func EvalExprs(nodes []parser.Node) []ast.Expr {
@@ -44,8 +45,7 @@ func EvalExpr(node parser.Node) ast.Expr {
 		return makeIdomaticSelector(node.Ident)
 
 	default:
-		msg := fmt.Sprintf("%s: %#v", common.NotImplementedError, t)
-		log.Notice(msg)
-		panic(msg)
+		log.Panicf("%s: %#v", common.NotImplementedError, t)
+		return nil
 	}
 }

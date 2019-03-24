@@ -38,7 +38,9 @@ func makeIdomaticSelector(src string) ast.Expr {
 }
 
 func makeIdomaticIdent(src string) *ast.Ident {
-	if src == "_" { return ast.NewIdent(src) }
+	if src == "_" {
+		return ast.NewIdent(src)
+	}
 	return ast.NewIdent(CamelCase(src, false))
 }
 

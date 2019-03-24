@@ -2,7 +2,7 @@ package main
 
 import (
 	"testing"
-	)
+)
 
 func TestRemoveExtension(t *testing.T) {
 	wanted := "thing"

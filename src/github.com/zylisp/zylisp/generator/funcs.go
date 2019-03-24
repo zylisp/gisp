@@ -1,10 +1,12 @@
 package generator
 
 import (
-	h "github.com/zylisp/zylisp/generator/helpers"
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/token"
+
+	log "github.com/sirupsen/logrus"
+	h "github.com/zylisp/zylisp/generator/helpers"
+	"github.com/zylisp/zylisp/parser"
 )
 
 func evalFuncCall(node *parser.CallNode) ast.Expr {
@@ -58,12 +60,10 @@ func evalFuncCall(node *parser.CallNode) ast.Expr {
 		return makeFuncLit(fnType, body)
 
 	case checkDefArgs(node):
-		log.Critical(DefInExpressionError)
-		panic(DefInExpressionError)
+		log.Panic(DefInExpressionError)
 
 	case checkNSArgs(node):
-		log.Critical(NSInExpressionError)
-		panic(NSInExpressionError)
+		log.Panic(NSInExpressionError)
 	}
 
 	callee := EvalExpr(node.Callee)
@@ -282,8 +282,7 @@ func isLoop(node *parser.CallNode) bool {
 	}
 
 	if !searchForRecur(node.Args[1:]) {
-		log.Critical(LoopWithoutRecurError)
-		panic(LoopWithoutRecurError)
+		log.Panic(LoopWithoutRecurError)
 	}
 
 	return true
@@ -428,13 +427,11 @@ func isAssert(node *parser.CallNode) bool {
 	}
 
 	if len(node.Args) != 2 {
-		log.Critical(AssertArgsCountError)
-		panic(AssertArgsCountError)
+		log.Panic(AssertArgsCountError)
 	}
 
 	if _, ok := node.Args[0].(*parser.IdentNode); !ok {
-		log.Critical(AssrtArgTypeError)
-		panic(AssrtArgTypeError)
+		log.Panic(AssrtArgTypeError)
 	}
 
 	return true

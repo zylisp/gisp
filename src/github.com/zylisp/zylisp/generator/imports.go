@@ -1,9 +1,11 @@
 package generator
 
 import (
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/token"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/parser"
 )
 
 func getImports(node *parser.CallNode) ast.Decl {
@@ -35,21 +37,18 @@ func getImports(node *parser.CallNode) ast.Decl {
 
 func makeImportSpecFromVector(vect *parser.VectorNode) *ast.ImportSpec {
 	if len(vect.Nodes) < 3 {
-		log.Critical(InvalidImportUseError)
-		panic(InvalidImportUseError)
+		log.Panic(InvalidImportUseError)
 	}
 
 	if vect.Nodes[0].Type() != parser.NodeString {
-		log.Critical(InvalidImportUseError)
-		panic(InvalidImportUseError)
+		log.Panic(InvalidImportUseError)
 	}
 
 	pathString := vect.Nodes[0].(*parser.StringNode).Value
 	path := makeBasicLit(token.STRING, pathString)
 
 	if vect.Nodes[1].Type() != parser.NodeIdent || vect.Nodes[1].(*parser.IdentNode).Ident != ":as" {
-		log.Critical(ExpectingAsInImportError)
-		panic(ExpectingAsInImportError)
+		log.Panic(ExpectingAsInImportError)
 	}
 	name := ast.NewIdent(vect.Nodes[2].(*parser.IdentNode).Ident)
 

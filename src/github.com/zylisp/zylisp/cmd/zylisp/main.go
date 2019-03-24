@@ -164,44 +164,43 @@ into '~/go/bin'.
 package main
 
 import (
-  "flag"
-  "fmt"
-  "github.com/zylisp/zylisp/common"
-  "github.com/zylisp/zylisp/generator"
-  "github.com/zylisp/zylisp/repl"
-  "github.com/zylisp/zylisp/util"
-  "os"
-  "os/exec"
-  "path/filepath"
+	"flag"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/common"
+	"github.com/zylisp/zylisp/generator"
+	"github.com/zylisp/zylisp/repl"
 )
 
-var log = util.GetLogger()
-
 type Modes struct {
-	cli bool
-	ast bool
-	gogen bool
-  bytecode bool
-	lisp bool
+	cli      bool
+	ast      bool
+	gogen    bool
+	bytecode bool
+	lisp     bool
 }
 
 type Inputs struct {
-	files []string
+	files    []string
 	hasFiles bool
 }
 
 type Outputs struct {
-	dir string
-	files []string
-	isDir bool
-	isFile bool
-	useDir bool
+	dir     string
+	files   []string
+	isDir   bool
+	isFile  bool
+	useDir  bool
 	useFile bool
 }
 
 func RemoveExtension(filename string) string {
 	extension := filepath.Ext(filename)
-	return filename[0:len(filename)-len(extension)]
+	return filename[0 : len(filename)-len(extension)]
 }
 
 func PrepareOutputDir(dir string) {
@@ -217,20 +216,20 @@ func PrepareOutputDir(dir string) {
 }
 
 func PrepareOutputFile(filename string) {
-  log.Debug("Preparing output file:", filename)
-  basename := filepath.Dir(filename)
-  log.Debug("Got basename:", basename)
-  PrepareOutputDir(basename)
+	log.Debug("Preparing output file:", filename)
+	basename := filepath.Dir(filename)
+	log.Debug("Got basename:", basename)
+	PrepareOutputDir(basename)
 }
 
 func MakeOutputFilename(prefix string, inputFile string, extension string) string {
 	var template string
-  if extension == "" {
-    template = "%s%s%s%s"
-  } else {
-    template = "%s%s%s.%s"
-  }
-  return fmt.Sprintf(
+	if extension == "" {
+		template = "%s%s%s%s"
+	} else {
+		template = "%s%s%s.%s"
+	}
+	return fmt.Sprintf(
 		template,
 		prefix,
 		string(os.PathSeparator),
@@ -253,12 +252,12 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 // }
 
 func compileGo(infile string, outfile string) {
-  log.Noticef("Compiling %s ...", outfile)
-  cmd := exec.Command("go", "build", "-o", outfile, infile)
-  _, err := cmd.Output()
-  if err != nil {
-    log.Errorf(repl.CompileError, err.Error())
-  }
+	log.Infof("Compiling %s ...", outfile)
+	cmd := exec.Command("go", "build", "-o", outfile, infile)
+	_, err := cmd.Output()
+	if err != nil {
+		log.Errorf(repl.CompileError, err.Error())
+	}
 }
 
 func dispatchLisp(modes Modes) {
@@ -278,8 +277,8 @@ func dispatchAST(modes Modes, inputs Inputs, outputs Outputs) {
 		for i, inputFile := range inputs.files {
 			log.Infof("Processing file '%s' for AST output '%s' ...",
 				inputFile, outputs.files[i])
-      log.Debug("Use file for output?", outputs.useFile)
-      log.Debug("Use directory for output?", outputs.useDir)
+			log.Debug("Use file for output?", outputs.useFile)
+			log.Debug("Use directory for output?", outputs.useDir)
 			if outputs.useFile {
 				generator.WriteASTFromFile(inputFile, outputs.files[i])
 			} else {
@@ -311,25 +310,25 @@ func dispatchGoGen(modes Modes, inputs Inputs, outputs Outputs) {
 }
 
 func dispatchByteCode(modes Modes, inputs Inputs, outputs Outputs) {
-  if modes.cli {
-    // Go-compiler CLI
-    for i, inputFile := range inputs.files {
-      outputFile := outputs.files[i]
-      goOutputFile := outputFile + ".go"
-      log.Infof("Processing file '%s' for Go output '%s' ...",
-        inputFile, goOutputFile)
-      if outputs.useFile {
-        generator.WriteGoFromFile(inputFile, goOutputFile)
-      } else {
-        log.Error(repl.CompileWithoutFileError)
-      }
-      log.Infof("Processing file '%s' for byte-code output '%s' ...",
-        goOutputFile, outputFile)
-      compileGo(goOutputFile, outputFile)
-    }
-  } else {
-    log.Error(repl.CompoileWithoutCLIError)
-  }
+	if modes.cli {
+		// Go-compiler CLI
+		for i, inputFile := range inputs.files {
+			outputFile := outputs.files[i]
+			goOutputFile := outputFile + ".go"
+			log.Infof("Processing file '%s' for Go output '%s' ...",
+				inputFile, goOutputFile)
+			if outputs.useFile {
+				generator.WriteGoFromFile(inputFile, goOutputFile)
+			} else {
+				log.Error(repl.CompileWithoutFileError)
+			}
+			log.Infof("Processing file '%s' for byte-code output '%s' ...",
+				goOutputFile, outputFile)
+			compileGo(goOutputFile, outputFile)
+		}
+	} else {
+		log.Error(repl.CompoileWithoutCLIError)
+	}
 }
 
 // XXX Currently unused; remove?
@@ -341,7 +340,7 @@ func dispatchByteCode(modes Modes, inputs Inputs, outputs Outputs) {
 // 	}
 // }
 
-func getHasFiles (files []string) bool {
+func getHasFiles(files []string) bool {
 	if len(files) > 0 {
 		return true
 	} else {
@@ -358,8 +357,8 @@ func extensionFromMode(modes Modes) string {
 		extension = "ast"
 	} else if modes.gogen {
 		extension = "go"
-  } else if modes.bytecode {
-    extension = ""
+	} else if modes.bytecode {
+		extension = ""
 	} else {
 		fmt.Println(repl.ModeNeededError)
 		os.Exit(1)
@@ -378,8 +377,8 @@ func dispatch(modes Modes, inputs Inputs, outputs Outputs) {
 		dispatchAST(modes, inputs, outputs)
 	} else if modes.gogen {
 		dispatchGoGen(modes, inputs, outputs)
-  } else if modes.bytecode {
-    dispatchByteCode(modes, inputs, outputs)
+	} else if modes.bytecode {
+		dispatchByteCode(modes, inputs, outputs)
 	} else {
 		fmt.Println(repl.ModeNeededError)
 		os.Exit(1)
@@ -391,35 +390,35 @@ func main() {
 	cliPtr := flag.Bool("cli", false, "Run as a CLI tool")
 	dirPtr := flag.String("dir", "", "Default directory for writing operations")
 	goPtr := flag.Bool("go", false, "Enable Go code-generation mode")
-  byteCodePtr := flag.Bool("bytecode", false, "Enable byte-code compilation from generated Go")
+	byteCodePtr := flag.Bool("bytecode", false, "Enable byte-code compilation from generated Go")
 	lispPtr := flag.Bool("lisp", false, "Enable LISP mode")
 	logLevelPtr := flag.String("loglevel", "warning", "Set the logging level")
 	outPtr := flag.String("o", "", "Default filename for writing operations")
 
 	flag.Parse()
-	util.SetupLogging(*logLevelPtr)
+	common.SetupLogger(*logLevelPtr)
 	inputFiles := flag.Args()
 	hasFiles := getHasFiles(inputFiles)
 	isDir := len(*dirPtr) > 0
 
-	modes := Modes {
-		cli: *cliPtr,
-		ast: *astPtr,
-		gogen: *goPtr,
-    bytecode: *byteCodePtr,
-		lisp: *lispPtr,
+	modes := Modes{
+		cli:      *cliPtr,
+		ast:      *astPtr,
+		gogen:    *goPtr,
+		bytecode: *byteCodePtr,
+		lisp:     *lispPtr,
 	}
 
-	inputs := Inputs {
-		files: inputFiles,
+	inputs := Inputs{
+		files:    inputFiles,
 		hasFiles: hasFiles,
 	}
 
-	outputs := Outputs {
-		dir: *dirPtr,
-		isDir: isDir,
-		isFile: len(*outPtr) > 0,
-		useDir: isDir,
+	outputs := Outputs{
+		dir:     *dirPtr,
+		isDir:   isDir,
+		isFile:  len(*outPtr) > 0,
+		useDir:  isDir,
 		useFile: false,
 	}
 
@@ -459,12 +458,12 @@ func main() {
 					outputs.useFile = true
 					log.Debug("Modified output files:", outputs.files)
 					log.Debug("Modified input files:", inputs.files)
-				// If only one file is given, and the output file is set
+					// If only one file is given, and the output file is set
 				} else {
 					log.Debug("Outputs is not a directory.")
-          PrepareOutputFile(*outPtr)
+					PrepareOutputFile(*outPtr)
 					outputs.files = append(outputs.files, *outPtr)
-          outputs.useFile = true
+					outputs.useFile = true
 					log.Debug("Modified output files:", outputs.files)
 					log.Debug("Modified input files:", inputs.files)
 				}

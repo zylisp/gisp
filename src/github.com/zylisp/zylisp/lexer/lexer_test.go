@@ -1,8 +1,9 @@
 package lexer
 
 import (
-	. "github.com/masukomi/check"
 	"testing"
+
+	. "github.com/masukomi/check"
 )
 
 func Test(t *testing.T) { TestingT(t) }

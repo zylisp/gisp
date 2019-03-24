@@ -3,15 +3,15 @@ package generator
 import (
 	"bytes"
 	"fmt"
-	"github.com/zylisp/zylisp/parser"
-	"github.com/zylisp/zylisp/util"
 	"go/ast"
 	"go/printer"
 	"go/token"
 	"io/ioutil"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/parser"
 )
 
-var log = util.GetLogger()
 var anyType = makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent("Any"))
 
 func GenerateAST(tree []parser.Node) *ast.File {
@@ -45,10 +45,9 @@ func generateDecls(tree []parser.Node) []ast.Decl {
 
 	for i, node := range tree {
 		if node.Type() != parser.NodeCall {
-			log.Critical(MissingCallNodeError)
 			// XXX Can we log an error and return an emptuy decls? What would that
 			//     mean ...?
-			panic(MissingCallNodeError)
+			log.Panic(MissingCallNodeError)
 		}
 
 		decls[i] = evalDeclNode(node.(*parser.CallNode))
@@ -77,10 +76,8 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 
 func evalDef(node *parser.CallNode) ast.Decl {
 	if len(node.Args) < 2 {
-		msg := fmt.Sprintf(MissingAssgnmentArgsError, node.Args[0])
-		log.Critical(msg)
 		// XXX Could we log an error and return a custom decl?
-		panic(msg)
+		log.Panicf(MissingAssgnmentArgsError, node.Args[0])
 	}
 
 	val := EvalExpr(node.Args[1])
@@ -122,11 +119,10 @@ func getNamespace(node *parser.CallNode) (*ast.Ident, ast.Decl) {
 
 func getPackageName(node *parser.CallNode) *ast.Ident {
 	if node.Args[0].Type() != parser.NodeIdent {
-		log.Critical(NSPackageTypeMismatch)
 		// XXX How does a type mismatch between these two occur? Could we return an
 		//     error here instead? Or maybe return some sort of fallback/default
 		//     package?
-		panic(NSPackageTypeMismatch)
+		log.Panic(NSPackageTypeMismatch)
 	}
 
 	return ast.NewIdent(node.Args[0].(*parser.IdentNode).Ident)
@@ -147,12 +143,10 @@ func checkNSArgs(node *parser.CallNode) bool {
 func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	b, err := ioutil.ReadFile(filename)
 
-
 	if err != nil {
-		log.Critical(err)
 		// XXX let's improve the error handling here ... maybe an empty fset? and
 		//     nil a (AST)?
-		panic(err)
+		log.Panic(err)
 	}
 
 	fset := token.NewFileSet()
@@ -182,7 +176,7 @@ func WriteASTFromFile(fromFile string, toFile string) {
 	err := ioutil.WriteFile(toFile, buf.Bytes(), 0644)
 
 	if err != nil {
-		log.Critical(err)
+		log.Error(err)
 	}
 }
 

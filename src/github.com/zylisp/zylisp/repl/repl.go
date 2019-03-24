@@ -4,23 +4,22 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/zylisp/zylisp/util"
-	"github.com/zylisp/zylisp/generator"
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/printer"
 	"go/token"
 	"os"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/generator"
+	"github.com/zylisp/zylisp/parser"
 )
 
-var log = util.GetLogger()
-
 func ASTMain() {
-	banner := Banner {
+	banner := Banner{
 		commonHelp: CommonREPLHelp,
-		greeting: REPLBannerGreeting,
-		modeHelp: ASTREPLHelp,
-		replMode: "AST",
+		greeting:   REPLBannerGreeting,
+		modeHelp:   ASTREPLHelp,
+		replMode:   "AST",
 	}
 
 	banner.printBanner()
@@ -30,7 +29,7 @@ func ASTMain() {
 		fmt.Print(ASTPrompt)
 		line, _, _ := r.ReadLine()
 		p := parser.ParseFromString("<REPL>", string(line)+"\n")
-		log.Notice("Parsed AST")
+		log.Info("Parsed AST")
 		log.Debugf("AST: %s", p)
 
 		// a := generator.GenerateAST(p)
@@ -45,11 +44,11 @@ func ASTMain() {
 }
 
 func GoGenMain() {
-	banner := Banner {
+	banner := Banner{
 		commonHelp: CommonREPLHelp,
-		greeting: REPLBannerGreeting,
-		modeHelp: GoGenREPLHelp,
-		replMode: "GOGEN",
+		greeting:   REPLBannerGreeting,
+		modeHelp:   GoGenREPLHelp,
+		replMode:   "GOGEN",
 	}
 
 	banner.printBanner()
@@ -58,17 +57,17 @@ func GoGenMain() {
 	for {
 		fmt.Print(GoGenPrompt)
 		line, _, _ := r.ReadLine()
-		log.Notice("Generated Go code")
+		log.Info("Generated Go code")
 		generator.PrintGoFromLispString(string(line))
 	}
 }
 
 func LispMain() {
-	banner := Banner {
+	banner := Banner{
 		commonHelp: CommonREPLHelp,
-		greeting: REPLBannerGreeting,
-		modeHelp: LispREPLHelp,
-		replMode: "Lisp",
+		greeting:   REPLBannerGreeting,
+		modeHelp:   LispREPLHelp,
+		replMode:   "Lisp",
 	}
 
 	banner.printBanner()
@@ -83,7 +82,7 @@ func LispMain() {
 		fmt.Print(LispPrompt)
 		line, _, _ := r.ReadLine()
 		p := parser.ParseFromString("<REPL>", string(line)+"\n")
-		log.Notice("Parsed AST")
+		log.Info("Parsed AST")
 		log.Debugf("AST: %s", p)
 
 		// a := generator.GenerateAST(p)

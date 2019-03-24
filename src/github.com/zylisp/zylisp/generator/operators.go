@@ -1,9 +1,11 @@
 package generator
 
 import (
-	"github.com/zylisp/zylisp/parser"
 	"go/ast"
 	"go/token"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/parser"
 )
 
 var (
