@@ -1,4 +1,4 @@
-VERSION = 1.0.0-alpha2
+VERSION = 1.0.0-alpha3
 BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylisp -version $(VERSION))
 DOC_DIR = doc/doc
 GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
