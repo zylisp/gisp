@@ -10,6 +10,9 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 GOLANGCI_LINT=$(shell which golangci-lint)
 DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
 DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
+DOCKER_ORG=zylisp
+DOCKER_TAG=zylisp
+DOCKER_BINARY=$(ZY)-linux
 
 .PHONY: build test all
 
@@ -35,6 +38,11 @@ build: deps
 	go build -ldflags="$(BUILD_FLAGS)" $(PROJ)
 	@GO111MODULE=on GOBIN=`pwd`/$(BIN) \
 	go install -ldflags="$(BUILD_FLAGS)" $(PROJ)/cmd/zylisp
+
+docker-binary:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on \
+	go build -ldflags="$(BUILD_FLAGS)" -o $(DOCKER_BINARY) \
+	$(PROJ)/cmd/zylisp
 
 lint-all: $(GOLANGCI_LINT)
 	@echo "\nLinting source code ...\n"
@@ -174,8 +182,16 @@ clean-go:
 
 clean-bin:
 	@echo "Removing untracked files from ./$(BIN) ..."
-	@git ls-files $(BIN) --others | xargs rm
+	@git ls-files $(BIN) --others | xargs rm -f
 
 clean: clean-go clean-bin clean-examples
 
 clean-all: clean clean-modules
+
+docker-img: docker-binary
+	docker build -t $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION) .
+	rm -rf $(DOCKER_BINARY)
+
+run-img:
+	docker run \
+		-it $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION)
