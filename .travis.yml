@@ -5,11 +5,8 @@ git:
   # Needs to include the commit of the latest tag
   depth: 50
   submodules: false
-before_install:
-  - mkdir -p $GOPATH/src/github.com/zylisp
 script:
-  - export GOPATH=${TRAVIS_BUILD_DIR}:${GOPATH}
-  - export PATH=${TRAVIS_BUILD_DIR}/bin:~/go/bin:${PATH}
+  - export GO111MODULE=on
   - make
 notifications:
   email:
