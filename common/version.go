@@ -1,4 +1,4 @@
-package zylisp
+package common
 
 import "fmt"
 

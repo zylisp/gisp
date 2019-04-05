@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/zylisp/zylisp"
+	"github.com/zylisp/zylisp/common"
 )
 
 type Banner struct {
@@ -24,8 +24,8 @@ func (b Banner) printHelp() {
 }
 
 func (b Banner) printVersions() {
-	fmt.Printf("ZYLISP version: %s\n", zylisp.VersionString())
-	fmt.Printf("Build: %s\n", zylisp.BuildString())
+	fmt.Printf("ZYLISP version: %s\n", common.VersionString())
+	fmt.Printf("Build: %s\n", common.BuildString())
 	fmt.Printf("REPL Mode: %s\n", b.replMode)
 	fmt.Printf("Go version: %s\n", runtime.Version())
 }
