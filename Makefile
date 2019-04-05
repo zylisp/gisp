@@ -1,79 +1,90 @@
-VERSION = 1.0.0-alpha3
-BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylisp -version $(VERSION))
-DOC_DIR = doc/doc
+VERSION=1.0.0-alpha4
+PROJ=github.com/zylisp/zylisp
+PACKAGE=$(PROJ)/common
+BUILD_FLAGS=$(shell govvv -flags -pkg $(PACKAGE) -version $(VERSION))
+BIN=bin
+ZY=./$(BIN)/zylisp
+ZYC=./$(BIN)/zyc
+DOC_DIR=doc/doc
 GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
+GOLANGCI_LINT=$(shell which golangci-lint)
+DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
+DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
 
 .PHONY: build test all
 
-all: build lint-all test build-examples test-cli test-examples test-zyc clean-examples
+default: all
 
-travis: lint-deps test-deps all
+all: clean build lint-all test build-examples clean-examples test-cli test-examples clean-examples test-zyc
+
+default-gopath:
+	@echo $(DEFAULT_GOPATH)
 
 deps:
-	go get github.com/ahmetb/govvv
-	go get github.com/zylisp/zylog/logger
-	go get github.com/sirupsen/logrus
+	@GO111MODULE=on go get github.com/sirupsen/logrus@v1.4.0
+	@GO111MODULE=on go install github.com/sirupsen/logrus
 
-lint-deps:
+$(GOLANGCI_LINT):
+	@echo "Couldn't find $(GOLANGCI_LINT); installing ..."
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
-	sh -s -- -b ~/go/bin v1.15.0
-	go get golang.org/x/tools/cmd/goimports
-
-test-deps:
-	go get github.com/masukomi/check
+	sh -s -- -b $(DEFAULT_GOBIN) v1.15.0
 
 build: deps
-	@go install -ldflags="$(BUILD_FLAGS)" ./cmd/zylisp
+	@echo "\nBuilding zylisp ...\n"
+	@GO111MODULE=on \
+	go build -ldflags="$(BUILD_FLAGS)" $(PROJ)
+	@GO111MODULE=on GOBIN=`pwd`/$(BIN) \
+	go install -ldflags="$(BUILD_FLAGS)" $(PROJ)/cmd/zylisp
 
-lint-all:
-	golangci-lint run ./
+lint-all: $(GOLANGCI_LINT)
+	@echo "\nLinting source code ...\n"
+	@golangci-lint run ./
 
-lint-cmd:
+lint-cmd: $(GOLANGCI_LINT)
 	cd .p/cmd/zylisp && \
 	golangci-lint run
 
-lint-repl:
+lint-repl: $(GOLANGCI_LINT)
 	cd ./repl && \
 	golangci-lint run
 
 lint: lint-repl lint-cmd
 
 vet:
-	go vet github.com/zylisp/zylisp/
-	go vet github.com/zylisp/zylisp/cmd/zylisp
-	# go vet github.com/zylisp/zylisp/core
-	# go vet github.com/zylisp/zylisp/generator
-	# go vet github.com/zylisp/zylisp/lexer
-	# go vet github.com/zylisp/zylisp/parser
-	go vet github.com/zylisp/zylisp/repl
+	GO111MODULE=on go vet $(PROJ)/
+	GO111MODULE=on go vet $(PROJ)/cmd/zylisp
+	# GO111MODULE=on go vet $(PROJ)/core
+	# GO111MODULE=on go vet $(PROJ)/generator
+	# GO111MODULE=on go vet $(PROJ)/lexer
+	# GO111MODULE=on go vet $(PROJ)/parser
+	GO111MODULE=on go vet $(PROJ)/repl
 
-test: test-deps
-	@echo "running 'go test' for core ..." && \
+test:
+	@echo "\nRunning 'go test' for core ...\n" && \
 	cd ./core && \
-	go test -v && \
-	cd - && \
-	echo "running 'go test' for lexer ..." && \
+	GO111MODULE=on go test -v
+	@echo "\nRunning 'go test' for lexer ...\n" && \
 	cd ./lexer && \
-	go test -v
-	@$(MAKE) clean-examples
+	GO111MODULE=on go test -v
 
 gogen-examples:
-	zylisp -cli -go -dir ./bin/examples examples/*.zsp
+	@echo "\nGenerating .go files for examples ...\n"
+	$(ZY) -cli -go -dir ./bin/examples examples/*.zsp
 
 ast-examples:
-	zylisp -cli -ast -dir ./examples examples/*.zsp
+	@echo "\nGenerating AST files for examples ...\n"
+	$(ZY) -cli -ast -dir ./examples examples/*.zsp
 
 bin/examples/%: bin/examples/%.go
-	go build -o $@ $<
+	GO111MODULE=on go build -o $@ $<
 
 build-examples: gogen-examples ast-examples
+	@echo "\nCompiling example go files ...\n"
 	@$(MAKE) $(basename $(wildcard ./bin/examples/*.go))
-	rm ./bin/examples/*.go
 
 clean-examples:
-	rm -rf ./bin/examples
-	rm -f ./examples/*.ast
-	rm -f ./examples/*.go
+	@echo "Removing generated example files ..."
+	@rm -rf ./bin/examples ./examples/*.ast ./examples/*.go
 
 test-cli:
 	./tests/test-zylisp-cli.sh
@@ -88,39 +99,37 @@ bench-inner-outer:
 	go test -v -run=^$ -bench=. ./play/func_call_benchmark_test.go
 
 docs:
-	@echo "Generating HTML files ..."
-	@echo
+	@echo "\nGenerating HTML files ...\n"
 	@mkdir -p $(DOC_DIR)/cmd/zylisp $(DOC_DIR)/core $(DOC_DIR)/generator \
 					 $(DOC_DIR)/generator/helpers $(DOC_DIR)/lexer \
 					 $(DOC_DIR)/parser $(DOC_DIR)/repl $(DOC_DIR)/common \
 					 $(DOC_DIR)/util
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp > \
+	@$(GODOC) -url /pkg/$(PROJ) > \
 		$(DOC_DIR)/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/cmd/ > \
+	@$(GODOC) -url /pkg/$(PROJ)/cmd/ > \
 		$(DOC_DIR)/cmd/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/cmd/zylisp > \
+	@$(GODOC) -url /pkg/$(PROJ)/cmd/zylisp > \
 		$(DOC_DIR)/cmd/zylisp/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/core > \
+	@$(GODOC) -url /pkg/$(PROJ)/core > \
 		$(DOC_DIR)/core/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/generator > \
+	@$(GODOC) -url /pkg/$(PROJ)/generator > \
 		$(DOC_DIR)/generator/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/generator/helpers > \
+	@$(GODOC) -url /pkg/$(PROJ)/generator/helpers > \
 		$(DOC_DIR)/generator/helpers/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/lexer > \
+	@$(GODOC) -url /pkg/$(PROJ)/lexer > \
 		$(DOC_DIR)/lexer/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/parser > \
+	@$(GODOC) -url /pkg/$(PROJ)/parser > \
 		$(DOC_DIR)/parser/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/repl > \
+	@$(GODOC) -url /pkg/$(PROJ)/repl > \
 		$(DOC_DIR)/repl/index.html
-	@$(GODOC) -url /pkg/github.com/zylisp/zylisp/common > \
+	@$(GODOC) -url /pkg/$(PROJ)/common > \
 		$(DOC_DIR)/common/index.html
 
 view-docs: docs
-	@echo "View project docs in a browser at:"
+	@echo "\nView project docs in a browser at:"
 	@echo "  http://localhost:6060/pkg/"
 	@echo "In particular, the zylisp command docs are here:"
-	@echo "  http://localhost:6060/pkg/github.com/zylisp/zylisp/cmd/zylisp/"
-	@echo
+	@echo "  http://localhost:6060/pkg/$(PROJ)/cmd/zylisp/\n"
 	@echo "Starting docs HTTP server ..."
 	@GOPATH=`pwd` $(GODOC) -http=:6060 -goroot=`pwd`/doc
 
@@ -134,9 +143,39 @@ install-zyc:
 	@cp bin/zyc ~/go/bin
 
 install-zylisp:
-	@go get github.com/zylisp/zylisp/cmd/zylisp
+	@go get $(PROJ)/cmd/zylisp
 
 install: install-zylisp install-zyc
 
 goimports:
-	GO111MODULE=on goimports -v -w ./
+	goimports -v -w ./
+
+list-packages:
+	GO111MODULE=on go list ./...
+
+modules-init:
+	GO111MODULE=on go mod init $(PROJ)/cmd/zylisp
+
+modules-update:
+	GO111MODULE=on go get -u
+
+module-upgrades:
+	GO111MODULE=on go list -u -m all
+
+modules-tidy:
+	GO111MODULE=on go mod tidy
+
+clean-modules:
+	GO111MODULE=on go clean --modcache
+
+clean-go:
+	@echo "Removing Go object files, etc. ..."
+	@go clean
+
+clean-bin:
+	@echo "Removing untracked files from ./$(BIN) ..."
+	@git ls-files $(BIN) --others | xargs rm
+
+clean: clean-go clean-bin clean-examples
+
+clean-all: clean clean-modules

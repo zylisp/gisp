@@ -10,7 +10,7 @@ before_install:
 script:
   - export GOPATH=${TRAVIS_BUILD_DIR}:${GOPATH}
   - export PATH=${TRAVIS_BUILD_DIR}/bin:~/go/bin:${PATH}
-  - make travis
+  - make
 notifications:
   email:
       - oubiwann@gmail.com

@@ -8,6 +8,9 @@ FAIL_SUITE=0
 FAILURES=0
 PASSES=0
 BASE_OUTDIR=/tmp/zylisp
+PATH=$PATH:./bin
+ZY=zylisp
+ZYC=zyc
 
 function create-tmp-dir () {
 	TMPDIR="$BASE_OUTDIR/cli/$1/`date|sed 's/[ :]/_/g'`"
@@ -16,21 +19,54 @@ function create-tmp-dir () {
 }
 
 function count-files () {
-	echo $(find "$1" -type f -name "$2" |wc -l|tr -d ' ')
+	FILEPATH=$1
+	MATCH=$2
+	echo $(find "$FILEPATH" -type f -name "$MATCH" |wc -l|tr -d ' ')
 }
 
 function count-files-without-extension () {
-	echo $(find "$1" -type f ! -name "*.*" |wc -l|tr -d ' ')
+	FILEPATH=$1
+	echo $(find "$FILEPATH" -type f ! -name "*.*" |wc -l|tr -d ' ')
 }
 
 function num-equals () {
-	if [ ! -z "$1" ] && [ ! -z "$1" ] && [ "$1" -eq "$2" ]; then
+	EXPECTED=$1
+	ACTUAL=$2
+	if [ ! -z "$ACTUAL" ] && [ ! -z "$ACTUAL" ] && [ "$ACTUAL" -eq "$EXPECTED" ]; then
 		echo -e "  ${GREEN}PASS${CLEAR_COLOR}"
 		PASSES=$((PASSES+1))
 	else
-		echo -e "  ${RED}FAIL${CLEAR_COLOR}: ($1 != $2)"
+		echo -e "  ${RED}FAIL${CLEAR_COLOR}: (actual value '$ACTUAL' != expected value '$EXPECTED')"
 		FAIL_SUITE=1
 		FAILURES=$((FAILURES+1))
+	fi
+}
+
+function exit-zero () {
+	EXIT_CODE=$1
+	FAIL_MSG=$2
+	if [ $EXIT_CODE -eq 0 ]; then
+		echo -e "  ${GREEN}PASS${CLEAR_COLOR}"
+		PASSES=$((PASSES+1))
+	else
+		echo -e "  ${RED}FAIL${CLEAR_COLOR}: $FAIL_MSG"
+		FAIL_SUITE=1
+		FAILURES=$((FAILURES+1))
+	fi
+}
+
+function tear-down () {
+	if [ ! -z "$BASE_OUTDIR" ]; then
+		rm -rf $BASE_OUTDIR
+	fi
+}
+
+function print-summary () {
+	echo -e "Tests passed: ${GREEN}$PASSES${CLEAR_COLOR}"
+	echo -e "Tests failed: ${RED}$FAILURES${CLEAR_COLOR}"
+	echo
+	if [ "$FAIL_SUITE" == 1 ]; then
+		exit 1
 	fi
 }
 
