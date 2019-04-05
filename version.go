@@ -19,6 +19,7 @@ var (
 	BuildDate string
 )
 
+// VersionString returns a version string or N/A, if one cannot be determined.
 func VersionString() string {
 	if Version == "" {
 		return "N/A"
@@ -26,6 +27,7 @@ func VersionString() string {
 	return Version
 }
 
+// BuildString returns a string containing information about the current build.
 func BuildString() string {
 	if GitCommit == "" {
 		return "N/A"

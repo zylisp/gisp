@@ -36,15 +36,14 @@ $ go get github.com/zylisp/zylisp/cmd/zylisp
 ```bash
 $ git clone git@github.com:zylisp/zylisp.git
 $ cd zylisp
-$ export GOPATH=$GOPATH:`pwd`
-$ export PATH=$PATH:`pwd`/bin
 $ make
 ```
 
 That last step creates the `zylisp` binary and runs all the tests.
 
 Note that the ZYLISP instructions and docs assume the `./bin` dir has been
-added to the `PATH` as above.
+added to the `PATH` as above and that the `git clone` has make made in 
+the directory `github.com/zylisp` which is on the `GOPATH`.
 
 
 ## Usage

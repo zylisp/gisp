@@ -1,10 +1,5 @@
 #!/bin/bash
 
-FAIL_SUITE=0
-FAILURES=0
-PASSES=0
-BASE_OUTDIR=/tmp/zylisp
-
 . ./tests/common.sh
 
 echo "Batch byte-code multiple file creation"
@@ -18,18 +13,18 @@ echo "Batch byte-code multiple file creation"
 	for FILE in $OUTDIR/factorial $OUTDIR/even_fib_terms $OUTDIR/power_digit_sum $OUTDIR/multiples_of_3_5; do
 		echo "$(basename $FILE): `$FILE`"
 		if [ $? -eq 0 ]; then
-			echo "  PASS"
+			echo -e "  ${GREEN}PASS${CLEAR_COLOR}"
 			PASSES=$((PASSES+1))
 		else
-			echo "  FAIL: Compiled file did not execute properly"
+			echo -e "  ${RED}FAIL${CLEAR_COLOR}: Compiled file did not execute properly"
 			FAIL_SUITE=1
 			FAILURES=$((FAILURES+1))
 		fi
 	done
 	echo
 
-echo "Tests passed: $PASSES"
-echo "Tests failed: $FAILURES"
+echo -e "Tests passed: ${GREEN}$PASSES${CLEAR_COLOR}"
+echo -e "Tests failed: ${RED}$FAILURES${CLEAR_COLOR}"
 echo
 
 if [ ! -z "$BASE_OUTDIR" ]; then
