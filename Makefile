@@ -7,9 +7,13 @@ ZY=./$(BIN)/zylisp
 ZYC=./$(BIN)/zyc
 DOC_DIR=doc/doc
 GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
-GOLANGCI_LINT=$(shell which golangci-lint)
-DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
+DEFAULT_GOPATH=$(shell tr ':' '\n' <<< $$GOPATH|awk '!x[$$0]++'|sed '/^$$/d'|head -1)
+ifeq ($(DEFAULT_GOPATH),)
+DEFAULT_GOPATH := ~/go
+endif
 DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
+export PATH:=$(PATH):$(DEFAULT_GOBIN)
+GOLANGCI_LINT=$(DEFAULT_GOBIN)/golangci-lint
 DOCKER_ORG=zylisp
 DOCKER_TAG=zylisp
 DOCKER_BINARY=$(ZY)-linux
@@ -18,7 +22,8 @@ DOCKER_BINARY=$(ZY)-linux
 
 default: all
 
-all: clean build lint-all test build-examples clean-examples test-cli test-examples clean-examples test-zyc
+all: clean build lint-all test build-examples clean-examples test-cli \
+		test-examples clean-examples test-zyc
 
 default-gopath:
 	@echo $(DEFAULT_GOPATH)
@@ -46,15 +51,15 @@ docker-binary:
 
 lint-all: $(GOLANGCI_LINT)
 	@echo "\nLinting source code ...\n"
-	@golangci-lint run ./
+	@GO111MODULE=off $(GOLANGCI_LINT) run ./
 
 lint-cmd: $(GOLANGCI_LINT)
-	cd .p/cmd/zylisp && \
-	golangci-lint run
+	@cd ./cmd/zylisp && \
+	GO111MODULE=off $(GOLANGCI_LINT) run
 
 lint-repl: $(GOLANGCI_LINT)
-	cd ./repl && \
-	golangci-lint run
+	@cd ./repl && \
+	GO111MODULE=off $(GOLANGCI_LINT) run
 
 lint: lint-repl lint-cmd
 
