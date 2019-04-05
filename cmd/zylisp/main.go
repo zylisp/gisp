@@ -394,8 +394,15 @@ func main() {
 	lispPtr := flag.Bool("lisp", false, "Enable LISP mode")
 	logLevelPtr := flag.String("loglevel", "warning", "Set the logging level")
 	outPtr := flag.String("o", "", "Default filename for writing operations")
+	versionPtr := flag.Bool("version", false, "Display version/build info and exit")
 
 	flag.Parse()
+	if *versionPtr {
+		println("Version: ", common.VersionString())
+		println("Build: ", common.BuildString())
+		os.Exit(0)
+	}
+
 	common.SetupLogger(*logLevelPtr)
 	inputFiles := flag.Args()
 	hasFiles := getHasFiles(inputFiles)
