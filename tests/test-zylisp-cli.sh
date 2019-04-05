@@ -1,10 +1,5 @@
 #!/bin/bash
 
-FAIL_SUITE=0
-FAILURES=0
-PASSES=0
-BASE_OUTDIR=/tmp/zylisp
-
 . ./tests/common.sh
 
 echo "Batch AST multiple file creation"
@@ -70,8 +65,8 @@ echo "Batch byte-code implicit output file (using dir) creation"
 	num-equals $BYTECODE_COUNT 1
 	echo
 
-echo "Tests passed: $PASSES"
-echo "Tests failed: $FAILURES"
+echo -e "Tests passed: ${GREEN}$PASSES${CLEAR_COLOR}"
+echo -e "Tests failed: ${RED}$FAILURES${CLEAR_COLOR}"
 echo
 
 if [ ! -z "$BASE_OUTDIR" ]; then

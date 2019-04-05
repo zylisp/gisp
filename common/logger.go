@@ -15,7 +15,6 @@ func SetupLogger(level string) {
 }
 
 func setupMainLogger(level string) {
-	println("Got level:", level)
 	log.SetupLogging(&log.ZyLogOptions{
 		Colored:      true,
 		Level:        level,

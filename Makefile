@@ -5,7 +5,7 @@ GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 .PHONY: build test all
 
-all: build lint-all test build-examples test-cli test-examples test-zyc
+all: build lint-all test build-examples test-cli test-examples test-zyc clean-examples
 
 travis: lint-deps test-deps all
 
@@ -23,17 +23,17 @@ test-deps:
 	go get github.com/masukomi/check
 
 build: deps
-	@go install -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylisp/cmd/zylisp
+	@go install -ldflags="$(BUILD_FLAGS)" ./cmd/zylisp
 
 lint-all:
-	golangci-lint run src/github.com/zylisp/zylisp/...
+	golangci-lint run ./
 
 lint-cmd:
-	cd src/github.com/zylisp/zylisp/cmd/zylisp && \
+	cd .p/cmd/zylisp && \
 	golangci-lint run
 
 lint-repl:
-	cd src/github.com/zylisp/zylisp/repl && \
+	cd ./repl && \
 	golangci-lint run
 
 lint: lint-repl lint-cmd
@@ -49,11 +49,11 @@ vet:
 
 test: test-deps
 	@echo "running 'go test' for core ..." && \
-	cd src/github.com/zylisp/zylisp/core && \
+	cd ./core && \
 	go test -v && \
 	cd - && \
 	echo "running 'go test' for lexer ..." && \
-	cd src/github.com/zylisp/zylisp/lexer && \
+	cd ./lexer && \
 	go test -v
 	@$(MAKE) clean-examples
 
@@ -73,6 +73,7 @@ build-examples: gogen-examples ast-examples
 clean-examples:
 	rm -rf ./bin/examples
 	rm -f ./examples/*.ast
+	rm -f ./examples/*.go
 
 test-cli:
 	./tests/test-zylisp-cli.sh
