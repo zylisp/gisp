@@ -254,9 +254,13 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 func compileGo(infile string, outfile string) {
 	log.Infof("Compiling %s ...", outfile)
 	cmd := exec.Command("go", "build", "-o", outfile, infile)
-	_, err := cmd.Output()
+	cmd.Env = append(os.Environ(), "GO111MODULE=on")
+	output, err := cmd.CombinedOutput()
 	if err != nil {
+		log.Debugf("Build error: %s", output)
 		log.Errorf(repl.CompileError, err.Error())
+	} else {
+		log.Tracef("Output: %s", output)
 	}
 }
 

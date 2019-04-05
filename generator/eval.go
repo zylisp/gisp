@@ -21,8 +21,8 @@ func EvalExprs(nodes []parser.Node) []ast.Expr {
 
 func EvalExpr(node parser.Node) ast.Expr {
 	t := node.Type()
-	log.Debug("Evaluating node:", node, "of type:", t)
-	log.Debug("Node data:", node)
+	log.Trace("Evaluating node:", node, "of type:", t)
+	log.Trace("Node data:", node)
 	switch t {
 	case parser.NodeCall:
 		node := node.(*parser.CallNode)
