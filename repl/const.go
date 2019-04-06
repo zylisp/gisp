@@ -19,13 +19,13 @@ const CommonREPLHelp string = `
 
 const ASTREPLHelp string = `
 Instructions: Simply type any form to view the generated Go AST.
-        Exit: <CONTROL><C>
+        Exit: ^D or ^C
 `
 
 const GoGenREPLHelp string = ASTREPLHelp
 
 const LispREPLHelp string = `
-      Exit: <CONTROL><D> or (exit) or (quit)
+      Exit: ^D, ^C, (exit), or (quit)
 `
 
 const REPLCommonExitMsg string = `
