@@ -13,17 +13,17 @@ type CoreSuite struct{}
 
 var _ = Suite(&CoreSuite{})
 
-func (s *CoreSuite) Test_isInt(c *C) {
-	c.Assert(isInt(1), IsTrue)
-	c.Assert(isInt(4.0), IsFalse)
-	c.Assert(isInt(int64(3)), IsTrue)
+func (s *CoreSuite) Test_IsInt(c *C) {
+	c.Assert(IsInt(1), IsTrue)
+	c.Assert(IsInt(4.0), IsFalse)
+	c.Assert(IsInt(int64(3)), IsTrue)
 }
 
-func (s *CoreSuite) Test_isFloat(c *C) {
-	c.Assert(isFloat(1), IsFalse)
-	c.Assert(isFloat(4.0), IsTrue)
-	c.Assert(isFloat(3.5), IsTrue)
-	c.Assert(isFloat(float32(3.5)), IsTrue)
+func (s *CoreSuite) Test_IsFloat(c *C) {
+	c.Assert(IsFloat(1), IsFalse)
+	c.Assert(IsFloat(4.0), IsTrue)
+	c.Assert(IsFloat(3.5), IsTrue)
+	c.Assert(IsFloat(float32(3.5)), IsTrue)
 }
 
 func (s *CoreSuite) Test_MOD(c *C) {

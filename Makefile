@@ -73,6 +73,9 @@ vet:
 	GO111MODULE=on go vet $(PROJ)/repl
 
 test:
+	@echo "\nRunning 'go test' for common ...\n" && \
+	cd ./common && \
+	GO111MODULE=on go test -v
 	@echo "\nRunning 'go test' for core ...\n" && \
 	cd ./core && \
 	GO111MODULE=on go test -v

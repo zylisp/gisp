@@ -1,5 +1,6 @@
 package lexer
 
+// Lexer-specific errors
 const (
 	UnsupportedRuneError          string = "Don't know what to do with rune: %q"
 	UnterminatedQuotedStringError string = "Unterminated quoted string"

@@ -1,5 +1,6 @@
 package repl
 
+// Errors for the repl package
 const (
 	// Mode Errors
 	ModeNeededError string = "You need to supply a mode"

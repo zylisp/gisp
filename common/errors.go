@@ -1,5 +1,6 @@
 package common
 
+// General error messages for ZYLISP
 const (
 	// Files and Directories Errors
 	DirectoryError         string = "There was a problem accessing directory %s: %s"

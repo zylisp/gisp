@@ -1,5 +1,6 @@
 package core
 
+// Core error messages
 const (
 	ModArgTypeError               string = "mod function requires need int/float argument; received incorrect type: "
 	AddArgTypeError               string = "add function requires int and/or float64 objects"

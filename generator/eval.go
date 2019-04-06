@@ -9,6 +9,8 @@ import (
 	"github.com/zylisp/zylisp/parser"
 )
 
+// EvalExprs is a function that takes a collection of parser nodes and returns
+// a collection of AST expressions.
 func EvalExprs(nodes []parser.Node) []ast.Expr {
 	out := make([]ast.Expr, len(nodes))
 
@@ -19,6 +21,8 @@ func EvalExprs(nodes []parser.Node) []ast.Expr {
 	return out
 }
 
+// EvalExpr is a function that takes a parser node and returns an AST
+// expression.
 func EvalExpr(node parser.Node) ast.Expr {
 	t := node.Type()
 	log.Trace("Evaluating node:", node, "of type:", t)

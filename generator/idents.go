@@ -1,12 +1,12 @@
 package generator
 
 import (
-	// "github.com/zylisp/zylisp/parser"
-	"bytes"
 	"go/ast"
-	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/zylisp/zylisp/common"
+	// "github.com/zylisp/zylisp/parser"
 )
 
 // XXX Currently unused; remove?
@@ -30,7 +30,7 @@ func makeIdomaticSelector(src string) ast.Expr {
 	var expr ast.Expr = makeIdomaticIdent(strs[0])
 
 	for i := 1; i < len(strs); i++ {
-		ido := CamelCase(strs[i], true)
+		ido := common.CamelCase(strs[i], true)
 		expr = makeSelectorExpr(expr, ast.NewIdent(ido))
 	}
 
@@ -41,20 +41,7 @@ func makeIdomaticIdent(src string) *ast.Ident {
 	if src == "_" {
 		return ast.NewIdent(src)
 	}
-	return ast.NewIdent(CamelCase(src, false))
-}
-
-var camelingRegex = regexp.MustCompile("[0-9A-Za-z]+")
-
-func CamelCase(src string, capit bool) string {
-	byteSrc := []byte(src)
-	chunks := camelingRegex.FindAll(byteSrc, -1)
-	for idx, val := range chunks {
-		if idx > 0 || capit {
-			chunks[idx] = bytes.Title(val)
-		}
-	}
-	return string(bytes.Join(chunks, nil))
+	return ast.NewIdent(common.CamelCase(src, false))
 }
 
 var gensyms = func() <-chan string {

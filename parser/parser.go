@@ -7,25 +7,29 @@ import (
 	"github.com/zylisp/zylisp/lexer"
 )
 
+// Pos type
 type Pos int
 
+// Position returns a pos type
 func (p Pos) Position() Pos {
 	return p
 }
 
 var nilNode = NewIdentNode("nil")
 
+// ParseFromString parses code and returns a collection of nodes
 func ParseFromString(name, program string) []Node {
 	return Parse(lexer.Lex(name, program))
 }
 
+// Parse takes lexed data and returns a tree of parsed nodes.
 func Parse(l *lexer.Lexer) []Node {
 	return parser(l, make([]Node, 0), ' ')
 }
 
 func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
 	for item := l.NextAtom(); item.Type != lexer.AtomEOF; {
-		log.Tracef("Parsed: %s", item)
+		log.Tracef("Parsed: %#v", item)
 		switch t := item.Type; t {
 		case lexer.AtomIdent:
 			tree = append(tree, NewIdentNode(item.Value))
@@ -61,6 +65,7 @@ func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
 	return tree
 }
 
+// NewIdentNode creates a new identity node
 func NewIdentNode(name string) *IdentNode {
 	return &IdentNode{NodeType: NodeIdent, Ident: name}
 }
@@ -85,9 +90,8 @@ func newComplexNode(val string) *NumberNode {
 func newCallNode(args []Node) Node {
 	if len(args) > 0 {
 		return &CallNode{NodeType: NodeCall, Callee: args[0], Args: args[1:]}
-	} else {
-		return nilNode
 	}
+	return nilNode
 }
 
 func newVectNode(content []Node) *VectorNode {

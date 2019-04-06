@@ -176,6 +176,7 @@ import (
 	"github.com/zylisp/zylisp/repl"
 )
 
+// Modes store how the zylisp executable has been run
 type Modes struct {
 	cli      bool
 	ast      bool
@@ -184,11 +185,13 @@ type Modes struct {
 	lisp     bool
 }
 
+// Inputs stores options about any files zylisp is operating upon
 type Inputs struct {
 	files    []string
 	hasFiles bool
 }
 
+// Outputs stores options about the manner in which zylisp writes to files
 type Outputs struct {
 	dir     string
 	files   []string
@@ -196,11 +199,6 @@ type Outputs struct {
 	isFile  bool
 	useDir  bool
 	useFile bool
-}
-
-func RemoveExtension(filename string) string {
-	extension := filepath.Ext(filename)
-	return filename[0 : len(filename)-len(extension)]
 }
 
 func PrepareOutputDir(dir string) {
@@ -233,23 +231,9 @@ func MakeOutputFilename(prefix string, inputFile string, extension string) strin
 		template,
 		prefix,
 		string(os.PathSeparator),
-		filepath.Base(RemoveExtension(inputFile)),
+		filepath.Base(common.RemoveExtension(inputFile)),
 		extension)
 }
-
-// XXX Currently unused; remove?
-// func isDir(filename string) bool {
-//   file, err := os.Stat(filename)
-//   if err != nil {
-//       log.Debugf(common.DirectoryError, filename, err.Error())
-//       return false
-//   }
-//   if file.Mode().IsDir() {
-//     return true
-//   } else {
-//     return false
-//   }
-// }
 
 func compileGo(infile string, outfile string) {
 	log.Infof("Compiling %s ...", outfile)

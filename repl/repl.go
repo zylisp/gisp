@@ -17,6 +17,7 @@ import (
 	"github.com/zylisp/zylisp/parser"
 )
 
+// ASTMain runs the main loop for the AST-based REPL
 func ASTMain() {
 	log.Info("Starting main loop ...")
 	banner := Banner{
@@ -50,6 +51,7 @@ func ASTMain() {
 	}
 }
 
+// GoGenMain runs the main loop for the Go-code-based REPL
 func GoGenMain() {
 	banner := Banner{
 		commonHelp: CommonREPLHelp,
@@ -69,6 +71,7 @@ func GoGenMain() {
 	}
 }
 
+// LispMain runs the main loop for the Lisp-based REPL
 func LispMain() {
 	log.Info("Starting main loop ...")
 	banner := Banner{
