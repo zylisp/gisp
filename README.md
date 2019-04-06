@@ -24,35 +24,18 @@ and cleanups. More to come ...
 - AST generating REPL included
 
 
-## Installation
+## Supported Lisp Functions
 
-```bash
-$ go get github.com/zylisp/zylisp/cmd/zylisp
-```
-
-
-## Development
-
-```bash
-$ git clone git@github.com:zylisp/zylisp.git
-$ cd zylisp
-$ . .env # optional, depending upon your local Go setup
-$ make
-```
-
-That last step creates the `zylisp` binary and runs all the tests.
-
-Note that the ZYLISP instructions and docs assume that the `git clone` has 
-make made in the directory `github.com/zylisp` which is on the `GOPATH`.
-
-
-## Usage
-
-For usage as a REPL as well as a CLI, see the command documentation here:
- * https://zylisp.github.io/zylisp/doc/cmd/zylisp/
-
-General package reference documentation is available here:
- * https://zylisp.github.io/zylisp/doc/
+* `+`
+* `-`
+* `*`
+* `mod`
+* `let`
+* `if`
+* `ns`
+* `def`
+* `fn`
+* All pre-existing Go functions
 
 
 ## Example Code
@@ -81,18 +64,107 @@ See [examples](examples) for some more examples (they are Project Euler
 solutions).
 
 
-## Supported Lisp Functions
+## Installation
 
-* `+`
-* `-`
-* `*`
-* `mod`
-* `let`
-* `if`
-* `ns`
-* `def`
-* `fn`
-* All pre-existing Go functions
+```bash
+$ go get github.com/zylisp/zylisp/cmd/zylisp
+```
+
+
+## Development
+
+```bash
+$ git clone git@github.com:zylisp/zylisp.git
+$ cd zylisp
+$ . .env # optional, depending upon your local Go setup
+$ make
+```
+
+That last step creates the `zylisp` binary and runs all the tests.
+
+Note that the ZYLISP instructions and docs assume that the `git clone` has 
+make made in the directory `src/github.com/zylisp`, where the parent directory
+of `src` is on the `GOPATH`.
+
+
+## Usage
+
+For usage as a REPL as well as a CLI, see the command documentation here:
+ * https://zylisp.github.io/zylisp/doc/cmd/zylisp/
+
+ In short, once compiled, you may pass a flag for one of the supported REPL
+ modes (e.g., `-ast`), or use `zylisp` as a CLI tool (i.e., compiler), with the 
+ `-cli` flag.
+
+General package reference documentation is available here:
+ * https://zylisp.github.io/zylisp/doc/
+
+
+## Docker Support
+
+For those who have `docker` installed and do not wish to install Go, you may 
+try out the various REPLs via `docker` commands, e.g.:
+
+```bash
+docker run -it zylisp/zylisp:latest -ast
+```
+```
+Okay, 3, 2, 1 - Let's jam!
+
+Welcome to
+
+/^^^^^^^^/^^ /^^      /^^ /^^       /^^ /^^^^^^^^ /^^^^^^^^^
+       /^^    /^^    /^^  /^^       /^^ /^^       /^^    /^^
+      /^^      /^^ /^^    /^^       /^^ /^^       /^^    /^^
+    /^^          /^^      /^^       /^^ /^^^^^^^^ /^^^^^^^^^
+   /^^           /^^      /^^       /^^       /^^ /^^
+ /^^             /^^      /^^       /^^ /^^   /^^ /^^
+/^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
+
+ZYLISP version: 1.0.0-alpha4
+Build: release/1.0.x@120e6d5, 2019-04-06T21:59:42Z
+REPL Mode: AST
+Go version: go1.12
+
+        Docs: https://zylisp.github.io/zylisp/
+     Project: https://github.com/zylisp/zylisp
+Instructions: Simply type any form to view the generated Go AST.
+        Exit: ^D or ^C
+
+AST>
+```
+
+Futhermore, since `zylisp` is the entrypoint for the Docker image, the run 
+command may receive all the options that the `zylisp` binary receives, 
+including the help flag:
+
+```bash
+$ docker run -it zylisp/zylisp:latest -h
+```
+```
+Usage of zylisp:
+  -ast
+    	Enable AST mode
+  -bytecode
+    	Enable byte-code compilation from generated Go
+  -cli
+    	Run as a CLI tool
+  -dir string
+    	Default directory for writing operations
+  -go
+    	Enable Go code-generation mode
+  -lisp
+    	Enable LISP mode
+  -loglevel string
+    	Set the logging level (default "warning")
+  -o string
+    	Default filename for writing operations
+  -version
+    	Display version/build info and exit
+```
+
+Note that the ZYLISP docker images are very small, usually weighing in about
+4 MB in size.
 
 
 ## Credits
@@ -100,6 +172,7 @@ solutions).
 * @jcla1 for the initial implementation
 * @masukomi for adding a number of tests and checks
 * @m90 for README fixes
+* The ZYLISP project for new development
 
 
 ## License
