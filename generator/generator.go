@@ -14,6 +14,7 @@ import (
 
 var anyType = makeSelectorExpr(ast.NewIdent("core"), ast.NewIdent("Any"))
 
+// GenerateAST takes a collection of parser nodes and returns an AST file.
 func GenerateAST(tree []parser.Node) *ast.File {
 	f := &ast.File{Name: ast.NewIdent("main")}
 	decls := make([]ast.Decl, 0, len(tree))
@@ -69,8 +70,16 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 	switch callee.Ident {
 	case "def":
 		return evalDef(node)
+	case "defn":
+		return evalDefn(node)
 	}
 
+	return nil
+}
+
+func evalDefn(node *parser.CallNode) ast.Decl {
+	log.Debugf("Got: %#v", node)
+	log.Error("Not implemented")
 	return nil
 }
 
@@ -91,9 +100,9 @@ func evalDef(node *parser.CallNode) ast.Decl {
 		}
 
 		return makeFunDeclFromFuncLit(ident, fn)
-	} else {
-		return makeGeneralDecl(token.VAR, []ast.Spec{makeValueSpec([]*ast.Ident{ident}, []ast.Expr{val}, nil)})
 	}
+	return makeGeneralDecl(token.VAR,
+		[]ast.Spec{makeValueSpec([]*ast.Ident{ident}, []ast.Expr{val}, nil)})
 }
 
 func isNSDecl(node parser.Node) bool {
@@ -140,6 +149,8 @@ func checkNSArgs(node *parser.CallNode) bool {
 	return true
 }
 
+// GenerateASTFromLispFile takes a ZYLISP file and generates the Go AST for it,
+// as an AST file set.
 func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	b, err := ioutil.ReadFile(filename)
 
@@ -156,6 +167,8 @@ func GenerateASTFromLispFile(filename string) (*token.FileSet, *ast.File) {
 	return fset, a
 }
 
+// GenerateASTFromLispString takes a ZYLISP string and generates the Go AST for
+// it and returns both a token file set for it as well as its AST expressions.
 func GenerateASTFromLispString(data string) (*token.FileSet, []ast.Expr) {
 	fset := token.NewFileSet()
 	p := parser.ParseFromString("<REPL>", data+"\n")
@@ -164,11 +177,15 @@ func GenerateASTFromLispString(data string) (*token.FileSet, []ast.Expr) {
 	return fset, a
 }
 
+// PrintASTFromFile takes a filename, generates the Go AST for it, and then
+// prints that AST.
 func PrintASTFromFile(filename string) {
 	fset, a := GenerateASTFromLispFile(filename)
 	ast.Print(fset, a)
 }
 
+// WriteASTFromFile takes an input file and an uutput file, reading Lisp from
+// the former and writing Go AST to the latter.
 func WriteASTFromFile(fromFile string, toFile string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(fromFile)
@@ -180,11 +197,15 @@ func WriteASTFromFile(fromFile string, toFile string) {
 	}
 }
 
+// PrintASTFromLispString takes Lisp data in the form of a string, parses it,
+// and prints the Go AST for it.
 func PrintASTFromLispString(data string) {
 	fset, a := GenerateASTFromLispString(data)
 	ast.Print(fset, a)
 }
 
+// WriteGoFromFile takes an input file and an uutput file, reading Lisp from
+// the former and writing the corresponding Go for it to the latter.
 func WriteGoFromFile(fromFile string, toFile string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(fromFile)
@@ -198,6 +219,8 @@ func WriteGoFromFile(fromFile string, toFile string) {
 	}
 }
 
+// PrintGoFromFile takes a filename, generates the Go code for it, and then
+// prints the Go.
 func PrintGoFromFile(filename string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispFile(filename)
@@ -205,6 +228,8 @@ func PrintGoFromFile(filename string) {
 	fmt.Printf("%s\n", buf.String())
 }
 
+// PrintGoFromLispString takes Lisp data in the form of a string, parses it,
+// and prints the generated Go for it.
 func PrintGoFromLispString(data string) {
 	var buf bytes.Buffer
 	fset, a := GenerateASTFromLispString(data)

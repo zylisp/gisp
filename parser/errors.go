@@ -1,5 +1,6 @@
 package parser
 
+// Errors specific to the parser package
 const (
 	RightCurvedBracketError string = "Unexpected \")\" [%d]"
 	RightSquareBracketError string = "Unexpected \"]\" [%d]"

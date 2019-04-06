@@ -1,5 +1,6 @@
 package generator
 
+// Generator-specific error messages
 const (
 	DefInExpressionError           string = "A def within an expression is not allowed"
 	NSInExpressionError            string = "A namespace defined in an expression is not allowed"

@@ -1,4 +1,6 @@
 .DS_Store
 /bin
 /examples/*.go
+/examples/*.ast
 /pkg
+/temp

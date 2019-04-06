@@ -7,6 +7,7 @@ import (
 	"github.com/zylisp/zylisp/common"
 )
 
+// Banner contains the data used for different banner types.
 type Banner struct {
 	commonHelp string
 	greeting   string

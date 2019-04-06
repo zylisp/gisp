@@ -9,16 +9,25 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// General lexer constants
+const (
+	EOF = -1
+)
+
+// Pos position type
 type Pos int
 
+// Atom object
 type Atom struct {
 	Type  AtomType
 	Pos   Pos
 	Value string
 }
 
+// AtomType atom type
 type AtomType int
 
+// Lexer atom constants
 const (
 	AtomError AtomType = iota
 	AtomEOF
@@ -42,9 +51,8 @@ const (
 	AtomUnquoteSplice
 )
 
-const EOF = -1
-
-var AdditionalAlphaNumRunes map[rune]bool = map[rune]bool{
+// AdditionalAlphaNumRunes rune vars
+var AdditionalAlphaNumRunes = map[rune]bool{
 	'>': true,
 	'<': true,
 	'=': true,
@@ -57,8 +65,10 @@ var AdditionalAlphaNumRunes map[rune]bool = map[rune]bool{
 	'?': true,
 }
 
+// stateFn state function type
 type stateFn func(*Lexer) stateFn
 
+// Lexer object
 type Lexer struct {
 	name    string
 	input   string
@@ -130,12 +140,14 @@ func (l *Lexer) errorf(format string, args ...interface{}) stateFn {
 	return nil
 }
 
+// NextAtom method
 func (l *Lexer) NextAtom() Atom {
 	item := <-l.items
 	l.lastPos = item.Pos
 	return item
 }
 
+// Lex returns a lexer constructor
 func Lex(name, input string) *Lexer {
 	l := &Lexer{
 		name:  name,
