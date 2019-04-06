@@ -1,4 +1,4 @@
 FROM scratch
 
 COPY bin/zylisp-linux /bin/zylisp
-ENTRYPOINT ["zylisp", "-ast"]
+ENTRYPOINT ["zylisp"]
