@@ -7,7 +7,10 @@ import (
 	"go/ast"
 	"go/printer"
 	"go/token"
+	"io"
 	"os"
+	"os/signal"
+	"syscall"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/zylisp/zylisp/generator"
@@ -15,6 +18,7 @@ import (
 )
 
 func ASTMain() {
+	log.Info("Starting main loop ...")
 	banner := Banner{
 		commonHelp: CommonREPLHelp,
 		greeting:   REPLBannerGreeting,
@@ -24,10 +28,13 @@ func ASTMain() {
 
 	banner.printBanner()
 	r := bufio.NewReader(os.Stdin)
-
 	for {
 		fmt.Print(ASTPrompt)
-		line, _, _ := r.ReadLine()
+		handleSignals()
+		// line, _, _ := r.ReadLine()
+		line, _, err := r.ReadLine()
+		log.Debugf("Got: %#v, %#v", line, err)
+		handleReadlineErrors(err)
 		p := parser.ParseFromString("<REPL>", string(line)+"\n")
 		log.Info("Parsed AST")
 		log.Debugf("AST: %s", p)
@@ -63,6 +70,7 @@ func GoGenMain() {
 }
 
 func LispMain() {
+	log.Info("Starting main loop ...")
 	banner := Banner{
 		commonHelp: CommonREPLHelp,
 		greeting:   REPLBannerGreeting,
@@ -80,7 +88,8 @@ func LispMain() {
 	//     more to the Lisp REPL
 	for {
 		fmt.Print(LispPrompt)
-		line, _, _ := r.ReadLine()
+		line, aa, bb := r.ReadLine()
+		log.Tracef("Got: %#v, %#v, %#v", line, aa, bb)
 		p := parser.ParseFromString("<REPL>", string(line)+"\n")
 		log.Info("Parsed AST")
 		log.Debugf("AST: %s", p)
@@ -93,5 +102,45 @@ func LispMain() {
 		var buf bytes.Buffer
 		printer.Fprint(&buf, fset, a)
 		fmt.Printf("%s\n", buf.String())
+	}
+}
+
+func handleSignals() {
+	log.Trace("Setting up signal handler ...")
+	signalChan := make(chan os.Signal, 1)
+
+	signal.Notify(signalChan,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+
+	go func() {
+		s := <-signalChan
+		log.Debugf("Signal: %#v", s)
+		switch s {
+		case syscall.SIGINT: // ^C
+			log.Debug("Received SIGNINT signal; quitting ...")
+			fmt.Printf("\n%s\n", REPLCommonExitMsg)
+			os.Exit(0)
+		case syscall.SIGTERM:
+			log.Debug("Received SIGTERM signal; quitting ...")
+			os.Exit(0)
+		case syscall.SIGQUIT:
+			log.Debug("Received SIGQUIT signal; quitting ...")
+			os.Exit(1)
+		default:
+			log.Debugf("Received unexpected signal %#v", s)
+		}
+	}()
+}
+
+func handleReadlineErrors(err error) {
+	switch err {
+	case io.EOF:
+		log.Debug("Received EOF from input; quitting ...")
+		fmt.Printf("\n%s\n", REPLCommonExitMsg)
+		os.Exit(0)
+	default:
+		log.Debugf("Not able to handle error %#v", err)
 	}
 }
