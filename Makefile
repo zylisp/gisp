@@ -198,8 +198,13 @@ clean-all: clean clean-modules
 
 docker-img: docker-binary
 	docker build -t $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION) .
+	docker build -t $(DOCKER_ORG)/$(DOCKER_TAG):latest .
 	rm -rf $(DOCKER_BINARY)
 
-run-img:
+run-img-ast:
 	docker run \
-		-it $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION)
+		-it $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION) -ast
+
+publish-img:
+	docker push $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION)
+	docker push $(DOCKER_ORG)/$(DOCKER_TAG):latest
