@@ -123,10 +123,10 @@ Welcome to
  /^^             /^^      /^^       /^^ /^^   /^^ /^^
 /^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
 
-ZYLISP version: 1.0.0-alpha4
-Build: release/1.0.x@120e6d5, 2019-04-06T21:59:42Z
+ZYLISP version: 0.8.0
+Build: release/0.8.x@ee5902a, 2019-04-07T04:07:14Z
 REPL Mode: AST
-Go version: go1.12
+Go version: go1.12.2
 
         Docs: https://zylisp.github.io/zylisp/
      Project: https://github.com/zylisp/zylisp
@@ -200,7 +200,7 @@ the following:
 
 | Version | Date       | Repo     | Notes
 |---------|------------|----------|----------------------------------------
-| 1.0.0   | 2019-04-06 | zylisp   | Code rename to zylisp, cleanup, Go modules, docker
+| 0.8.0   | 2019-04-06 | zylisp   | Code rename to zylisp, cleanup, Go modules, docker
 | 0.7.0   | 2019-03-12 | zylisp   | CLI support, improved compiling options, logging
 | 0.6.0   | 2019-02-28 | zylisp   | Compatibility release, docs updates
 | 0.5.0   | 2017-08-25 | rcarmo   | Merged PR from m90, minor fixes and tweaks
