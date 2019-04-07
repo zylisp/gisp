@@ -11,19 +11,28 @@
 
 ## Status
 
-This project was largely abandoned in 2014, but revived in 2017 with updates
-from various forks as well as some additional cleanup work. It was brought into
-the ZYLISP Github org for exploratory purposes, and received more loving tweaks
-and cleanups. More to come ...
+ZYLISP is capable of generating Go files and compiled byte code from files
+written in the ZYLISP Lisp dialect. AST files may also be generated from the
+command line. An AST-generating expression shell is currently available, but
+no LISP REPL yet.
+
+Current development efforts are focused on adding more core functions to the
+Lisp dialect with a special interest in syntactic support for explicit types.
+
+Milestone currently under development:
+[0.9.0](https://github.com/zylisp/zylisp/milestone/4)
 
 
-## Includes
+## Features
 
 - Lexer based on Rob Pike's
   [Lexical Scanning in Go](https://talks.golang.org/2011/lex.slide)
 - Simple recursive parser, supporting ints, floats, strings, bools
 - TCO via loop/recur
-- AST generating REPL included
+- AST-generating shell and CLI
+- Go-generating CLI
+- Byte-code-compiling CLI
+- Published Docker images
 
 
 ## Supported Lisp Functions
