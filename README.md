@@ -124,7 +124,7 @@ Welcome to
 /^^^^^^^^^^^     /^^      /^^^^^^^^ /^^ /^^^^^^^^ /^^
 
 ZYLISP version: 0.8.0
-Build: release/0.8.x@ee5902a, 2019-04-07T04:07:14Z
+Build: master@1e52cac, 2019-04-07T04:16:06Z
 REPL Mode: AST
 Go version: go1.12.2
 
