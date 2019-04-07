@@ -127,9 +127,6 @@
 			
 			
 				
-				<dd><a href="#CamelCase">func CamelCase(src string, capit bool) string</a></dd>
-			
-				
 				<dd><a href="#EvalExpr">func EvalExpr(node parser.Node) ast.Expr</a></dd>
 			
 				
@@ -205,7 +202,10 @@
 		
 			<h2 id="pkg-constants">Constants</h2>
 			
-				
+				<p>
+Generator-specific error messages
+</p>
+
 				<pre>const (
     <span id="DefInExpressionError">DefInExpressionError</span>           <a href="/pkg/builtin/#string">string</a> = &#34;A def within an expression is not allowed&#34;
     <span id="NSInExpressionError">NSInExpressionError</span>            <a href="/pkg/builtin/#string">string</a> = &#34;A namespace defined in an expression is not allowed&#34;
@@ -230,156 +230,186 @@
 		
 			
 			
-			<h2 id="CamelCase">func <a href="/src/github.com/zylisp/zylisp/generator/idents.go?s=952:997#L39">CamelCase</a>
-				<a class="permalink" href="#CamelCase">&#xb6;</a>
-				
-				
-			</h2>
-			<pre>func CamelCase(src <a href="/pkg/builtin/#string">string</a>, capit <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
-			
-			
-
-		
-			
-			
-			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=320:360#L12">EvalExpr</a>
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=520:560#L16">EvalExpr</a>
 				<a class="permalink" href="#EvalExpr">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func EvalExpr(node <a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) <a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
-			
+			<p>
+EvalExpr is a function that takes a parser node and returns an AST
+expression.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=158:204#L2">EvalExprs</a>
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=273:319#L4">EvalExprs</a>
 				<a class="permalink" href="#EvalExprs">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func EvalExprs(nodes []<a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
-			
+			<p>
+EvalExprs is a function that takes a collection of parser nodes and returns
+a collection of AST expressions.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=241:287#L7">GenerateAST</a>
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=316:362#L8">GenerateAST</a>
 				<a class="permalink" href="#GenerateAST">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func GenerateAST(tree []<a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a></pre>
-			
+			<p>
+GenerateAST takes a collection of parser nodes and returns an AST file.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3038:3111#L133">GenerateASTFromLispFile</a>
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3368:3441#L144">GenerateASTFromLispFile</a>
 				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func GenerateASTFromLispFile(filename <a href="/pkg/builtin/#string">string</a>) (*<a href="/pkg/go/token/">token</a>.<a href="/pkg/go/token/#FileSet">FileSet</a>, *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a>)</pre>
-			
+			<p>
+GenerateASTFromLispFile takes a ZYLISP file and generates the Go AST for it,
+as an AST file set.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3412:3484#L149">GenerateASTFromLispString</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3901:3973#L162">GenerateASTFromLispString</a>
 				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func GenerateASTFromLispString(data <a href="/pkg/builtin/#string">string</a>) (*<a href="/pkg/go/token/">token</a>.<a href="/pkg/go/token/#FileSet">FileSet</a>, []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a>)</pre>
-			
+			<p>
+GenerateASTFromLispString takes a ZYLISP string and generates the Go AST for
+it and returns both a token file set for it as well as its AST expressions.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3604:3642#L157">PrintASTFromFile</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4189:4227#L172">PrintASTFromFile</a>
 				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func PrintASTFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+PrintASTFromFile takes a filename, generates the Go AST for it, and then
+prints that AST.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3963:4003#L173">PrintASTFromLispString</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4785:4825#L192">PrintASTFromLispString</a>
 				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func PrintASTFromLispString(data <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+PrintASTFromLispString takes Lisp data in the form of a string, parses it,
+and prints the Go AST for it.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4416:4453#L191">PrintGoFromFile</a>
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5478:5515#L214">PrintGoFromFile</a>
 				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func PrintGoFromFile(filename <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+PrintGoFromFile takes a filename, generates the Go code for it, and then
+prints the Go.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4592:4631#L198">PrintGoFromLispString</a>
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5770:5809#L223">PrintGoFromLispString</a>
 				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func PrintGoFromLispString(data <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+PrintGoFromLispString takes Lisp data in the form of a string, parses it,
+and prints the generated Go for it.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3714:3767#L162">WriteASTFromFile</a>
+			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4425:4478#L179">WriteASTFromFile</a>
 				<a class="permalink" href="#WriteASTFromFile">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func WriteASTFromFile(fromFile <a href="/pkg/builtin/#string">string</a>, toFile <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+WriteASTFromFile takes an input file and an uutput file, reading Lisp from
+the former and writing Go AST to the latter.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4073:4125#L178">WriteGoFromFile</a>
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5041:5093#L199">WriteGoFromFile</a>
 				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func WriteGoFromFile(fromFile <a href="/pkg/builtin/#string">string</a>, toFile <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+WriteGoFromFile takes an input file and an uutput file, reading Lisp from
+the former and writing the corresponding Go for it to the latter.
+</p>
+
 			
 			
 

@@ -123,9 +123,26 @@
 				<dd><a href="#pkg-constants">Constants</a></dd>
 			
 			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#BuildString">func BuildString() string</a></dd>
+			
+				
+				<dd><a href="#CamelCase">func CamelCase(src string, capit bool) string</a></dd>
+			
+				
+				<dd><a href="#IsDir">func IsDir(path string) bool</a></dd>
+			
+				
+				<dd><a href="#RemoveExtension">func RemoveExtension(path string) string</a></dd>
 			
 				
 				<dd><a href="#SetupLogger">func SetupLogger(level string)</a></dd>
+			
+				
+				<dd><a href="#VersionString">func VersionString() string</a></dd>
 			
 			
 			
@@ -145,6 +162,10 @@
 			
 				<a href="/src/github.com/zylisp/zylisp/common/logger.go">logger.go</a>
 			
+				<a href="/src/github.com/zylisp/zylisp/common/util.go">util.go</a>
+			
+				<a href="/src/github.com/zylisp/zylisp/common/version.go">version.go</a>
+			
 			</span>
 			</p>
 		
@@ -156,7 +177,10 @@
 		
 			<h2 id="pkg-constants">Constants</h2>
 			
-				
+				<p>
+General error messages for ZYLISP
+</p>
+
 				<pre>const (
     <span class="comment">// Files and Directories Errors</span>
     <span id="DirectoryError">DirectoryError</span>         <a href="/pkg/builtin/#string">string</a> = &#34;There was a problem accessing directory %s: %s&#34;
@@ -168,23 +192,135 @@
     <span id="LogLevelUnsupportedError">LogLevelUnsupportedError</span> <a href="/pkg/builtin/#string">string</a> = &#34;The provided logging level is not supported&#34;
 )</pre>
 			
-				
+				<p>
+Primary constants for ZYLISP
+</p>
+
 				<pre>const (
     <span id="ApplicationName">ApplicationName</span> <a href="/pkg/builtin/#string">string</a> = &#34;zylisp&#34;
 )</pre>
 			
 		
 		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				
+				<pre>var (
+    <span class="comment">// Version is populated at compile time by govvv from ./VERSION</span>
+    <span id="Version">Version</span> <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// GitCommit is populated at compile time by govvv.</span>
+    <span id="GitCommit">GitCommit</span> <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// GitState is populated at compile time by govvv.</span>
+    <span id="GitState">GitState</span> <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// GitBranch is current branch name the code is built off</span>
+    <span id="GitBranch">GitBranch</span> <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// BuildDate is RFC3339 formatted UTC date</span>
+    <span id="BuildDate">BuildDate</span> <a href="/pkg/builtin/#string">string</a>
+)</pre>
+			
+		
 		
 			
 			
-			<h2 id="SetupLogger">func <a href="/src/github.com/zylisp/zylisp/common/logger.go?s=75:105#L1">SetupLogger</a>
+			<h2 id="BuildString">func <a href="/src/github.com/zylisp/zylisp/common/version.go?s=649:674#L21">BuildString</a>
+				<a class="permalink" href="#BuildString">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func BuildString() <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+BuildString returns a string containing information about the current build.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="CamelCase">func <a href="/src/github.com/zylisp/zylisp/common/util.go?s=297:342#L6">CamelCase</a>
+				<a class="permalink" href="#CamelCase">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CamelCase(src <a href="/pkg/builtin/#string">string</a>, capit <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+CamelCase takes a string and a boolean and returns a camel-cased version of
+the provided string. If the provided boolean is true,
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="IsDir">func <a href="/src/github.com/zylisp/zylisp/common/util.go?s=868:896#L26">IsDir</a>
+				<a class="permalink" href="#IsDir">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func IsDir(path <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsDir returns a boolean depending upon whether the provided path points
+to a directory or not.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="RemoveExtension">func <a href="/src/github.com/zylisp/zylisp/common/util.go?s=645:685#L19">RemoveExtension</a>
+				<a class="permalink" href="#RemoveExtension">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func RemoveExtension(path <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+RemoveExtension returns just the bare name of a path without the final
+&#39;.*&#39; ending.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="SetupLogger">func <a href="/src/github.com/zylisp/zylisp/common/logger.go?s=255:285#L2">SetupLogger</a>
 				<a class="permalink" href="#SetupLogger">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func SetupLogger(level <a href="/pkg/builtin/#string">string</a>)</pre>
+			<p>
+SetupLogger is a dispatch function that calls specific setup functions
+depending upon such things as command line paramaters or whether the
+context is a test runner, etc.
+</p>
+
 			
+			
+
+		
+			
+			
+			<h2 id="VersionString">func <a href="/src/github.com/zylisp/zylisp/common/version.go?s=482:509#L13">VersionString</a>
+				<a class="permalink" href="#VersionString">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func VersionString() <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+VersionString returns a version string or N/A, if one cannot be determined.
+</p>
+
 			
 			
 

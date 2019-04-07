@@ -238,7 +238,10 @@
 		
 			<h2 id="pkg-constants">Constants</h2>
 			
-				
+				<p>
+Errors specific to the parser package
+</p>
+
 				<pre>const (
     <span id="RightCurvedBracketError">RightCurvedBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;)\&#34; [%d]&#34;
     <span id="RightSquareBracketError">RightSquareBracketError</span> <a href="/pkg/builtin/#string">string</a> = &#34;Unexpected \&#34;]\&#34; [%d]&#34;
@@ -252,13 +255,13 @@
 		
 			
 			
-			<h2 id="CallNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1545:1615#L88">CallNode</a>
+			<h2 id="CallNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=2073:2143#L101">CallNode</a>
 				<a class="permalink" href="#CallNode">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-CALL NODE ----------------------------------
+CallNode object
 </p>
 
 			<pre>type CallNode struct {
@@ -281,25 +284,31 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="CallNode.Copy">func (*CallNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1617:1650#L95">Copy</a>
+				<h3 id="CallNode.Copy">func (*CallNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=2183:2216#L109">Copy</a>
 					<a class="permalink" href="#CallNode.Copy">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#CallNode">CallNode</a>) Copy() <a href="#Node">Node</a></pre>
-				
+				<p>
+Copy creates a copy of a call node
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="CallNode.String">func (*CallNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1835:1872#L103">String</a>
+				<h3 id="CallNode.String">func (*CallNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=2452:2489#L118">String</a>
 					<a class="permalink" href="#CallNode.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#CallNode">CallNode</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+String returns the string value for a call node
+</p>
+
 				
 				
 				
@@ -307,12 +316,15 @@ CALL NODE ----------------------------------
 		
 			
 			
-			<h2 id="IdentNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=290:347#L19">IdentNode</a>
+			<h2 id="IdentNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=545:602#L24">IdentNode</a>
 				<a class="permalink" href="#IdentNode">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+IdentNode defines the identity node for use in identity operations
+</p>
+
 			<pre>type IdentNode struct {
     <span class="comment">// Pos</span>
     <a href="#NodeType">NodeType</a>
@@ -330,38 +342,47 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="NewIdentNode">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=1539:1580#L54">NewIdentNode</a>
+				<h3 id="NewIdentNode">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=1754:1795#L59">NewIdentNode</a>
 					<a class="permalink" href="#NewIdentNode">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func NewIdentNode(name <a href="/pkg/builtin/#string">string</a>) *<a href="#IdentNode">IdentNode</a></pre>
-				
+				<p>
+NewIdentNode creates a new identity node
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="IdentNode.Copy">func (*IdentNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=349:383#L25">Copy</a>
+				<h3 id="IdentNode.Copy">func (*IdentNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=652:686#L31">Copy</a>
 					<a class="permalink" href="#IdentNode.Copy">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#IdentNode">IdentNode</a>) Copy() <a href="#Node">Node</a></pre>
-				
+				<p>
+Copy creates a copy of an IdentNode instance
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="IdentNode.String">func (*IdentNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=422:460#L29">String</a>
+				<h3 id="IdentNode.String">func (*IdentNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=780:818#L36">String</a>
 					<a class="permalink" href="#IdentNode.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#IdentNode">IdentNode</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+String returns a string represnetation of IdentNode
+</p>
+
 				
 				
 				
@@ -369,12 +390,15 @@ CALL NODE ----------------------------------
 		
 			
 			
-			<h2 id="Node">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=47:136#L1">Node</a>
+			<h2 id="Node">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=207:296#L8">Node</a>
 				<a class="permalink" href="#Node">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+Node holds data for parsed AST nodes
+</p>
+
 			<pre>type Node interface {
     Type() <a href="#NodeType">NodeType</a>
     <span class="comment">// Position() Pos</span>
@@ -392,24 +416,30 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="Parse">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=296:329#L12">Parse</a>
+				<h3 id="Parse">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=466:499#L16">Parse</a>
 					<a class="permalink" href="#Parse">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Parse(l *<a href="/pkg/github.com/zylisp/zylisp/lexer/">lexer</a>.<a href="/pkg/github.com/zylisp/zylisp/lexer/#Lexer">Lexer</a>) []<a href="#Node">Node</a></pre>
-				
+				<p>
+Parse takes lexed data and returns a tree of parsed nodes.
+</p>
+
 				
 				
 			
 				
-				<h3 id="ParseFromString">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=201:250#L8">ParseFromString</a>
+				<h3 id="ParseFromString">func <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=309:358#L11">ParseFromString</a>
 					<a class="permalink" href="#ParseFromString">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func ParseFromString(name, program <a href="/pkg/builtin/#string">string</a>) []<a href="#Node">Node</a></pre>
-				
+				<p>
+ParseFromString parses code and returns a collection of nodes
+</p>
+
 				
 				
 			
@@ -418,16 +448,22 @@ CALL NODE ----------------------------------
 		
 			
 			
-			<h2 id="NodeType">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=138:155#L5">NodeType</a>
+			<h2 id="NodeType">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=350:367#L16">NodeType</a>
 				<a class="permalink" href="#NodeType">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+NodeType defines a dedicated type for node types
+</p>
+
 			<pre>type NodeType <a href="/pkg/builtin/#int">int</a></pre>
 
 			
-				
+				<p>
+Constants for the parser package
+</p>
+
 				<pre>const (
     <span id="NodeIdent">NodeIdent</span> <a href="#NodeType">NodeType</a> = <a href="/pkg/builtin/#iota">iota</a>
     <span id="NodeString">NodeString</span>
@@ -447,13 +483,16 @@ CALL NODE ----------------------------------
 
 			
 				
-				<h3 id="NodeType.Type">func (NodeType) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=157:190#L7">Type</a>
+				<h3 id="NodeType.Type">func (NodeType) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=426:459#L19">Type</a>
 					<a class="permalink" href="#NodeType.Type">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (t <a href="#NodeType">NodeType</a>) Type() <a href="#NodeType">NodeType</a></pre>
-				
+				<p>
+Type is a convenience method for getting the NodeType
+</p>
+
 				
 				
 				
@@ -461,13 +500,13 @@ CALL NODE ----------------------------------
 		
 			
 			
-			<h2 id="NumberNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=828:915#L53">NumberNode</a>
+			<h2 id="NumberNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1229:1316#L62">NumberNode</a>
 				<a class="permalink" href="#NumberNode">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-NUMBER NODE ----------------------------------
+NumberNode object
 </p>
 
 			<pre>type NumberNode struct {
@@ -490,25 +529,31 @@ NUMBER NODE ----------------------------------
 
 			
 				
-				<h3 id="NumberNode.Copy">func (*NumberNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=917:952#L60">Copy</a>
+				<h3 id="NumberNode.Copy">func (*NumberNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1358:1393#L70">Copy</a>
 					<a class="permalink" href="#NumberNode.Copy">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#NumberNode">NumberNode</a>) Copy() <a href="#Node">Node</a></pre>
-				
+				<p>
+Copy creates a copy of a number node
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="NumberNode.String">func (*NumberNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1049:1088#L64">String</a>
+				<h3 id="NumberNode.String">func (*NumberNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1543:1582#L75">String</a>
 					<a class="permalink" href="#NumberNode.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#NumberNode">NumberNode</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+String returns the string value for a number node
+</p>
+
 				
 				
 				
@@ -516,12 +561,15 @@ NUMBER NODE ----------------------------------
 		
 			
 			
-			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=109:121#L1">Pos</a>
+			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=121:133#L1">Pos</a>
 				<a class="permalink" href="#Pos">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+Pos type
+</p>
+
 			<pre>type Pos <a href="/pkg/builtin/#int">int</a></pre>
 
 			
@@ -536,13 +584,16 @@ NUMBER NODE ----------------------------------
 
 			
 				
-				<h3 id="Pos.Position">func (Pos) <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=123:150#L2">Position</a>
+				<h3 id="Pos.Position">func (Pos) <a href="/src/github.com/zylisp/zylisp/parser/parser.go?s=166:193#L4">Position</a>
 					<a class="permalink" href="#Pos.Position">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (p <a href="#Pos">Pos</a>) Position() <a href="#Pos">Pos</a></pre>
-				
+				<p>
+Position returns a pos type
+</p>
+
 				
 				
 				
@@ -550,13 +601,13 @@ NUMBER NODE ----------------------------------
 		
 			
 			
-			<h2 id="StringNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=579:637#L38">StringNode</a>
+			<h2 id="StringNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=908:966#L45">StringNode</a>
 				<a class="permalink" href="#StringNode">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-STRING NODE ----------------------------------
+StringNode object
 </p>
 
 			<pre>type StringNode struct {
@@ -578,25 +629,31 @@ STRING NODE ----------------------------------
 
 			
 				
-				<h3 id="StringNode.Copy">func (*StringNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=639:674#L44">Copy</a>
+				<h3 id="StringNode.Copy">func (*StringNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1008:1043#L52">Copy</a>
 					<a class="permalink" href="#StringNode.Copy">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#StringNode">StringNode</a>) Copy() <a href="#Node">Node</a></pre>
-				
+				<p>
+Copy creates a copy of a string node
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="StringNode.String">func (*StringNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=714:753#L48">String</a>
+				<h3 id="StringNode.String">func (*StringNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1144:1183#L57">String</a>
 					<a class="permalink" href="#StringNode.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#StringNode">StringNode</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+String returns the string represnetation of a string node
+</p>
+
 				
 				
 				
@@ -604,13 +661,13 @@ STRING NODE ----------------------------------
 		
 			
 			
-			<h2 id="VectorNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1163:1221#L69">VectorNode</a>
+			<h2 id="VectorNode">type <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1628:1686#L80">VectorNode</a>
 				<a class="permalink" href="#VectorNode">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-VECTOR NODE ----------------------------------
+VectorNode object
 </p>
 
 			<pre>type VectorNode struct {
@@ -632,25 +689,31 @@ VECTOR NODE ----------------------------------
 
 			
 				
-				<h3 id="VectorNode.Copy">func (*VectorNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1223:1258#L75">Copy</a>
+				<h3 id="VectorNode.Copy">func (*VectorNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1728:1763#L87">Copy</a>
 					<a class="permalink" href="#VectorNode.Copy">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#VectorNode">VectorNode</a>) Copy() <a href="#Node">Node</a></pre>
-				
+				<p>
+Copy creates a copy of a vector node
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="VectorNode.String">func (*VectorNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1421:1460#L83">String</a>
+				<h3 id="VectorNode.String">func (*VectorNode) <a href="/src/github.com/zylisp/zylisp/parser/nodes.go?s=1978:2017#L96">String</a>
 					<a class="permalink" href="#VectorNode.String">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (node *<a href="#VectorNode">VectorNode</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+String returns the string value of a vector node
+</p>
+
 				
 				
 				

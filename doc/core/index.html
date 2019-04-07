@@ -140,6 +140,12 @@
 				<dd><a href="#GTEQ">func GTEQ(args ...Any) bool</a></dd>
 			
 				
+				<dd><a href="#IsFloat">func IsFloat(n Any) bool</a></dd>
+			
+				
+				<dd><a href="#IsInt">func IsInt(n Any) bool</a></dd>
+			
+				
 				<dd><a href="#LT">func LT(args ...Any) bool</a></dd>
 			
 				
@@ -211,7 +217,10 @@
 		
 			<h2 id="pkg-constants">Constants</h2>
 			
-				
+				<p>
+Core error messages
+</p>
+
 				<pre>const (
     <span id="ModArgTypeError">ModArgTypeError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;mod function requires need int/float argument; received incorrect type: &#34;
     <span id="AddArgTypeError">AddArgTypeError</span>               <a href="/pkg/builtin/#string">string</a> = &#34;add function requires int and/or float64 objects&#34;
@@ -227,7 +236,7 @@
 		
 			
 			
-			<h2 id="ADD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=552:581#L27">ADD</a>
+			<h2 id="ADD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1140:1169#L62">ADD</a>
 				<a class="permalink" href="#ADD">&#xb6;</a>
 				
 				
@@ -244,39 +253,47 @@ ALWAYS returns a float64
 		
 			
 			
-			<h2 id="DIV">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1573:1583#L83">DIV</a>
+			<h2 id="DIV">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2369:2379#L125">DIV</a>
 				<a class="permalink" href="#DIV">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func DIV()</pre>
-			
+			<p>
+DIV any number of int or float64 args
+ALWAYS returns a float64
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="EQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2804:2829#L151">EQ</a>
+			<h2 id="EQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3668:3693#L198">EQ</a>
 				<a class="permalink" href="#EQ">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func EQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+EQ equal
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2251:2276#L119">GT</a>
+			<h2 id="GT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3103:3128#L165">GT</a>
 				<a class="permalink" href="#GT">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func GT(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
+GT greater-than
 TODO: can only compare ints and slice lens for now.
 </p>
 
@@ -286,14 +303,14 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3382:3409#L184">GTEQ</a>
+			<h2 id="GTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4251:4278#L231">GTEQ</a>
 				<a class="permalink" href="#GTEQ">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func GTEQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
-greater than or equal
+GTEQ greater-than or equal
 </p>
 
 			
@@ -302,13 +319,46 @@ greater than or equal
 		
 			
 			
-			<h2 id="LT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1643:1668#L86">LT</a>
+			<h2 id="IsFloat">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=169:193#L4">IsFloat</a>
+				<a class="permalink" href="#IsFloat">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func IsFloat(n <a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsFloat boolean check
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="IsInt">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=434:456#L21">IsInt</a>
+				<a class="permalink" href="#IsInt">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func IsInt(n <a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsInt boolean check
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="LT">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2476:2501#L131">LT</a>
 				<a class="permalink" href="#LT">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func LT(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
+LT less-than
 TODO: can only compare ints and slice lens for now.
 </p>
 
@@ -318,14 +368,14 @@ TODO: can only compare ints and slice lens for now.
 		
 			
 			
-			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=3502:3529#L193">LTEQ</a>
+			<h2 id="LTEQ">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4376:4403#L240">LTEQ</a>
 				<a class="permalink" href="#LTEQ">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func LTEQ(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
-less than or equal
+LTEQ less-than or equal
 </p>
 
 			
@@ -334,39 +384,50 @@ less than or equal
 		
 			
 			
-			<h2 id="MOD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=101:123#L2">MOD</a>
+			<h2 id="MOD">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=689:711#L37">MOD</a>
 				<a class="permalink" href="#MOD">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func MOD(a, b <a href="#Any">Any</a>) <a href="/pkg/builtin/#int">int</a></pre>
-			
+			<p>
+MOD modulus operator
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="MUL">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1349:1378#L69">MUL</a>
+			<h2 id="MUL">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=2075:2104#L108">MUL</a>
 				<a class="permalink" href="#MUL">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func MUL(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#float64">float64</a></pre>
-			
+			<p>
+MUL any number of int or float64 args
+ALWAYS returns a float64
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="SUB">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=964:993#L47">SUB</a>
+			<h2 id="SUB">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=1621:1650#L84">SUB</a>
 				<a class="permalink" href="#SUB">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func SUB(args ...<a href="#Any">Any</a>) <a href="/pkg/builtin/#float64">float64</a></pre>
-			
+			<p>
+SUB any number of int or float64 args
+ALWAYS returns a float64
+</p>
+
 			
 			
 
@@ -374,12 +435,15 @@ less than or equal
 		
 			
 			
-			<h2 id="Any">type <a href="/src/github.com/zylisp/zylisp/core/core.go?s=79:99#L1">Any</a>
+			<h2 id="Any">type <a href="/src/github.com/zylisp/zylisp/core/core.go?s=122:142#L1">Any</a>
 				<a class="permalink" href="#Any">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+Any is an interface for any ZYLISP type
+</p>
+
 			<pre>type Any interface{}</pre>
 
 			
@@ -392,13 +456,16 @@ less than or equal
 
 			
 				
-				<h3 id="Get">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4073:4098#L232">Get</a>
+				<h3 id="Get">func <a href="/src/github.com/zylisp/zylisp/core/core.go?s=4485:4510#L249">Get</a>
 					<a class="permalink" href="#Get">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func Get(args ...<a href="#Any">Any</a>) <a href="#Any">Any</a></pre>
-				
+				<p>
+Get ...
+</p>
+
 				
 				
 			
@@ -407,12 +474,15 @@ less than or equal
 		
 			
 			
-			<h2 id="Number">type <a href="/src/github.com/zylisp/zylisp/core/number.go?s=36:69#L1">Number</a>
+			<h2 id="Number">type <a href="/src/github.com/zylisp/zylisp/core/number.go?s=50:83#L1">Number</a>
 				<a class="permalink" href="#Number">&#xb6;</a>
 				
 				
 			</h2>
-			
+			<p>
+Number type
+</p>
+
 			<pre>type Number struct {
 <span id="Number.Value"></span>    Value <a href="#Any">Any</a>
 }
@@ -428,62 +498,77 @@ less than or equal
 
 			
 				
-				<h3 id="AddNumbers">func <a href="/src/github.com/zylisp/zylisp/core/number.go?s=431:489#L23">AddNumbers</a>
+				<h3 id="AddNumbers">func <a href="/src/github.com/zylisp/zylisp/core/number.go?s=592:650#L29">AddNumbers</a>
 					<a class="permalink" href="#AddNumbers">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func AddNumbers(args ...<a href="#Number">Number</a>) (newNum <a href="#Number">Number</a>, err <a href="/pkg/builtin/#error">error</a>)</pre>
-				
+				<p>
+AddNumbers adds a series of numbers
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Number.IsFloat">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=127:157#L4">IsFloat</a>
+				<h3 id="Number.IsFloat">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=206:236#L8">IsFloat</a>
 					<a class="permalink" href="#Number.IsFloat">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (n <a href="#Number">Number</a>) IsFloat() <a href="/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>
+IsFloat method on number type
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Number.IsInt">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=71:99#L1">IsInt</a>
+				<h3 id="Number.IsInt">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=116:144#L3">IsInt</a>
 					<a class="permalink" href="#Number.IsInt">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (n <a href="#Number">Number</a>) IsInt() <a href="/pkg/builtin/#bool">bool</a></pre>
-				
+				<p>
+IsInt method on number type
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Number.ToFloat">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=305:338#L16">ToFloat</a>
+				<h3 id="Number.ToFloat">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=437:470#L21">ToFloat</a>
 					<a class="permalink" href="#Number.ToFloat">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (n <a href="#Number">Number</a>) ToFloat() <a href="/pkg/builtin/#float64">float64</a></pre>
-				
+				<p>
+ToFloat method on number type
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Number.ToInt">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=188:215#L8">ToInt</a>
+				<h3 id="Number.ToInt">func (Number) <a href="/src/github.com/zylisp/zylisp/core/number.go?s=298:325#L13">ToInt</a>
 					<a class="permalink" href="#Number.ToInt">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (n <a href="#Number">Number</a>) ToInt() <a href="/pkg/builtin/#int">int</a></pre>
-				
+				<p>
+ToInt method on number type
+</p>
+
 				
 				
 				
