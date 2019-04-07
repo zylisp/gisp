@@ -169,6 +169,47 @@ Note that the ZYLISP docker images are very small, usually weighing in about
 4 MB in size.
 
 
+## History 
+
+In December of 2013, [@jcla1](https://github.com/jcla1) pushed his initial
+work on [Gisp](https://github.com/jcla1/gisp) to Github. He hacked on it over 
+the course of the next six months. In December of 2014, it was 
+[then picked up](https://github.com/masukomi/gisp) by 
+[@masukomi](https://github.com/masukomi) who hacked on it for about a month.
+Later, in 2017, [@rcarmo](https://github.com/rcarmo) forked the original and
+merged in [@masukomi](https://github.com/masukomi)'s changes, merged a
+(still-open) pull request from [@m90](https://github.com/m90), and made a few
+updates himself. 
+
+In early 2019 [@oubiwann](https://github.com/oubiwann) had created a 
+[zylisp](https://github.com/zylisp) Github org where various Go Lisp's were 
+being explored. In particular, the 
+[zygomys](https://github.com/glycerine/zygomys) project (which was based on
+a different Lisp/Go lineage, [Glisp](https://github.com/zhemao/glisp), which 
+was started in 2014). The ZYLISP Github org took inspiration in its name from
+the zygomys project. However, work with zygomys was abandoned after it became 
+clear that Go interop was very awkward in this Lisp dialect. It was at this 
+point that [@rcarmo](https://github.com/rcarmo)'s fork was forked into the 
+ZYLISP org where it was eventually renamed from Gisp to ZYLISP.
+
+### Versions
+
+None of the previous forks tagged any of the work with versions, as such, this
+fork has retroactrively tagged the various phases of the project's work with 
+the following:
+
+| Version | Date       | Repo     | Notes
+|---------|------------|----------|----------------------------------------
+| 1.0.0   | 2019-04-06 | zylisp   | Code rename to zylisp, cleanup, Go modules, docker
+| 0.7.0   | 2019-03-12 | zylisp   | CLI support, improved compiling options, logging
+| 0.6.0   | 2019-02-28 | zylisp   | Compatibility release, docs updates
+| 0.5.0   | 2017-08-25 | rcarmo   | Merged PR from m90, minor fixes and tweaks
+| 0.4.0   | 2014-12-20 | masukomi | Refactoring, tests, error handling
+| 0.3.0   | 2014-06-29 | jcla1    | Updates and a merged PR from kedebug
+| 0.2.0   | 2014-02-12 | jcla1    | Follow-up work, control structures, etc.
+| 0.1.0   | 2014-01-25 | jcla1    | Core original work
+    
+
 ## Credits
 
 * @jcla1 for the initial implementation
