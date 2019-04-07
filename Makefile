@@ -202,9 +202,9 @@ docker-img: docker-binary
 	rm -rf $(DOCKER_BINARY)
 
 run-img-ast:
-	docker run \
+	@docker run \
 		-it $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION) -ast
 
-publish-img:
+publish-img: docker-img
 	docker push $(DOCKER_ORG)/$(DOCKER_TAG):$(VERSION)
 	docker push $(DOCKER_ORG)/$(DOCKER_TAG):latest
