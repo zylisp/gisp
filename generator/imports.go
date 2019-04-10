@@ -5,7 +5,7 @@ import (
 	"go/token"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/zylisp/zylisp/parser"
+	"github.com/zylisp/zylisp/core/parser"
 )
 
 func getImports(node *parser.CallNode) ast.Decl {

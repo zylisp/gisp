@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/zylisp/zylisp/common"
-	// "github.com/zylisp/zylisp/parser"
+	// "github.com/zylisp/zylisp/core/parser"
 )
 
 // XXX Currently unused; remove?

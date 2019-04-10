@@ -13,8 +13,8 @@ import (
 	"syscall"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/zylisp/zylisp/core/parser"
 	"github.com/zylisp/zylisp/generator"
-	"github.com/zylisp/zylisp/parser"
 )
 
 // ASTMain runs the main loop for the AST-based REPL

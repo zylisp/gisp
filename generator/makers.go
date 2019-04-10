@@ -4,8 +4,8 @@ import (
 	"go/ast"
 	"go/token"
 
+	"github.com/zylisp/zylisp/core/parser"
 	h "github.com/zylisp/zylisp/generator/helpers"
-	"github.com/zylisp/zylisp/parser"
 )
 
 func makeIfStmtFunc(node *parser.CallNode) ast.Expr {
