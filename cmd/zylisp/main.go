@@ -172,7 +172,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/zylisp/zylisp/common"
-	"github.com/zylisp/zylisp/generator"
+	"github.com/zylisp/zylisp/core/generator"
 	"github.com/zylisp/zylisp/repl"
 )
 

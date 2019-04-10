@@ -5,8 +5,8 @@ import (
 	"go/token"
 
 	log "github.com/sirupsen/logrus"
+	h "github.com/zylisp/zylisp/core/generator/helpers"
 	"github.com/zylisp/zylisp/core/parser"
-	h "github.com/zylisp/zylisp/generator/helpers"
 )
 
 func evalFuncCall(node *parser.CallNode) ast.Expr {
