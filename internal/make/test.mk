@@ -6,7 +6,7 @@ test:
 	cd ./core && \
 	GO111MODULE=on go test -v
 	@echo "\nRunning 'go test' for lexer ...\n" && \
-	cd ./lexer && \
+	cd ./core/lexer && \
 	GO111MODULE=on go test -v
 
 gogen-examples:

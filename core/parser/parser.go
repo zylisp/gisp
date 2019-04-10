@@ -4,7 +4,7 @@ import (
 	"go/token"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/zylisp/zylisp/lexer"
+	"github.com/zylisp/zylisp/core/lexer"
 )
 
 // Pos type
