@@ -78,12 +78,13 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 }
 
 func evalDefn(node *parser.CallNode) ast.Decl {
-	log.Debugf("Got: %#v", node)
+	log.Debugf("Evaling with args: #%v", node.Args)
 	log.Error("Not implemented")
 	return nil
 }
 
 func evalDef(node *parser.CallNode) ast.Decl {
+	log.Debugf("Evaling with args: #%v", node.Args)
 	if len(node.Args) < 2 {
 		// XXX Could we log an error and return a custom decl?
 		log.Panicf(MissingAssgnmentArgsError, node.Args[0])
@@ -91,6 +92,8 @@ func evalDef(node *parser.CallNode) ast.Decl {
 
 	val := EvalExpr(node.Args[1])
 	fn, ok := val.(*ast.FuncLit)
+	log.Debugf("val: %v (%T)", val, val)
+	log.Debugf("fn: %v (%T: %T)", fn, fn, fn.Body)
 
 	ident := makeIdomaticIdent(node.Args[0].(*parser.IdentNode).Ident)
 
