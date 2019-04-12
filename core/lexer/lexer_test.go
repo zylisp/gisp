@@ -120,4 +120,9 @@ func (s *LexerSuite) Test_scanNumber(c *C) {
 	// totally not a number
 	testLexer = newTestLexer("poopy")
 	c.Assert(testLexer.scanNumber(), IsFalse)
+	// we want to support names with leading +/-
+	testLexer = newTestLexer("-pvt-fn")
+	c.Assert(testLexer.scanNumber(), IsFalse)
+	testLexer = newTestLexer("+silly-fn")
+	c.Assert(testLexer.scanNumber(), IsFalse)
 }
