@@ -1,10 +1,16 @@
-test:
-	@echo "\nRunning 'go test' for common ...\n" && \
-	cd ./common && \
-	GO111MODULE=on go test -v
+test: test-top-level-core test-common test-lexer
+
+test-top-level-core:
 	@echo "\nRunning 'go test' for core ...\n" && \
 	cd ./core && \
 	GO111MODULE=on go test -v
+
+test-common:
+	@echo "\nRunning 'go test' for common ...\n" && \
+	cd ./common && \
+	GO111MODULE=on go test -v
+
+test-lexer:
 	@echo "\nRunning 'go test' for lexer ...\n" && \
 	cd ./core/lexer && \
 	GO111MODULE=on go test -v
