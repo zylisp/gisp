@@ -2,33 +2,22 @@ package common
 
 import (
 	"testing"
+
+	. "github.com/masukomi/check"
 )
 
-func TestRemoveExtension(t *testing.T) {
-	wanted := "thing"
-	filePart := RemoveExtension("thing.zsp")
-	if filePart != wanted {
-		t.Errorf("RemoveExtension filePart incorrect, got: %s, want: %s", filePart, wanted)
-	}
+// Hook up gocheck into the "go test" runner
+func Test(t *testing.T) {
+	TestingT(t)
 }
 
-func TestRemoveExtensionWithoutExtension(t *testing.T) {
-	wanted := "thing"
-	filePart := RemoveExtension("thing.")
-	if filePart != wanted {
-		t.Errorf("RemoveExtension filePart incorrect, got: %s, want: %s", filePart, wanted)
-	}
-}
+type CommonSuite struct{}
 
-func TestRemoveExtensionWithoutDot(t *testing.T) {
-	wanted := "thing"
-	filePart := RemoveExtension("thing")
-	if filePart != wanted {
-		t.Errorf("RemoveExtension filePart incorrect, got: %s, want: %s", filePart, wanted)
-	}
-	wanted = "thingzsp"
-	filePart = RemoveExtension("thingzsp")
-	if filePart != wanted {
-		t.Errorf("RemoveExtension filePart incorrect, got: %s, want: %s", filePart, wanted)
-	}
+var _ = Suite(&CommonSuite{})
+
+func (s *CommonSuite) Test_RemoveExtension(c *C) {
+	c.Assert(RemoveExtension("thing.zsp"), Equals, "thing")
+	c.Assert(RemoveExtension("thing."), Equals, "thing")
+	c.Assert(RemoveExtension("thing"), Equals, "thing")
+	c.Assert(RemoveExtension("thingzsp"), Equals, "thingzsp")
 }
