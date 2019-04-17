@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"go/token"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/zylisp/zylisp/core/lexer"
 )
@@ -63,37 +61,4 @@ func parser(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
 		item = l.NextAtom()
 	}
 	return tree
-}
-
-// NewIdentNode creates a new identity node
-func NewIdentNode(name string) *IdentNode {
-	return &IdentNode{NodeType: NodeIdent, Ident: name}
-}
-
-func newStringNode(val string) *StringNode {
-	return &StringNode{NodeType: NodeString, Value: val}
-}
-
-func newIntNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.INT}
-}
-
-func newFloatNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.FLOAT}
-}
-
-func newComplexNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.IMAG}
-}
-
-// We return Node here, because it could be that it's nil
-func newCallNode(args []Node) Node {
-	if len(args) > 0 {
-		return &CallNode{NodeType: NodeCall, Callee: args[0], Args: args[1:]}
-	}
-	return nilNode
-}
-
-func newVectNode(content []Node) *VectorNode {
-	return &VectorNode{NodeType: NodeVector, Nodes: content}
 }

@@ -44,7 +44,7 @@ const (
 	AtomInt
 	AtomComplex
 
-	// Ok, these aren't really atoms but...
+	// Ok, these aren't really atoms but ...
 	AtomQuote
 	AtomQuasiQuote
 	AtomUnquote
@@ -82,6 +82,17 @@ type Lexer struct {
 	// XXX currently unused; remove? or keep for later?
 	// parenDepth int
 	// vectDepth  int
+}
+
+// Lex returns a lexer constructor
+func Lex(name, input string) *Lexer {
+	l := &Lexer{
+		name:  name,
+		input: input,
+		items: make(chan Atom),
+	}
+	go l.run()
+	return l
 }
 
 // next returns the next rune in the input.
@@ -145,17 +156,6 @@ func (l *Lexer) NextAtom() Atom {
 	item := <-l.items
 	l.lastPos = item.Pos
 	return item
-}
-
-// Lex returns a lexer constructor
-func Lex(name, input string) *Lexer {
-	l := &Lexer{
-		name:  name,
-		input: input,
-		items: make(chan Atom),
-	}
-	go l.run()
-	return l
 }
 
 func (l *Lexer) run() {

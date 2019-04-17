@@ -6,7 +6,10 @@ import (
 	. "github.com/masukomi/check"
 )
 
-func Test(t *testing.T) { TestingT(t) }
+// Hook up gocheck into the "go test" runner
+func Test(t *testing.T) {
+	TestingT(t)
+}
 
 type LexerSuite struct{}
 
