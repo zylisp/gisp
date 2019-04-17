@@ -129,3 +129,36 @@ func (s *LexerSuite) Test_scanNumber(c *C) {
 	testLexer = newTestLexer("+silly-fn")
 	c.Assert(testLexer.scanNumber(), IsFalse)
 }
+
+func (s *LexerSuite) Test_atomName(c *C) {
+	c.Assert(AtomName(0), Equals, "AtomError")
+	c.Assert(AtomName(1), Equals, "AtomEOF")
+	c.Assert(AtomName(2), Equals, "AtomLeftParen")
+	c.Assert(AtomName(5), Equals, "AtomRightVect")
+	c.Assert(AtomName(10), Equals, "AtomInt")
+	c.Assert(AtomName(15), Equals, "AtomUnquoteSplice")
+}
+
+var exampleFn = "(def dbl (fn [x] (* 2 x)))"
+var expectedExampleFnTokens = `
+(  : position  0, type AtomLeftParen
+def: position  1, type AtomIdent
+dbl: position  5, type AtomIdent
+(  : position  9, type AtomLeftParen
+fn : position 10, type AtomIdent
+[  : position 13, type AtomLeftVect
+x  : position 14, type AtomIdent
+]  : position 15, type AtomRightVect
+(  : position 17, type AtomLeftParen
+*  : position 18, type AtomIdent
+2  : position 20, type AtomIdent
+x  : position 22, type AtomIdent
+)  : position 23, type AtomRightParen
+)  : position 24, type AtomRightParen
+)  : position 25, type AtomRightParen
+`
+
+func (s *LexerSuite) Test_exampleFn(c *C) {
+	lexed := Lex("a-prog", exampleFn)
+	c.Assert(lexed.String(), Equals, expectedExampleFnTokens)
+}

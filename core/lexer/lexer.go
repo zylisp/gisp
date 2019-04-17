@@ -51,6 +51,25 @@ const (
 	AtomUnquoteSplice
 )
 
+var atomNames = []string{
+	AtomError:         "AtomError",
+	AtomEOF:           "AtomEOF",
+	AtomLeftParen:     "AtomLeftParen",
+	AtomRightParen:    "AtomRightParen",
+	AtomLeftVect:      "AtomLeftVect",
+	AtomRightVect:     "AtomRightVect",
+	AtomIdent:         "AtomIdent",
+	AtomString:        "AtomString",
+	AtomChar:          "AtomChar",
+	AtomFloat:         "AtomFloat",
+	AtomInt:           "AtomInt",
+	AtomComplex:       "AtomComplex",
+	AtomQuote:         "AtomQuote",
+	AtomQuasiQuote:    "AtomQuasiQuote",
+	AtomUnquote:       "AtomUnquote",
+	AtomUnquoteSplice: "AtomUnquoteSplice",
+}
+
 // AdditionalAlphaNumRunes rune vars
 var AdditionalAlphaNumRunes = map[rune]bool{
 	'>': true,
@@ -82,6 +101,11 @@ type Lexer struct {
 	// XXX currently unused; remove? or keep for later?
 	// parenDepth int
 	// vectDepth  int
+}
+
+// AtomName returns the name of the atom for a given atom value
+func AtomName(atomType AtomType) string {
+	return atomNames[atomType]
 }
 
 // Lex returns a lexer constructor
@@ -164,6 +188,52 @@ func (l *Lexer) run() {
 	}
 	close(l.items)
 }
+
+func (l *Lexer) scanNumber() bool {
+	// Optional leading sign.
+	l.accept("+-")
+	// Is it hex?
+	digits := "0123456789"
+	if l.accept("0") && l.accept("xX") {
+		digits = "0123456789abcdefABCDEF"
+	}
+	l.acceptRuneRun(digits)
+	if l.accept(".") {
+		l.acceptRuneRun(digits)
+	}
+	if l.accept("eE") {
+		l.accept("+-")
+		l.acceptRuneRun("0123456789")
+	}
+	// Is it imaginary?
+	l.accept("i")
+	// Next thing mustn't be alphanumeric.
+	if r := l.peek(); isAlphaNumeric(r) {
+		l.next()
+		return false
+	}
+	return true
+}
+
+func (l *Lexer) String() string {
+	lexedStrings := []string{""}
+	for item := l.NextAtom(); item.Type != AtomEOF; {
+		lexedStrings = append(lexedStrings, fmt.Sprintf("%-3s: position %2d, type %s",
+			item.Value, item.Pos, AtomName(item.Type)))
+		item = l.NextAtom()
+	}
+	lexedStrings = append(lexedStrings, "")
+	return strings.Join(lexedStrings, "\n")
+}
+
+// PrintAtoms prints the value of String()
+func (l *Lexer) PrintAtoms() {
+	fmt.Print(l.String())
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   Support Functions   ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 func lexLeftVect(l *Lexer) stateFn {
 	l.emit(AtomLeftVect)
@@ -275,32 +345,6 @@ func lexNumber(l *Lexer) stateFn {
 	}
 
 	return lexWhitespace
-}
-
-func (l *Lexer) scanNumber() bool {
-	// Optional leading sign.
-	l.accept("+-")
-	// Is it hex?
-	digits := "0123456789"
-	if l.accept("0") && l.accept("xX") {
-		digits = "0123456789abcdefABCDEF"
-	}
-	l.acceptRuneRun(digits)
-	if l.accept(".") {
-		l.acceptRuneRun(digits)
-	}
-	if l.accept("eE") {
-		l.accept("+-")
-		l.acceptRuneRun("0123456789")
-	}
-	// Is it imaginary?
-	l.accept("i")
-	// Next thing mustn't be alphanumeric.
-	if r := l.peek(); isAlphaNumeric(r) {
-		l.next()
-		return false
-	}
-	return true
 }
 
 // isSpace reports whether r is a space character.
