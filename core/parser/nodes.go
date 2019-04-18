@@ -5,6 +5,10 @@ import (
 	"go/token"
 )
 
+/////////////////////////////////////////////////////////////////////////////
+///   Constants, Vars, and Types   //////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // Constants for the parser package
 const (
 	NodeIdent NodeType = iota
@@ -13,6 +17,14 @@ const (
 	NodeCall
 	NodeVector
 )
+
+var nodeNames = []string{
+	NodeIdent:  "NodeIdent",
+	NodeString: "NodeString",
+	NodeNumber: "NodeNumber",
+	NodeCall:   "NodeCall",
+	NodeVector: "NodeVector",
+}
 
 // Node holds data for parsed AST nodes
 type Node interface {
@@ -30,12 +42,25 @@ func (t NodeType) Type() NodeType {
 	return t
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///   IdentNode Object Definition   /////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // IdentNode defines the identity node for use in identity operations
 type IdentNode struct {
 	// Pos
 	NodeType
 	Ident string
 }
+
+// NewIdentNode creates a new identity node
+func NewIdentNode(name string) *IdentNode {
+	return &IdentNode{NodeType: NodeIdent, Ident: name}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   IdentNode Object Methods   ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 // Copy creates a copy of an IdentNode instance
 func (node *IdentNode) Copy() Node {
@@ -51,12 +76,24 @@ func (node *IdentNode) String() string {
 	return node.Ident
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///   StringNode Object Definition   ////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // StringNode object
 type StringNode struct {
 	// Pos
 	NodeType
 	Value string
 }
+
+func newStringNode(val string) *StringNode {
+	return &StringNode{NodeType: NodeString, Value: val}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   StringNode Object Methods   ///////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 // Copy creates a copy of a string node
 func (node *StringNode) Copy() Node {
@@ -68,6 +105,10 @@ func (node *StringNode) String() string {
 	return node.Value
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///   NumberNode Object Definition   ////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // NumberNode object
 type NumberNode struct {
 	// Pos
@@ -75,6 +116,22 @@ type NumberNode struct {
 	Value      string
 	NumberType token.Token
 }
+
+func newIntNode(val string) *NumberNode {
+	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.INT}
+}
+
+func newFloatNode(val string) *NumberNode {
+	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.FLOAT}
+}
+
+func newComplexNode(val string) *NumberNode {
+	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.IMAG}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   NumberNode Object Methods   ///////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 // Copy creates a copy of a number node
 func (node *NumberNode) Copy() Node {
@@ -86,12 +143,24 @@ func (node *NumberNode) String() string {
 	return node.Value
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///   VectorNode Object Definition   ////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // VectorNode object
 type VectorNode struct {
 	// Pos
 	NodeType
 	Nodes []Node
 }
+
+func newVectNode(content []Node) *VectorNode {
+	return &VectorNode{NodeType: NodeVector, Nodes: content}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   VectorNode Object Methods   ///////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 // Copy creates a copy of a vector node
 func (node *VectorNode) Copy() Node {
@@ -107,6 +176,10 @@ func (node *VectorNode) String() string {
 	return fmt.Sprint(node.Nodes)
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///   CallNode Object Definition   //////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // CallNode object
 type CallNode struct {
 	// Pos
@@ -114,6 +187,18 @@ type CallNode struct {
 	Callee Node
 	Args   []Node
 }
+
+// We return Node here, because it could be that it's nil
+func newCallNode(args []Node) Node {
+	if len(args) > 0 {
+		return &CallNode{NodeType: NodeCall, Callee: args[0], Args: args[1:]}
+	}
+	return nilNode
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   CallNode Object Methods   /////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 // Copy creates a copy of a call node
 func (node *CallNode) Copy() Node {
@@ -130,37 +215,11 @@ func (node *CallNode) String() string {
 	return fmt.Sprintf("(%s %s)", node.Callee, args[1:len(args)-1])
 }
 
-// Node constrcutors
+/////////////////////////////////////////////////////////////////////////////
+///   Utility Functions   ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-// NewIdentNode creates a new identity node
-func NewIdentNode(name string) *IdentNode {
-	return &IdentNode{NodeType: NodeIdent, Ident: name}
-}
-
-func newStringNode(val string) *StringNode {
-	return &StringNode{NodeType: NodeString, Value: val}
-}
-
-func newIntNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.INT}
-}
-
-func newFloatNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.FLOAT}
-}
-
-func newComplexNode(val string) *NumberNode {
-	return &NumberNode{NodeType: NodeNumber, Value: val, NumberType: token.IMAG}
-}
-
-// We return Node here, because it could be that it's nil
-func newCallNode(args []Node) Node {
-	if len(args) > 0 {
-		return &CallNode{NodeType: NodeCall, Callee: args[0], Args: args[1:]}
-	}
-	return nilNode
-}
-
-func newVectNode(content []Node) *VectorNode {
-	return &VectorNode{NodeType: NodeVector, Nodes: content}
+// NodeName returns the name of the node for a given node value
+func NodeName(nodeType NodeType) string {
+	return nodeNames[nodeType]
 }

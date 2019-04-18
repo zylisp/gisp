@@ -70,6 +70,7 @@ func evalDeclNode(node *parser.CallNode) ast.Decl {
 	switch callee.Ident {
 	case "def":
 		return evalDef(node)
+	// XXX exploratory only ...
 	case "defn":
 		return evalDefn(node)
 	}
