@@ -1,4 +1,4 @@
-test: test-top-level-core test-common test-lexer
+test: test-top-level-core test-common test-parser test-lexer
 
 test-top-level-core:
 	@echo "\nRunning 'go test' for core ...\n" && \
@@ -8,6 +8,11 @@ test-top-level-core:
 test-common:
 	@echo "\nRunning 'go test' for common ...\n" && \
 	cd ./common && \
+	GO111MODULE=on go test -v
+
+test-parser:
+	@echo "\nRunning 'go test' for parser ...\n" && \
+	cd ./core/parser && \
 	GO111MODULE=on go test -v
 
 test-lexer:
