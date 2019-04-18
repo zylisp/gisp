@@ -1,4 +1,0 @@
-[submodule "doc"]
-	path = doc
-	url = git@github.com:zylisp/zylisp.git
-	branch = gh-pages
