@@ -3,21 +3,21 @@ package common
 import (
 	"testing"
 
-	. "github.com/masukomi/check"
+	"github.com/stretchr/testify/suite"
 )
 
 // Hook up gocheck into the "go test" runner
-func Test(t *testing.T) {
-	TestingT(t)
+type UtilSuite struct {
+	suite.Suite
 }
 
-type CommonSuite struct{}
+func TestUtilSuite(t *testing.T) {
+	suite.Run(t, new(UtilSuite))
+}
 
-var _ = Suite(&CommonSuite{})
-
-func (s *CommonSuite) Test_RemoveExtension(c *C) {
-	c.Assert(RemoveExtension("thing.zsp"), Equals, "thing")
-	c.Assert(RemoveExtension("thing."), Equals, "thing")
-	c.Assert(RemoveExtension("thing"), Equals, "thing")
-	c.Assert(RemoveExtension("thingzsp"), Equals, "thingzsp")
+func (s *UtilSuite) TestRemoveExtension() {
+	s.Equal(RemoveExtension("thing.zsp"), "thing")
+	s.Equal(RemoveExtension("thing."), "thing")
+	s.Equal(RemoveExtension("thing"), "thing")
+	s.Equal(RemoveExtension("thingzsp"), "thingzsp")
 }
