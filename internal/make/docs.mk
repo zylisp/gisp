@@ -38,12 +38,13 @@ view-docs:
 gen-view-docs: docs view-docs
 
 publish-docs: docs
-	@cd doc && \
-	git commit -am "Regen'ed docs." && \
-	git push origin gh-pages && \
-	git add doc && \
+	@git add doc && \
 	git commit doc -m "Regen'ed docs." && \
 	git push origin `git rev-parse --abbrev-ref HEAD`
+	@cd doc && \
+	git commit -am "Regen'ed docs." && \
+	git push origin gh-pages
+	
 
 pull-updated-docs:
 	@git submodule update --remote --merge
