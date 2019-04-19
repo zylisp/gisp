@@ -1,6 +1,6 @@
-test: test-top-level-core test-common test-parser test-lexer
+test: test-core test-common test-parser test-lexer
 
-test-top-level-core:
+test-core:
 	@echo "\nRunning 'go test' for core ...\n" && \
 	cd ./core && \
 	GO111MODULE=on go test -v
