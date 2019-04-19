@@ -3,99 +3,97 @@ package lexer
 import (
 	"testing"
 
-	. "github.com/masukomi/check"
+	"github.com/stretchr/testify/suite"
 )
 
-// Hook up gocheck into the "go test" runner
-func Test(t *testing.T) {
-	TestingT(t)
-}
-
-type LexerSuite struct{}
-
-var _ = Suite(&LexerSuite{})
-
-var testLexer Lexer
-
-func (s *LexerSuite) SetUpTest(c *C) {
-	testLexer = newTestLexer("()")
-}
-
-func newTestLexer(lexMe string) Lexer {
+func newTestLexer(data string) Lexer {
 	return Lexer{
 		name:  "tester",
-		input: lexMe,
+		input: data,
 		items: make(chan Atom),
 	}
 }
 
-func (s *LexerSuite) Test_next(c *C) {
+type LexerSuite struct {
+	suite.Suite
+	testLexer Lexer
+}
+
+func TestLexerSuite(t *testing.T) {
+	suite.Run(t, new(LexerSuite))
+}
+
+func (s *LexerSuite) SetupTest() {
+	s.testLexer = newTestLexer("()")
+}
+
+func (s *LexerSuite) TestNext() {
 	// returns and "consumes" the next rune
-	c.Assert(int(testLexer.pos), Equals, 0)
-	c.Assert(testLexer.next(), Equals, '(')
-	c.Assert(int(testLexer.pos), Equals, 1)
-	c.Assert(testLexer.next(), Equals, ')')
+	s.Equal(int(s.testLexer.pos), 0)
+	s.Equal(s.testLexer.next(), '(')
+	s.Equal(int(s.testLexer.pos), 1)
+	s.Equal(s.testLexer.next(), ')')
 
 	// next should move the position forward but not
 	// affect the start (of input)
-	currentString := testLexer.input[testLexer.start:len(testLexer.input)]
-	c.Assert(currentString, Equals, "()")
+	currentString := s.testLexer.input[s.testLexer.start:len(s.testLexer.input)]
+	s.Equal(currentString, "()")
 }
 
-func (s *LexerSuite) Test_backup(c *C) {
+func (s *LexerSuite) TestBackup() {
 	// returns and "consumes" the next rune
-	c.Assert(testLexer.next(), Equals, '(')
-	c.Assert(testLexer.next(), Equals, ')')
+	s.Equal(s.testLexer.next(), '(')
+	s.Equal(s.testLexer.next(), ')')
 	// ^^^ consumes the ) so if we backup
 	// we should get it again
-	testLexer.backup()
-	c.Assert(testLexer.next(), Equals, ')')
+	s.testLexer.backup()
+	s.Equal(s.testLexer.next(), ')')
 }
 
-func (s *LexerSuite) Test_peek(c *C) {
+func (s *LexerSuite) TestPeek() {
 	// peek is next, but without consuming the rune
-	c.Assert(testLexer.peek(), Equals, '(')
-	c.Assert(testLexer.peek(), Equals, '(')
-	c.Assert(testLexer.next(), Equals, '(')
+	s.Equal(s.testLexer.peek(), '(')
+	s.Equal(s.testLexer.peek(), '(')
+	s.Equal(s.testLexer.next(), '(')
 }
 
-func (s *LexerSuite) Test_ignore(c *C) {
+func (s *LexerSuite) TestIgnore() {
 	// returns and "consumes" the next rune
-	//c.Assert(testLexer.emit(AtomString), Equals, "BS")
-	testLexer.next()   // moves position but not start. See Test_next
-	testLexer.ignore() // moves start to current position.
-	currentString := testLexer.input[testLexer.start:len(testLexer.input)]
-	c.Assert(currentString, Equals, ")")
+	//s.Equal(s.testLexer.emit(AtomString), "BS")
+	s.testLexer.next()   // moves position but not start. See Test_next
+	s.testLexer.ignore() // moves start to current position.
+	currentString := s.testLexer.input[s.testLexer.start:len(s.testLexer.input)]
+	s.Equal(currentString, ")")
 }
 
-func (s *LexerSuite) Test_accept(c *C) {
+func (s *LexerSuite) TestAccept() {
 	// accept consumes the next rune *if* it's from the valid set.
 
 	acceptableSet := "abc(d"
 	unacceptableSet := "nope"
-	c.Assert(int(testLexer.pos), Equals, 0)
-	c.Assert(testLexer.accept(unacceptableSet), IsFalse)
-	c.Assert(int(testLexer.pos), Equals, 0)
+	s.Equal(int(s.testLexer.pos), 0)
+	s.False(s.testLexer.accept(unacceptableSet))
+	s.Equal(int(s.testLexer.pos), 0)
 	// position shouldn't have changed
 
-	c.Assert(testLexer.accept(acceptableSet), IsTrue)
-	c.Assert(int(testLexer.pos), Equals, 1)
+	s.True(s.testLexer.accept(acceptableSet))
+	s.Equal(int(s.testLexer.pos), 1)
 }
 
-func (s *LexerSuite) Test_acceptRuneRun(c *C) {
+func (s *LexerSuite) TestAcceptRuneRun() {
 
 	acceptableSet := "12345"
-	testLexer.input = "123a45"
-	testLexer.acceptRuneRun(acceptableSet)
+	s.testLexer.input = "123a45"
+	s.testLexer.acceptRuneRun(acceptableSet)
 	// position should now be 3
 	// e.g. it should have nexted to the a, then gone back one
-	c.Assert(int(testLexer.pos), Equals, 3)
+	s.Equal(int(s.testLexer.pos), 3)
 }
 
 // TODO: complete Test_emit
 // I, apparently, don't understand chanels enough to
 // make it not blow up
-// func (s *LexerSuite) Test_emit(c *C) {
+// func (s *LexerSuite) Test_emit() {
 // }
 
 // TODO: Test_NextAtom
@@ -105,41 +103,41 @@ func (s *LexerSuite) Test_acceptRuneRun(c *C) {
 // TODO: Test_lexComment
 // TODO: Test_lexNumber
 // TODO: Test_scanNumber
-func (s *LexerSuite) Test_scanNumber(c *C) {
-	testLexer = newTestLexer("1234")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+func (s *LexerSuite) TestScanNumber() {
+	testLexer := newTestLexer("1234")
+	s.True(testLexer.scanNumber())
 	testLexer = newTestLexer("-1234")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+	s.True(testLexer.scanNumber())
 	testLexer = newTestLexer("+1234")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+	s.True(testLexer.scanNumber())
 	testLexer = newTestLexer("1234.56")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+	s.True(testLexer.scanNumber())
 	testLexer = newTestLexer("-1234.456e+78")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+	s.True(testLexer.scanNumber())
 	testLexer = newTestLexer("0x1c8")
-	c.Assert(testLexer.scanNumber(), IsTrue)
+	s.True(testLexer.scanNumber())
 	//TODO: add a test for imaginary numbers (start with i)
 
 	// totally not a number
 	testLexer = newTestLexer("poopy")
-	c.Assert(testLexer.scanNumber(), IsFalse)
+	s.False(testLexer.scanNumber())
 	// we want to support names with leading +/-
 	testLexer = newTestLexer("-pvt-fn")
-	c.Assert(testLexer.scanNumber(), IsFalse)
+	s.False(testLexer.scanNumber())
 	testLexer = newTestLexer("+silly-fn")
-	c.Assert(testLexer.scanNumber(), IsFalse)
+	s.False(testLexer.scanNumber())
 }
 
-func (s *LexerSuite) Test_atomName(c *C) {
-	c.Assert(AtomName(0), Equals, "AtomError")
-	c.Assert(AtomName(1), Equals, "AtomEOF")
-	c.Assert(AtomName(2), Equals, "AtomLeftParen")
-	c.Assert(AtomName(5), Equals, "AtomRightVect")
-	c.Assert(AtomName(10), Equals, "AtomInt")
-	c.Assert(AtomName(15), Equals, "AtomUnquoteSplice")
+func (s *LexerSuite) TestAtomName() {
+	s.Equal(AtomName(0), "AtomError")
+	s.Equal(AtomName(1), "AtomEOF")
+	s.Equal(AtomName(2), "AtomLeftParen")
+	s.Equal(AtomName(5), "AtomRightVect")
+	s.Equal(AtomName(10), "AtomInt")
+	s.Equal(AtomName(15), "AtomUnquoteSplice")
 }
 
-var exampleFn = "(def dbl (fn [x] (* 2 x)))"
+var exampleFnOneLine = "(def dbl (fn [x] (* 2 x)))"
 var expectedExampleFnTokens = `
 (  : position  0, type AtomLeftParen
 def: position  1, type AtomIdent
@@ -158,7 +156,13 @@ x  : position 22, type AtomIdent
 )  : position 25, type AtomRightParen
 `
 
-func (s *LexerSuite) Test_exampleFn(c *C) {
-	lexed := Lex("a-prog", exampleFn)
-	c.Assert(lexed.String(), Equals, expectedExampleFnTokens)
+func (s *LexerSuite) TestExampleFn() {
+	lexed := Lex("a-prog", exampleFnOneLine)
+	s.Equal(lexed.String(), expectedExampleFnTokens)
 }
+
+var exampleFnManyLines = `
+(def dbl 
+	(fn [x] 
+		(* 2 x)))
+`
