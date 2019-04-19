@@ -247,10 +247,15 @@ This also demonstrates support for file globbing, allowing you to generate
 output for multiple files at once.
 </p>
 <p>
-For convenience, the &#39;zyc&#39; bash wrapper is provided for
-&#39;zylisp -cli -bytecode&#39;:
+For convenience, the &#39;zyc&#39; bash wrapper is provided, and essentially offers a
+shortcut  for typing &#39;zylisp -cli -bytecode&#39;. Compare this:
 </p>
 <pre>$ zyc -dir bin/examples examples/*.zsp
+</pre>
+<p>
+to the longer:
+</p>
+<pre>$ zylisp -cli -bytecode -dir bin/examples examples/*.zsp
 </pre>
 <p>
 Note that since &#39;zyc&#39; is not a compiled command, it will not be installed by
