@@ -1,17 +1,23 @@
 package parser
 
 import (
-	. "github.com/masukomi/check"
+	"testing"
+
+	"github.com/stretchr/testify/suite"
 )
 
-type NodeSuite struct{}
+type NodeSuite struct {
+	suite.Suite
+}
 
-var _ = Suite(&NodeSuite{})
+func TestNodeSuite(t *testing.T) {
+	suite.Run(t, new(NodeSuite))
+}
 
-func (s *NodeSuite) Test_nodeName(c *C) {
-	c.Assert(NodeName(0), Equals, "NodeIdent")
-	c.Assert(NodeName(1), Equals, "NodeString")
-	c.Assert(NodeName(2), Equals, "NodeNumber")
-	c.Assert(NodeName(3), Equals, "NodeCall")
-	c.Assert(NodeName(4), Equals, "NodeVector")
+func (s *NodeSuite) TestNodeName() {
+	s.Equal(NodeName(0), "NodeIdent")
+	s.Equal(NodeName(1), "NodeString")
+	s.Equal(NodeName(2), "NodeNumber")
+	s.Equal(NodeName(3), "NodeCall")
+	s.Equal(NodeName(4), "NodeVector")
 }
