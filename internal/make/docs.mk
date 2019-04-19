@@ -33,7 +33,7 @@ view-docs:
 	@echo "In particular, the zylisp command docs are here:"
 	@echo "  http://localhost:6060/pkg/$(PROJ)/cmd/zylisp/\n"
 	@echo "Starting docs HTTP server ..."
-	@GOROOT=/usr/local/go GOPATH=`pwd` $(GODOC) -http=:6060
+	@GOPATH=`pwd`/../../../../ $(GODOC) -http=:6060 --goroot=`pwd`/doc
 
 gen-view-docs: docs view-docs
 
