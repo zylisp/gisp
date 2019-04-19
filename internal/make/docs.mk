@@ -41,3 +41,6 @@ publish-docs: docs
 	@cd doc && \
 	git commit -am "Regen'ed docs." && \
 	git push origin gh-pages
+
+pull-updated-docs:
+	@git submodule update --remote --merge
