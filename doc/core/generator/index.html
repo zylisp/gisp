@@ -88,7 +88,7 @@
 		
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "github.com/zylisp/zylisp/generator"</code></dd>
+			<dd><code>import "github.com/zylisp/zylisp/core/generator"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -171,25 +171,25 @@
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/errors.go">errors.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/errors.go">errors.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/eval.go">eval.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/eval.go">eval.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/funcs.go">funcs.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/funcs.go">funcs.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/generator.go">generator.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/generator.go">generator.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/idents.go">idents.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/idents.go">idents.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/imports.go">imports.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/imports.go">imports.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/literals.go">literals.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/literals.go">literals.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/makers.go">makers.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/makers.go">makers.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/operators.go">operators.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/operators.go">operators.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/generator/statements.go">statements.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/generator/statements.go">statements.go</a>
 			
 			</span>
 			</p>
@@ -230,12 +230,12 @@ Generator-specific error messages
 		
 			
 			
-			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=520:560#L16">EvalExpr</a>
+			<h2 id="EvalExpr">func <a href="/src/github.com/zylisp/zylisp/core/generator/eval.go?s=525:565#L16">EvalExpr</a>
 				<a class="permalink" href="#EvalExpr">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func EvalExpr(node <a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) <a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
+			<pre>func EvalExpr(node <a href="/pkg/github.com/zylisp/zylisp/core/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/core/parser/#Node">Node</a>) <a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
 			<p>
 EvalExpr is a function that takes a parser node and returns an AST
 expression.
@@ -247,12 +247,12 @@ expression.
 		
 			
 			
-			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/generator/eval.go?s=273:319#L4">EvalExprs</a>
+			<h2 id="EvalExprs">func <a href="/src/github.com/zylisp/zylisp/core/generator/eval.go?s=278:324#L4">EvalExprs</a>
 				<a class="permalink" href="#EvalExprs">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func EvalExprs(nodes []<a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
+			<pre>func EvalExprs(nodes []<a href="/pkg/github.com/zylisp/zylisp/core/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/core/parser/#Node">Node</a>) []<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#Expr">Expr</a></pre>
 			<p>
 EvalExprs is a function that takes a collection of parser nodes and returns
 a collection of AST expressions.
@@ -264,12 +264,12 @@ a collection of AST expressions.
 		
 			
 			
-			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=316:362#L8">GenerateAST</a>
+			<h2 id="GenerateAST">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=321:367#L8">GenerateAST</a>
 				<a class="permalink" href="#GenerateAST">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func GenerateAST(tree []<a href="/pkg/github.com/zylisp/zylisp/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/parser/#Node">Node</a>) *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a></pre>
+			<pre>func GenerateAST(tree []<a href="/pkg/github.com/zylisp/zylisp/core/parser/">parser</a>.<a href="/pkg/github.com/zylisp/zylisp/core/parser/#Node">Node</a>) *<a href="/pkg/go/ast/">ast</a>.<a href="/pkg/go/ast/#File">File</a></pre>
 			<p>
 GenerateAST takes a collection of parser nodes and returns an AST file.
 </p>
@@ -280,7 +280,7 @@ GenerateAST takes a collection of parser nodes and returns an AST file.
 		
 			
 			
-			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3368:3441#L144">GenerateASTFromLispFile</a>
+			<h2 id="GenerateASTFromLispFile">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=3556:3629#L148">GenerateASTFromLispFile</a>
 				<a class="permalink" href="#GenerateASTFromLispFile">&#xb6;</a>
 				
 				
@@ -297,7 +297,7 @@ as an AST file set.
 		
 			
 			
-			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=3901:3973#L162">GenerateASTFromLispString</a>
+			<h2 id="GenerateASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=4089:4161#L166">GenerateASTFromLispString</a>
 				<a class="permalink" href="#GenerateASTFromLispString">&#xb6;</a>
 				
 				
@@ -314,7 +314,7 @@ it and returns both a token file set for it as well as its AST expressions.
 		
 			
 			
-			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4189:4227#L172">PrintASTFromFile</a>
+			<h2 id="PrintASTFromFile">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=4377:4415#L176">PrintASTFromFile</a>
 				<a class="permalink" href="#PrintASTFromFile">&#xb6;</a>
 				
 				
@@ -331,7 +331,7 @@ prints that AST.
 		
 			
 			
-			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4785:4825#L192">PrintASTFromLispString</a>
+			<h2 id="PrintASTFromLispString">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=4973:5013#L196">PrintASTFromLispString</a>
 				<a class="permalink" href="#PrintASTFromLispString">&#xb6;</a>
 				
 				
@@ -348,7 +348,7 @@ and prints the Go AST for it.
 		
 			
 			
-			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5478:5515#L214">PrintGoFromFile</a>
+			<h2 id="PrintGoFromFile">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=5666:5703#L218">PrintGoFromFile</a>
 				<a class="permalink" href="#PrintGoFromFile">&#xb6;</a>
 				
 				
@@ -365,7 +365,7 @@ prints the Go.
 		
 			
 			
-			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5770:5809#L223">PrintGoFromLispString</a>
+			<h2 id="PrintGoFromLispString">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=5958:5997#L227">PrintGoFromLispString</a>
 				<a class="permalink" href="#PrintGoFromLispString">&#xb6;</a>
 				
 				
@@ -382,7 +382,7 @@ and prints the generated Go for it.
 		
 			
 			
-			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=4425:4478#L179">WriteASTFromFile</a>
+			<h2 id="WriteASTFromFile">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=4613:4666#L183">WriteASTFromFile</a>
 				<a class="permalink" href="#WriteASTFromFile">&#xb6;</a>
 				
 				
@@ -399,7 +399,7 @@ the former and writing Go AST to the latter.
 		
 			
 			
-			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/generator/generator.go?s=5041:5093#L199">WriteGoFromFile</a>
+			<h2 id="WriteGoFromFile">func <a href="/src/github.com/zylisp/zylisp/core/generator/generator.go?s=5229:5281#L203">WriteGoFromFile</a>
 				<a class="permalink" href="#WriteGoFromFile">&#xb6;</a>
 				
 				

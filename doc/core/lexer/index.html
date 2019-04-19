@@ -88,7 +88,7 @@
 		
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "github.com/zylisp/zylisp/lexer"</code></dd>
+			<dd><code>import "github.com/zylisp/zylisp/core/lexer"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -126,6 +126,9 @@
 				<dd><a href="#pkg-variables">Variables</a></dd>
 			
 			
+				
+				<dd><a href="#AtomName">func AtomName(atomType AtomType) string</a></dd>
+			
 			
 				
 				<dd><a href="#Atom">type Atom</a></dd>
@@ -147,6 +150,12 @@
 					
 					<dd>&nbsp; &nbsp; <a href="#Lexer.NextAtom">func (l *Lexer) NextAtom() Atom</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Lexer.PrintAtoms">func (l *Lexer) PrintAtoms()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Lexer.String">func (l *Lexer) String() string</a></dd>
+				
 			
 				
 				<dd><a href="#Pos">type Pos</a></dd>
@@ -164,9 +173,9 @@
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/src/github.com/zylisp/zylisp/lexer/errors.go">errors.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/lexer/errors.go">errors.go</a>
 			
-				<a href="/src/github.com/zylisp/zylisp/lexer/lexer.go">lexer.go</a>
+				<a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go">lexer.go</a>
 			
 			</span>
 			</p>
@@ -220,10 +229,26 @@ AdditionalAlphaNumRunes rune vars
 			
 		
 		
+			
+			
+			<h2 id="AtomName">func <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=8446:8485#L372">AtomName</a>
+				<a class="permalink" href="#AtomName">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func AtomName(atomType <a href="#AtomType">AtomType</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+AtomName returns the name of the atom for a given atom value
+</p>
+
+			
+			
+
+		
 		
 			
 			
-			<h2 id="Atom">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=205:266#L11">Atom</a>
+			<h2 id="Atom">type <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=440:501#L15">Atom</a>
 				<a class="permalink" href="#Atom">&#xb6;</a>
 				
 				
@@ -253,7 +278,7 @@ Atom object
 		
 			
 			
-			<h2 id="AtomType">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=290:307#L18">AtomType</a>
+			<h2 id="AtomType">type <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=525:542#L22">AtomType</a>
 				<a class="permalink" href="#AtomType">&#xb6;</a>
 				
 				
@@ -285,7 +310,7 @@ Lexer atom constants
     <span id="AtomInt">AtomInt</span>
     <span id="AtomComplex">AtomComplex</span>
 
-    <span class="comment">// Ok, these aren&#39;t really atoms but...</span>
+    <span class="comment">// Ok, these aren&#39;t really atoms but ...</span>
     <span id="AtomQuote">AtomQuote</span>
     <span id="AtomQuasiQuote">AtomQuasiQuote</span>
     <span id="AtomUnquote">AtomUnquote</span>
@@ -305,7 +330,7 @@ Lexer atom constants
 		
 			
 			
-			<h2 id="Lexer">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=896:1129#L62">Lexer</a>
+			<h2 id="Lexer">type <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=1953:2186#L89">Lexer</a>
 				<a class="permalink" href="#Lexer">&#xb6;</a>
 				
 				
@@ -329,7 +354,7 @@ Lexer object
 
 			
 				
-				<h3 id="Lex">func <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2537:2572#L141">Lex</a>
+				<h3 id="Lex">func <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=2458:2493#L109">Lex</a>
 					<a class="permalink" href="#Lex">&#xb6;</a>
 					
 					
@@ -345,7 +370,7 @@ Lex returns a lexer constructor
 
 			
 				
-				<h3 id="Lexer.NextAtom">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=2411:2442#L134">NextAtom</a>
+				<h3 id="Lexer.NextAtom">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=4110:4141#L180">NextAtom</a>
 					<a class="permalink" href="#Lexer.NextAtom">&#xb6;</a>
 					
 					
@@ -359,10 +384,37 @@ NextAtom method
 				
 				
 			
+				
+				<h3 id="Lexer.PrintAtoms">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=5216:5244#L231">PrintAtoms</a>
+					<a class="permalink" href="#Lexer.PrintAtoms">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (l *<a href="#Lexer">Lexer</a>) PrintAtoms()</pre>
+				<p>
+PrintAtoms prints the value of String()
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Lexer.String">func (*Lexer) <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=4820:4851#L219">String</a>
+					<a class="permalink" href="#Lexer.String">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (l *<a href="#Lexer">Lexer</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
 		
 			
 			
-			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/lexer/lexer.go?s=176:188#L8">Pos</a>
+			<h2 id="Pos">type <a href="/src/github.com/zylisp/zylisp/core/lexer/lexer.go?s=411:423#L12">Pos</a>
 				<a class="permalink" href="#Pos">&#xb6;</a>
 				
 				
