@@ -3,24 +3,23 @@ package parser
 import (
 	"testing"
 
-	. "github.com/masukomi/check"
+	"github.com/stretchr/testify/suite"
 )
 
-// Hook up gocheck into the "go test" runner
-func Test(t *testing.T) {
-	TestingT(t)
+type ParserSuite struct {
+	suite.Suite
 }
 
-type ParserSuite struct{}
+func TestParserSuite(t *testing.T) {
+	suite.Run(t, new(ParserSuite))
+}
 
-var _ = Suite(&ParserSuite{})
-
-func (s *ParserSuite) Test_exampleFn(c *C) {
+func (s *ParserSuite) TestExampleFn() {
 	parsedNodes := ParseFromString("a-prog", "(def dbl (fn [x] (* 2 x)))")
-	c.Assert(len(parsedNodes), Equals, 1)
+	s.Equal(len(parsedNodes), 1)
 	for _, node := range parsedNodes {
-		c.Assert(NodeName(node.Type()), Equals, "NodeCall")
-		c.Assert(node.String(), Equals, "(def dbl (fn [x] (* 2 x)))")
-		// c.Assert(node, Equals, "NodeCall")
+		s.Equal(NodeName(node.Type()), "NodeCall")
+		s.Equal(node.String(), "(def dbl (fn [x] (* 2 x)))")
+		// s.Equal(node, "NodeCall")
 	}
 }
