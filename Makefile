@@ -5,7 +5,6 @@ BUILD_FLAGS=$(shell govvv -flags -pkg $(PACKAGE) -version $(VERSION))
 BIN=bin
 ZY=./$(BIN)/zylisp
 ZYC=./$(BIN)/zyc
-DOC_DIR=doc/doc
 DEFAULT_GOPATH=$(shell tr ':' '\n' <<< $$GOPATH|awk '!x[$$0]++'|sed '/^$$/d'|head -1)
 ifeq ($(DEFAULT_GOPATH),)
 DEFAULT_GOPATH := ~/go

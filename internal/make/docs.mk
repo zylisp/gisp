@@ -1,3 +1,4 @@
+DOC_DIR=doc/doc
 GODOC=godoc -index -links=true -notes="BUG|TODO|XXX|ISSUE"
 
 docs:
