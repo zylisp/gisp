@@ -16,11 +16,12 @@ type Position struct {
 type PositionReader struct {
 	positionStack []Position
 	reader        *bufio.Reader
+	lastRune      rune
 }
 
 // defaultPositions defines the defaults for use by the constructor
 func defaultPositions() []Position {
-	return []Position{Position{row: 1, column: 1}}
+	return []Position{Position{row: 1, column: 0, absolute: -1}}
 }
 
 // NewPositionReader creates a PositionReader for the given string and optional
@@ -39,7 +40,8 @@ func NewPositionReader(stringData string, opts ...Position) *PositionReader {
 	}
 	return &PositionReader{
 		opts,
-		bufio.NewReader(strings.NewReader(stringData))}
+		bufio.NewReader(strings.NewReader(stringData)),
+		'0'}
 }
 
 // lastPositionIndex returns the index in the postition stack for the most
@@ -52,6 +54,18 @@ func (r *PositionReader) lastPositionIndex() int {
 //              stack
 func (r *PositionReader) lastPosition() Position {
 	return r.positionStack[r.lastPositionIndex()]
+}
+
+// nextToLastPositionIndex returns the index in the postition stack for the
+//                         most recently added position
+func (r *PositionReader) nextToLastPositionIndex() int {
+	return len(r.positionStack) - 2
+}
+
+// nextToLastPosition returns the second most recently added position from the
+//                    position stack
+func (r *PositionReader) nextToLastPosition() Position {
+	return r.positionStack[r.nextToLastPositionIndex()]
 }
 
 // deleteLastPosition deletes the most recently added position in the position
@@ -84,17 +98,24 @@ func (r *PositionReader) popPosition() Position {
 // nextRunePosition copies the most recently added position from the position
 //                  stack and updates it with new values; the position is then
 //                  returned. The rune passed to this method is used to
-//                  determine if a newline has been read, and if so, to update
-//                  the row and column apropriately
+//                  determine how to handle row and column counting:
+//                  * if a newline has been read, don't update row or col
+//                  * if the last run that was passed was a newline, perform a
+//                    row inrememnt and column reset
+//                  * else, just increment the column number
+//                  the row and column apropriately.
 func (r *PositionReader) nextRunePosition(rn rune) Position {
 	next := r.lastPosition()
 	next.absolute++
-	if rn == newline {
+	if r.lastRune == newline {
 		next.column = 1
 		next.row++
+	} else if rn == newline {
+		// do nothing
 	} else {
 		next.column++
 	}
+	r.lastRune = rn
 	return next
 }
 
