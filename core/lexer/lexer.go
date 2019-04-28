@@ -15,17 +15,41 @@ import (
 
 // General lexer constants
 const (
-	EOF = -1
+	EOF                          = -1
+	newline                 rune = '\n'
+	carriageReturn          rune = '\r'
+	tab                     rune = '\t'
+	space                   rune = ' '
+	leftParen               rune = '('
+	rightParen              rune = ')'
+	leftBracket             rune = '['
+	rightBracket            rune = ']'
+	doubleQuote             rune = '"'
+	plusSign                rune = '+'
+	minusSign               rune = '-'
+	lowestDigit             rune = '0'
+	highestDigit            rune = '9'
+	semiColon               rune = ';'
+	doubleSlash             rune = '\\'
+	complexNumberIdentifier rune = 'i'
+	floatDelimiter          rune = '.'
 )
 
-// Pos position type
-type Pos int
+// Position position type
+type Position struct {
+	row    int
+	column int
+	// While the above give human-referencable position information, the lexer
+	// needs to know, at any given point, the absolute position of a character
+	// in the textual data of the given program.
+	absolute int
+}
 
 // Atom object
 type Atom struct {
-	Type  AtomType
-	Pos   Pos
-	Value string
+	Type     AtomType
+	Position Position
+	Value    string
 }
 
 // AtomType atom type
@@ -92,19 +116,19 @@ var AdditionalAlphaNumRunes = map[rune]bool{
 type stateFn func(*Lexer) stateFn
 
 /////////////////////////////////////////////////////////////////////////////
-///   Object Definition   ///////////////////////////////////////////////////
+///   Object Definitions   //////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
 // Lexer object
 type Lexer struct {
-	name    string
-	input   string
-	state   stateFn
-	pos     Pos
-	start   Pos
-	width   Pos
-	lastPos Pos
-	items   chan Atom
+	name             string
+	input            string
+	state            stateFn
+	position         Position
+	start            int
+	currentRuneWidth int
+	lastPosition     Position
+	items            chan Atom
 
 	// XXX currently unused; remove? or keep for later?
 	// parenDepth int
@@ -112,34 +136,129 @@ type Lexer struct {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-///   Constructor   /////////////////////////////////////////////////////////
+///   Constructors   ////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-// Lex returns a lexer constructor
-func Lex(name, input string) *Lexer {
+// NewPosition is a variadic Position constructor
+func NewPosition(args ...int) (Position, error) {
+	defRow, defCol, defAbs := 1, 1, 0
+	switch argCount := len(args); argCount {
+	case 0:
+		return NewPosition(defRow, defCol, defAbs)
+	case 2:
+		return NewPosition(args[0], args[1], defAbs)
+	case 3:
+		row, col, abs := args[0], args[1], args[2]
+		if row == 0 {
+			row = 1
+		}
+		if col == 0 {
+			col = 1
+		}
+		return Position{row, col, abs}, nil
+	default:
+		return Position{}, fmt.Errorf(UnsupportedArgCount, argCount)
+	}
+}
+
+// NewLexer returns a new lexer object
+func NewLexer(name, input string) *Lexer {
+	pos, _ := NewPosition()
+	lastPos, _ := NewPosition(-1, -1, -1)
 	l := &Lexer{
-		name:  name,
-		input: input,
-		items: make(chan Atom),
+		name:         name,
+		input:        input,
+		position:     pos,
+		lastPosition: lastPos,
+		items:        make(chan Atom),
 	}
 	go l.run()
 	return l
 }
 
 /////////////////////////////////////////////////////////////////////////////
-///   Methods   /////////////////////////////////////////////////////////////
+///   Position Methods   ////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
+
+// Column returns the column value of the associated item Position
+func (p *Position) Column() int {
+	return p.column
+}
+
+// Row returns the row value of the associated item Position
+func (p *Position) Row() int {
+	return p.row
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   Atom Methods   ////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// Column returns the column value of the associated item Position
+func (a *Atom) Column() int {
+	return a.Position.column
+}
+
+// Row returns the row value of the associated item Position
+func (a *Atom) Row() int {
+	return a.Position.row
+}
+
+// Absolute returns the absolute value of the associated item Position
+func (a *Atom) Absolute() int {
+	return a.Position.absolute
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///   Lexer Methods   ///////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+func (l *Lexer) codeSize() int {
+	return utf8.RuneCountInString(l.input)
+}
+
+// Column returns the column value of the associated item Position
+func (l *Lexer) Column() int {
+	return l.position.column
+}
+
+// Row returns the row value of the associated item Position
+func (l *Lexer) Row() int {
+	return l.position.row
+}
+
+// Absolute returns the absolute value of the associated item Position
+func (l *Lexer) Absolute() int {
+	return l.position.absolute
+}
 
 // next returns the next rune in the input.
 func (l *Lexer) next() rune {
-	if int(l.pos) >= len(l.input) {
-		l.width = 0
+	log.Error("\nRUNNING NEXT ...")
+	log.Warnf("Initial position: %#v", l.position)
+	if l.Absolute() >= l.codeSize() {
+		log.Error("Hit end of code string ...")
+		log.Warnf("Last position: %#v", l.position)
+		l.currentRuneWidth = 0
 		return EOF
 	}
-	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
-	log.Tracef("Lexed rune %#v at position %d", r, l.pos)
-	l.width = Pos(w)
-	l.pos += l.width
+	r, w := utf8.DecodeRuneInString(l.input[l.Absolute():])
+	log.Warnf("Rune: %s; width: %d", string(r), w)
+	l.currentRuneWidth = w
+	log.Warnf("Old position: %d", l.Absolute())
+	l.position.absolute += l.currentRuneWidth
+	log.Warnf("New position: %d", l.Absolute())
+	log.Warnf("Updated position: %#v", l.position)
+
+	if r == newline {
+		log.Warn("Got newline; updating row and column ...")
+		l.updatePositionNewLine()
+	} else {
+		log.Warn("Updating column ...")
+		l.updatePositionNext()
+	}
+	log.Warnf("Final position update: %#v", l.position)
+	log.Errorf("Lexed rune %s at position %#v", string(r), l.position)
 	return r
 }
 
@@ -152,17 +271,22 @@ func (l *Lexer) peek() rune {
 
 // backup steps back one rune. Can only be called once per call of next.
 func (l *Lexer) backup() {
-	l.pos -= l.width
+	l.position.absolute -= l.currentRuneWidth
+	l.updatePositionBack()
 }
 
 // emit passes an Atom back to the client.
 func (l *Lexer) emit(t AtomType) {
-	l.items <- Atom{t, l.start, l.input[l.start:l.pos]}
-	l.start = l.pos
+	pos, err := NewPosition(l.Row(), l.Column(), l.start)
+	if err != nil {
+		log.Error(err)
+	}
+	l.items <- Atom{t, pos, l.input[l.start:l.Absolute()]}
+	l.start = l.Absolute()
 }
 
 func (l *Lexer) ignore() {
-	l.start = l.pos
+	l.start = l.Absolute()
 }
 
 // accept consumes the next rune if it's from the valid set.
@@ -182,14 +306,15 @@ func (l *Lexer) acceptRuneRun(valid string) {
 }
 
 func (l *Lexer) errorf(format string, args ...interface{}) stateFn {
-	l.items <- Atom{AtomError, l.start, fmt.Sprintf(format, args...)}
+	pos, _ := NewPosition(l.Row(), l.Column(), l.start)
+	l.items <- Atom{AtomError, pos, fmt.Sprintf(format, args...)}
 	return nil
 }
 
 // NextAtom method
 func (l *Lexer) NextAtom() Atom {
 	item := <-l.items
-	l.lastPos = item.Pos
+	l.lastPosition = item.Position
 	return item
 }
 
@@ -219,7 +344,7 @@ func (l *Lexer) scanNumber() bool {
 	// Is it imaginary?
 	l.accept("i")
 	// Next thing mustn't be alphanumeric.
-	if r := l.peek(); isAlphaNumeric(r) {
+	if r := l.peek(); isAllowedIdentifierRune(r) {
 		l.next()
 		return false
 	}
@@ -229,8 +354,10 @@ func (l *Lexer) scanNumber() bool {
 func (l *Lexer) String() string {
 	lexedStrings := []string{""}
 	for item := l.NextAtom(); item.Type != AtomEOF; {
-		lexedStrings = append(lexedStrings, fmt.Sprintf("%-3s: position %2d, type %s",
-			item.Value, item.Pos, AtomName(item.Type)))
+		lexedStrings = append(lexedStrings,
+			fmt.Sprintf("%-3s: row: %d, col: %2d, abs: %2d, type %s",
+				item.Value, item.Row(), item.Column(),
+				item.Absolute(), AtomName(item.Type)))
 		item = l.NextAtom()
 	}
 	lexedStrings = append(lexedStrings, "")
@@ -240,6 +367,26 @@ func (l *Lexer) String() string {
 // PrintAtoms prints the value of String()
 func (l *Lexer) PrintAtoms() {
 	fmt.Print(l.String())
+}
+
+func (l *Lexer) updatePositionNewLine() {
+	l.lastPosition = l.position
+	l.position.row++
+	l.position.column = 1
+}
+
+func (l *Lexer) updatePositionNext() {
+	log.Errorf("Column pre-update; last position: %#v; current position: %#v", l.lastPosition, l.position)
+	l.lastPosition = l.position
+	l.position.column++
+	log.Errorf("Column post-update; last position: %#v; current position: %#v", l.lastPosition, l.position)
+}
+
+func (l *Lexer) updatePositionBack() {
+	// back can only be called once per next call, so there's no need to
+	// preserve a history of positions
+	l.position.row = l.lastPosition.row
+	l.position.column = l.lastPosition.column
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -266,7 +413,7 @@ func lexLeftParen(l *Lexer) stateFn {
 }
 
 func lexWhitespace(l *Lexer) stateFn {
-	for r := l.next(); isSpace(r) || r == '\n'; l.next() {
+	for r := l.next(); isWhiteSpace(r); l.next() {
 		r = l.peek()
 	}
 	l.backup()
@@ -274,23 +421,22 @@ func lexWhitespace(l *Lexer) stateFn {
 
 	switch r := l.next(); {
 	case r == EOF:
-		l.emit(AtomEOF)
-		return nil
-	case r == '(':
+		return lexEndOfFile
+	case r == leftParen:
 		return lexLeftParen
-	case r == ')':
+	case r == rightParen:
 		return lexRightParen
-	case r == '[':
+	case r == leftBracket:
 		return lexLeftVect
-	case r == ']':
+	case r == rightBracket:
 		return lexRightVect
-	case r == '"':
+	case r == doubleQuote:
 		return lexString
-	case r == '+' || r == '-' || ('0' <= r && r <= '9'):
+	case isCompoundNumber(r):
 		return lexNumber
-	case r == ';':
+	case r == semiColon:
 		return lexComment
-	case isAlphaNumeric(r):
+	case isAllowedIdentifierRune(r):
 		return lexIdentifier
 	default:
 		log.Panic(fmt.Sprintf(UnsupportedRuneError, r))
@@ -299,8 +445,8 @@ func lexWhitespace(l *Lexer) stateFn {
 }
 
 func lexString(l *Lexer) stateFn {
-	for r := l.next(); r != '"'; r = l.next() {
-		if r == '\\' {
+	for r := l.next(); r != doubleQuote; r = l.next() {
+		if r == doubleSlash {
 			r = l.next()
 		}
 		if r == EOF {
@@ -312,7 +458,7 @@ func lexString(l *Lexer) stateFn {
 }
 
 func lexIdentifier(l *Lexer) stateFn {
-	for r := l.next(); isAlphaNumeric(r); r = l.next() {
+	for r := l.next(); isAllowedIdentifierRune(r); r = l.next() {
 	}
 	l.backup()
 	l.emit(AtomIdent)
@@ -328,28 +474,29 @@ func lexRightParen(l *Lexer) stateFn {
 
 // lex a comment, comment delimiter is known to be already read
 func lexComment(l *Lexer) stateFn {
-	i := strings.Index(l.input[l.pos:], "\n")
-	l.pos += Pos(i)
+	i := strings.Index(l.input[l.position.absolute:], "\n")
+	l.position.absolute += i
+	l.updatePositionNewLine()
 	l.ignore()
 	return lexWhitespace
 }
 
 func lexNumber(l *Lexer) stateFn {
 	if !l.scanNumber() {
-		return l.errorf(BadNumberSyntax, l.input[l.start:l.pos])
+		return l.errorf(BadNumberSyntax, l.input[l.start:l.position.absolute])
 	}
 
-	if l.start+1 == l.pos {
+	if l.start+1 == l.position.absolute {
 		return lexIdentifier
 	}
 
-	if sign := l.peek(); sign == '+' || sign == '-' {
+	if sign := l.peek(); sign == plusSign || sign == minusSign {
 		// Complex: 1+2i. No spaces, must end in 'i'.
-		if !l.scanNumber() || l.input[l.pos-1] != 'i' {
-			return l.errorf(BadNumberSyntax, l.input[l.start:l.pos])
+		if !l.scanNumber() || string(l.input[l.position.absolute-1]) != string(complexNumberIdentifier) {
+			return l.errorf(BadNumberSyntax, l.input[l.start:l.position.absolute])
 		}
 		l.emit(AtomComplex)
-	} else if strings.ContainsRune(l.input[l.start:l.pos], '.') {
+	} else if strings.ContainsRune(l.input[l.start:l.position.absolute], floatDelimiter) {
 		l.emit(AtomFloat)
 	} else {
 		l.emit(AtomInt)
@@ -358,24 +505,44 @@ func lexNumber(l *Lexer) stateFn {
 	return lexWhitespace
 }
 
+// lex end of a file
+func lexEndOfFile(l *Lexer) stateFn {
+	l.emit(AtomEOF)
+
+	return nil
+}
+
 /////////////////////////////////////////////////////////////////////////////
 ///   Utility Functions   ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-// isSpace reports whether r is a space character.
-func isSpace(r rune) bool {
-	return r == ' ' || r == '\t'
+// isWhiteSpace reports whether r is a space character.
+func isWhiteSpace(r rune) bool {
+	return r == space || r == tab || r == newline
 }
 
 // XXX Currently unused; remove?
 // isEndOfLine reports whether r is an end-of-line character.
 // func isEndOfLine(r rune) bool {
-// 	return r == '\r' || r == '\n'
+// 	return r == carriageReturn || r == newLine
 // }
 
-// isAlphaNumeric reports whether r is a valid rune for an identifier.
-func isAlphaNumeric(r rune) bool {
+// isAllowedIdentifierRune reports whether r is a valid rune for an identifier.
+func isAllowedIdentifierRune(r rune) bool {
 	return AdditionalAlphaNumRunes[r] || unicode.IsLetter(r) || unicode.IsDigit(r)
+}
+
+// XXX Let's fix this so that + or - qualify ONLY if the next char is a number
+func isNumber(r rune) bool {
+	return (lowestDigit <= r && r <= highestDigit)
+}
+
+// isCompoundNumber reports whether r is a number or series of characters that
+//                  represent a number.
+// XXX Let's fix this so that + or - qualify ONLY if the next char is a number,
+//     since this logic is currently breaking symbols that start with a + or -
+func isCompoundNumber(r rune) bool {
+	return r == plusSign || r == minusSign || isNumber(r)
 }
 
 // AtomName returns the name of the atom for a given atom value

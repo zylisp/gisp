@@ -12,7 +12,7 @@ endif
 DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
 export PATH:=$(PATH):$(DEFAULT_GOBIN)
 
-.PHONY: build test all
+.PHONY: build test all run-test
 
 default: all
 

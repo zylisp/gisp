@@ -20,6 +20,11 @@ test-lexer:
 	cd ./core/lexer && \
 	GO111MODULE=on go test -v
 
+run-lexer-test:
+	@echo "\nRunning 'go test' for lexer test $(TEST)...\n" && \
+	cd ./core/lexer && \
+	GO111MODULE=on go test -v -run LexerSuite -testify.m $(TEST)
+
 gogen-examples:
 	@echo "\nGenerating .go files for examples ...\n"
 	$(ZY) -cli -go -dir ./bin/examples examples/*.zsp

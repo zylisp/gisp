@@ -19,7 +19,7 @@ var nilNode = NewIdentNode("nil")
 
 // ParseFromString parses code and returns a collection of nodes.
 func ParseFromString(name, program string) []Node {
-	return Parse(lexer.Lex(name, program))
+	return Parse(lexer.NewLexer(name, program))
 }
 
 // Parse takes lexed data and returns a tree of parsed nodes. This function is
@@ -64,16 +64,19 @@ func ParseAtom(l *lexer.Lexer, item lexer.Atom, lookingFor rune) (Node, error) {
 		node = newVectNode(ParseAtoms(l, make([]Node, 0), ']'))
 	case lexer.AtomRightParen:
 		if lookingFor != ')' {
-			log.Error(RightCurvedBracketError, item.Pos)
+			log.Error(RightCurvedBracketError, item.Position.Row(),
+				item.Position.Column())
 		}
 		return nil, errors.New("done")
 	case lexer.AtomRightVect:
 		if lookingFor != ']' {
-			log.Error(RightSquareBracketError, item.Pos)
+			log.Error(RightSquareBracketError, item.Position.Row(),
+				item.Position.Column())
 		}
 		return nil, errors.New("done")
 	case lexer.AtomError:
-		log.Panicf(UnspecifiedAtomError, lexer.AtomError, item.Pos)
+		log.Panicf(UnspecifiedAtomError, lexer.AtomName(lexer.AtomError),
+			item.Position.Row(), item.Position.Column())
 	default:
 		log.Panic(AtomTypeError)
 	}
