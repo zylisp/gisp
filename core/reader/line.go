@@ -19,9 +19,14 @@ type PositionReader struct {
 	lastRune      rune
 }
 
+// initPosition defines the initial default position
+func initPosition() Position {
+	return Position{row: 1, column: 0, absolute: -1}
+}
+
 // defaultPositions defines the defaults for use by the constructor
 func defaultPositions() []Position {
-	return []Position{Position{row: 1, column: 0, absolute: -1}}
+	return []Position{initPosition()}
 }
 
 // NewPositionReader creates a PositionReader for the given string and optional
@@ -41,7 +46,8 @@ func NewPositionReader(stringData string, opts ...Position) *PositionReader {
 	return &PositionReader{
 		opts,
 		bufio.NewReader(strings.NewReader(stringData)),
-		'0'}
+		'0',
+	}
 }
 
 // lastPositionIndex returns the index in the postition stack for the most

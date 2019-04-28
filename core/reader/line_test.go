@@ -6,15 +6,15 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type ReaderSuite struct {
+type PositionReaderSuite struct {
 	suite.Suite
 }
 
-func TestReaderSuite(t *testing.T) {
-	suite.Run(t, new(ReaderSuite))
+func TestPositionReaderSuite(t *testing.T) {
+	suite.Run(t, new(PositionReaderSuite))
 }
 
-func (s *ReaderSuite) TestNewPositionReader() {
+func (s *PositionReaderSuite) TestNewPositionReader() {
 	r := NewPositionReader("thing1")
 	// default initial positions:
 	s.Equal(1, r.Row())
@@ -38,7 +38,7 @@ func (s *ReaderSuite) TestNewPositionReader() {
 	s.Equal(2, r.Absolute())
 }
 
-func (s *ReaderSuite) TestLastPositionIndex() {
+func (s *PositionReaderSuite) TestLastPositionIndex() {
 	r := NewPositionReader("thing1",
 		Position{row: 1, column: 1, absolute: 0},
 		Position{row: 1, column: 2, absolute: 1},
@@ -46,14 +46,14 @@ func (s *ReaderSuite) TestLastPositionIndex() {
 	s.Equal(2, r.lastPositionIndex())
 }
 
-func (s *ReaderSuite) TestLastPosition() {
+func (s *PositionReaderSuite) TestLastPosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1, p2)
 	s.Equal(p2, r.lastPosition())
 }
 
-func (s *ReaderSuite) TesDeletetLastPosition() {
+func (s *PositionReaderSuite) TesDeletetLastPosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1, p2)
@@ -61,7 +61,7 @@ func (s *ReaderSuite) TesDeletetLastPosition() {
 	s.Equal(p1, r.lastPosition())
 }
 
-func (s *ReaderSuite) TestPushPosition() {
+func (s *PositionReaderSuite) TestPushPosition() {
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1")
 	r.pushPosition(p2)
@@ -69,7 +69,7 @@ func (s *ReaderSuite) TestPushPosition() {
 	s.Equal(2, len(r.positionStack))
 }
 
-func (s *ReaderSuite) TestPushPositions() {
+func (s *PositionReaderSuite) TestPushPositions() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	p3 := Position{row: 1, column: 3, absolute: 2}
@@ -80,7 +80,7 @@ func (s *ReaderSuite) TestPushPositions() {
 	s.Equal(4, len(r.positionStack))
 }
 
-func (s *ReaderSuite) TestPopPosition() {
+func (s *PositionReaderSuite) TestPopPosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1, p2)
@@ -91,7 +91,7 @@ func (s *ReaderSuite) TestPopPosition() {
 	s.Equal(0, len(r.positionStack))
 }
 
-func (s *ReaderSuite) TestNextRunePosition() {
+func (s *PositionReaderSuite) TestNextRunePosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1)
@@ -100,7 +100,7 @@ func (s *ReaderSuite) TestNextRunePosition() {
 	s.Equal(1, len(r.positionStack))
 }
 
-func (s *ReaderSuite) TestReadRuneOneLine() {
+func (s *PositionReaderSuite) TestReadRuneOneLine() {
 	r := NewPositionReader("thing1")
 	// Before any reading, positions are at the initialized values
 	s.Equal(1, r.Row())
@@ -116,7 +116,7 @@ func (s *ReaderSuite) TestReadRuneOneLine() {
 	s.Equal(1, r.Absolute())
 }
 
-func (s *ReaderSuite) TestReadRuneManyLines() {
+func (s *PositionReaderSuite) TestReadRuneManyLines() {
 	r := NewPositionReader("t1\nt2\nt3")
 	rn, _, _ := r.ReadRune()
 	s.Equal("t", string(rn))
@@ -144,7 +144,7 @@ func (s *ReaderSuite) TestReadRuneManyLines() {
 	s.Equal(Position{row: 3, column: 2, absolute: 7}, r.lastPosition())
 }
 
-func (s *ReaderSuite) TestUneadRuneOneLine() {
+func (s *PositionReaderSuite) TestUneadRuneOneLine() {
 	r := NewPositionReader("thing1")
 	_, _, _ = r.ReadRune()
 	s.Equal(0, r.Absolute())
@@ -166,7 +166,7 @@ func (s *ReaderSuite) TestUneadRuneOneLine() {
 	s.Equal(0, r.Absolute())
 }
 
-func (s *ReaderSuite) TestUneadRuneManyLines() {
+func (s *PositionReaderSuite) TestUneadRuneManyLines() {
 	r := NewPositionReader("t1\nt2\nt3")
 	var rn rune
 	for i := 0; i <= 7; i++ {
