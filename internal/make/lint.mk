@@ -23,10 +23,14 @@ lint-all: $(GOLANGCI_LINT)
 
 lint-cmd: $(GOLANGCI_LINT)
 	@cd ./cmd/zylisp && \
-	GO111MODULE=off $(GOLANGCI_LINT) run
+	GO111MODULE=off $(GOLANGCI_LINT) run ./...
+
+lint-reader: $(GOLANGCI_LINT)
+	@cd ./core/reader && \
+	GO111MODULE=on $(GOLANGCI_LINT) run ./...
 
 lint-repl: $(GOLANGCI_LINT)
 	@cd ./repl && \
-	GO111MODULE=off $(GOLANGCI_LINT) run
+	GO111MODULE=off $(GOLANGCI_LINT) run ./...
 
 lint: lint-repl lint-cmd

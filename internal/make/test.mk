@@ -20,6 +20,13 @@ test-lexer:
 	cd ./core/lexer && \
 	GO111MODULE=on go test -v
 
+test-reader:
+	@echo "\nRunning 'go test' for reader ...\n" && \
+	cd ./core/reader && \
+	GO111MODULE=on go test -v
+
+# Example usage:
+#  $ TEST=Backup make run-lexer-test
 run-lexer-test:
 	@echo "\nRunning 'go test' for lexer test $(TEST)...\n" && \
 	cd ./core/lexer && \
