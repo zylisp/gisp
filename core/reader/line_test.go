@@ -1,4 +1,4 @@
-package line
+package reader
 
 import (
 	"testing"
@@ -86,14 +86,14 @@ func (s *LineReaderSuite) TestPopPosition() {
 }
 
 func (s *LineReaderSuite) TestNextRunePosition() {
-	p2 := Position{row: 1, column: 1, absolute: 1}
+	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1")
 	s.Equal(1, len(r.positionStack))
-	s.Equal(p2, r.nextRunePosition())
+	s.Equal(p2, r.nextRunePosition('h'))
 	s.Equal(1, len(r.positionStack))
 }
 
-func (s *LineReaderSuite) TestReadRune() {
+func (s *LineReaderSuite) TestReadRuneOneLine() {
 	r := NewPositionReader("thing1")
 	s.Equal(1, r.Row())
 	s.Equal(1, r.Column())
@@ -108,15 +108,43 @@ func (s *LineReaderSuite) TestReadRune() {
 	s.Equal(2, r.Absolute())
 }
 
-func (s *LineReaderSuite) TestUneadRune() {
+func (s *LineReaderSuite) TestReadRuneManyLines() {
+	r := NewPositionReader("t1\nt2\nt3")
+	rn, _, _ := r.ReadRune()
+	s.Equal("t", string(rn))
+	s.Equal(Position{row: 1, column: 2, absolute: 1}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("1", string(rn))
+	s.Equal(Position{row: 1, column: 3, absolute: 2}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("\n", string(rn))
+	s.Equal(Position{row: 2, column: 1, absolute: 3}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("t", string(rn))
+	s.Equal(Position{row: 2, column: 2, absolute: 4}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("2", string(rn))
+	s.Equal(Position{row: 2, column: 3, absolute: 5}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("\n", string(rn))
+	s.Equal(Position{row: 3, column: 1, absolute: 6}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("t", string(rn))
+	s.Equal(Position{row: 3, column: 2, absolute: 7}, r.lastPosition())
+	rn, _, _ = r.ReadRune()
+	s.Equal("3", string(rn))
+	s.Equal(Position{row: 3, column: 3, absolute: 8}, r.lastPosition())
+}
+
+func (s *LineReaderSuite) TestUneadRuneOneLine() {
 	r := NewPositionReader("thing1")
 	_, _, _ = r.ReadRune()
 	s.Equal(1, r.Absolute())
 	_ = r.UnreadRune()
 	s.Equal(0, r.Absolute())
-	_, _, _ = r.ReadRune()
-	_, _, _ = r.ReadRune()
-	_, _, _ = r.ReadRune()
+	for i := 0; i <= 2; i++ {
+		_, _, _ = r.ReadRune()
+	}
 	s.Equal(3, r.Absolute())
 	_ = r.UnreadRune()
 	s.Equal(2, r.Absolute())
@@ -124,4 +152,27 @@ func (s *LineReaderSuite) TestUneadRune() {
 	s.Equal(1, r.Absolute())
 	_ = r.UnreadRune()
 	s.Equal(0, r.Absolute())
+}
+
+func (s *LineReaderSuite) TestUneadRuneManyLines() {
+	r := NewPositionReader("t1\nt2\nt3")
+	for i := 0; i <= 8; i++ {
+		_, _, _ = r.ReadRune()
+	}
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 3, column: 2, absolute: 7}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 3, column: 1, absolute: 6}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 2, column: 3, absolute: 5}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 2, column: 2, absolute: 4}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 2, column: 1, absolute: 3}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 1, column: 3, absolute: 2}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 1, column: 2, absolute: 1}, r.lastPosition())
+	_ = r.UnreadRune()
+	s.Equal(Position{row: 1, column: 1, absolute: 0}, r.lastPosition())
 }

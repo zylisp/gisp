@@ -1,4 +1,4 @@
-package line
+package reader
 
 import (
 	"bufio"
@@ -73,9 +73,14 @@ func (r *PositionReader) popPosition() Position {
 }
 
 // nextRunePosition ...
-func (r *PositionReader) nextRunePosition() Position {
+func (r *PositionReader) nextRunePosition(rn rune) Position {
 	next := r.lastPosition()
 	next.absolute++
+	next.column++
+	if rn == newline {
+		next.column = 1
+		next.row++
+	}
 	return next
 }
 
@@ -100,7 +105,7 @@ func (r *PositionReader) ReadRune() (rune, int, error) {
 	if err != nil {
 		return rn, sz, err
 	}
-	r.pushPosition(r.nextRunePosition())
+	r.pushPosition(r.nextRunePosition(rn))
 	return rn, sz, nil
 }
 

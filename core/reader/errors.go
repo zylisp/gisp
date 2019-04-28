@@ -1,4 +1,4 @@
-package line
+package reader
 
 // Reader-specific errors
 const (
