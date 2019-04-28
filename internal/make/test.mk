@@ -1,4 +1,4 @@
-test: test-core test-common test-parser test-lexer
+test: test-core test-common test-parser test-lexer test-reader
 
 test-core:
 	@echo "\nRunning 'go test' for core ...\n" && \
