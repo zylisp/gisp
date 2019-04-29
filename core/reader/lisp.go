@@ -43,7 +43,6 @@ func NewLispReader(programName string, programData string) *LispReader {
 func (l *LispReader) Read() {
 	var rn rune
 	for rn = l.read1(); isWhitespace(rn); {
-		// rn = l.read1()
 		continue
 	}
 
@@ -62,12 +61,12 @@ func (l *LispReader) Read() {
 		readLeftVect(l)
 	case rn == rightBracket:
 		readRightVect(l)
-	// // case r == doubleQuote:
-	// // 	return readString
-	// // case isCompoundNumber(r):
-	// // 	return readNumber
+	case rn == doubleQuote:
+		readString(l)
 	// // case r == semiColon:
 	// // 	return readComment
+	// // case isCompoundNumber(r):
+	// // 	return readNumber
 	// // case isAllowedIdentifierRune(r):
 	// // 	return readIdentifier
 	default:
@@ -150,6 +149,20 @@ func readRightVect(l *LispReader) {
 	l.tokenAsAtom(AtomRightVect)
 }
 
+func readString(l *LispReader) {
+	// The opening quote was written to .token in the Read method; now we need
+	// to remove that and write the rest of the string
+	l.ResetToken()
+	for rn := l.read1(); !isStringEnd(rn); rn = l.read1() {
+		if isUnexpectedStringEnd(rn) {
+			log.Error(UnterminatedQuotedStringError)
+			return
+		}
+		l.WriteToken(rn)
+	}
+	l.tokenAsAtom(AtomString)
+}
+
 /////////////////////////////////////////////////////////////////////////////
 ///   Utility Functions   ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -157,6 +170,13 @@ func readRightVect(l *LispReader) {
 // isWhitespace reports whether a given rune is considered whitespace
 func isWhitespace(rn rune) bool {
 	return rn == space || rn == tab || rn == newline || rn == optionalCollectionDelimiter
+}
+
+func isStringEnd(rn rune) bool {
+	return rn == doubleQuote
+}
+func isUnexpectedStringEnd(rn rune) bool {
+	return rn == EOF || rn == newline
 }
 
 // ReadAtomsData ...

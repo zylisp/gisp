@@ -15,8 +15,7 @@ func TestLispReaderSuite(t *testing.T) {
 }
 
 func (s *LispReaderSuite) TestReadEmpty() {
-	var l *LispReader
-	l = NewLispReader("test-prog", "")
+	l := NewLispReader("test-prog", "")
 	l.Read()
 	atoms := l.Atoms()
 	s.Equal(1, len(atoms))
@@ -24,8 +23,7 @@ func (s *LispReaderSuite) TestReadEmpty() {
 }
 
 func (s *LispReaderSuite) TestReadJustParens() {
-	var l *LispReader
-	l = NewLispReader("test-prog", "()")
+	l := NewLispReader("test-prog", "()")
 	l.Read()
 	atoms := l.Atoms()
 	s.Equal(3, len(atoms))
@@ -35,8 +33,7 @@ func (s *LispReaderSuite) TestReadJustParens() {
 }
 
 func (s *LispReaderSuite) TestReadJustBrackets() {
-	var l *LispReader
-	l = NewLispReader("test-prog", "[]")
+	l := NewLispReader("test-prog", "[]")
 	l.Read()
 	atoms := l.Atoms()
 	s.Equal(3, len(atoms))
@@ -44,6 +41,30 @@ func (s *LispReaderSuite) TestReadJustBrackets() {
 	s.Equal("AtomRightVect", AtomName(atoms[1].Type))
 	s.Equal("AtomEOF", AtomName(atoms[2].Type))
 }
+
+func (s *LispReaderSuite) TestReadJustString() {
+	l := NewLispReader("test-prog", `"space dog"`)
+	l.Read()
+	atoms := l.Atoms()
+	s.Equal(2, len(atoms))
+	s.Equal("AtomString", AtomName(atoms[0].Type))
+	s.Equal("space dog", atoms[0].Value)
+	s.Equal("AtomEOF", AtomName(atoms[1].Type))
+}
+
+func (s *LispReaderSuite) TestReadEmptyString() {
+	l := NewLispReader("test-prog", `""`)
+	l.Read()
+	atoms := l.Atoms()
+	s.Equal(2, len(atoms))
+	s.Equal("AtomString", AtomName(atoms[0].Type))
+	s.Equal("", atoms[0].Value)
+	s.Equal("AtomEOF", AtomName(atoms[1].Type))
+}
+
+// XXX
+// func (s *LispReaderSuite) TestReadStringWithEscapes() {
+// }
 
 func (s *PositionReaderSuite) TestRead1EOF() {
 	var rn rune
