@@ -48,20 +48,20 @@ func (l *LispReader) Read() {
 	}
 
 	if rn == EOF {
-		readEndOfFile(l, rn)
+		readEndOfFile(l)
 		return
 	}
 	l.WriteToken(rn)
 
 	switch {
 	case rn == leftParen:
-		readLeftParen(l, rn)
+		readLeftParen(l)
 	case rn == rightParen:
-		readRightParen(l, rn)
-	// // case r == leftBracket:
-	// // 	return readLeftVect
-	// // case r == rightBracket:
-	// // 	return readRightVect
+		readRightParen(l)
+	case rn == leftBracket:
+		readLeftVect(l)
+	case rn == rightBracket:
+		readRightVect(l)
 	// // case r == doubleQuote:
 	// // 	return readString
 	// // case isCompoundNumber(r):
@@ -127,19 +127,27 @@ func (l *LispReader) tokenAsAtom(atomType AtomType) {
 ///   Support Functions   ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-func readLeftParen(l *LispReader, rn rune) {
+func readLeftParen(l *LispReader) {
 	log.Tracef("Reading left paren and emitting atom ...\n")
 	l.tokenAsAtom(AtomLeftParen)
 }
 
-func readRightParen(l *LispReader, rn rune) {
+func readRightParen(l *LispReader) {
 	log.Tracef("Reading right paren and emitting atom ...\n")
 	l.tokenAsAtom(AtomRightParen)
 }
 
-func readEndOfFile(l *LispReader, rn rune) {
+func readEndOfFile(l *LispReader) {
 	log.Tracef("Reading end of file and emitting atom ...\n")
 	l.tokenAsAtom(AtomEOF)
+}
+
+func readLeftVect(l *LispReader) {
+	l.tokenAsAtom(AtomLeftVect)
+}
+
+func readRightVect(l *LispReader) {
+	l.tokenAsAtom(AtomRightVect)
 }
 
 /////////////////////////////////////////////////////////////////////////////

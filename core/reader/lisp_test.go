@@ -21,7 +21,6 @@ func (s *LispReaderSuite) TestReadEmpty() {
 	atoms := l.Atoms()
 	s.Equal(1, len(atoms))
 	s.Equal("AtomEOF", AtomName(atoms[0].Type))
-	s.Equal("", atoms[0].Value)
 }
 
 func (s *LispReaderSuite) TestReadJustParens() {
@@ -30,8 +29,19 @@ func (s *LispReaderSuite) TestReadJustParens() {
 	l.Read()
 	atoms := l.Atoms()
 	s.Equal(3, len(atoms))
-	s.Equal("(", atoms[0].Value)
-	s.Equal(")", atoms[1].Value)
+	s.Equal("AtomLeftParen", AtomName(atoms[0].Type))
+	s.Equal("AtomRightParen", AtomName(atoms[1].Type))
+	s.Equal("AtomEOF", AtomName(atoms[2].Type))
+}
+
+func (s *LispReaderSuite) TestReadJustBrackets() {
+	var l *LispReader
+	l = NewLispReader("test-prog", "[]")
+	l.Read()
+	atoms := l.Atoms()
+	s.Equal(3, len(atoms))
+	s.Equal("AtomLeftVect", AtomName(atoms[0].Type))
+	s.Equal("AtomRightVect", AtomName(atoms[1].Type))
 	s.Equal("AtomEOF", AtomName(atoms[2].Type))
 }
 
