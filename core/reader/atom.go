@@ -1,14 +1,25 @@
 package reader
 
-// Atom object
-type Atom struct {
-	Type     AtomType
-	Position Position
-	Value    string
-}
+import log "github.com/sirupsen/logrus"
 
 // AtomType atom type
 type AtomType int
+
+// Atom object
+type Atom struct {
+	Type     AtomType
+	Value    string
+	Position Position
+}
+
+// NewAtom ...
+func NewAtom(l *LispReader, atomType AtomType) Atom {
+	pos := l.lastPosition()
+	val := l.ReadToken()
+	log.Tracef("Creating atom of type %s from token %s at position %#v ...",
+		AtomName(atomType), val, pos)
+	return Atom{Type: atomType, Value: val, Position: pos}
+}
 
 // Lexer atom constants
 const (

@@ -1,6 +1,7 @@
 package reader
 
 import (
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -66,7 +67,7 @@ func (s *PositionReaderSuite) TestPushPosition() {
 	r := NewPositionReader("thing1")
 	r.pushPosition(p2)
 	s.Equal(p2, r.lastPosition())
-	s.Equal(2, len(r.positionStack))
+	s.Equal(2, r.stackLength())
 }
 
 func (s *PositionReaderSuite) TestPushPositions() {
@@ -77,27 +78,27 @@ func (s *PositionReaderSuite) TestPushPositions() {
 	r := NewPositionReader("thing1\nthing2", p1)
 	r.pushPositions(p2, p3, p4)
 	s.Equal(p4, r.lastPosition())
-	s.Equal(4, len(r.positionStack))
+	s.Equal(4, r.stackLength())
 }
 
 func (s *PositionReaderSuite) TestPopPosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1, p2)
-	s.Equal(2, len(r.positionStack))
+	s.Equal(2, r.stackLength())
 	s.Equal(p2, r.popPosition())
-	s.Equal(1, len(r.positionStack))
+	s.Equal(1, r.stackLength())
 	s.Equal(p1, r.popPosition())
-	s.Equal(0, len(r.positionStack))
+	s.Equal(0, r.stackLength())
 }
 
 func (s *PositionReaderSuite) TestNextRunePosition() {
 	p1 := Position{row: 1, column: 1, absolute: 0}
 	p2 := Position{row: 1, column: 2, absolute: 1}
 	r := NewPositionReader("thing1", p1)
-	s.Equal(1, len(r.positionStack))
+	s.Equal(1, r.stackLength())
 	s.Equal(p2, r.nextRunePosition('h'))
-	s.Equal(1, len(r.positionStack))
+	s.Equal(1, r.stackLength())
 }
 
 func (s *PositionReaderSuite) TestReadRuneOneLine() {
@@ -190,4 +191,18 @@ func (s *PositionReaderSuite) TestUneadRuneManyLines() {
 	s.Equal(Position{row: 1, column: 2, absolute: 1}, r.lastPosition())
 	_ = r.UnreadRune()
 	s.Equal(Position{row: 1, column: 1, absolute: 0}, r.lastPosition())
+}
+
+func (s *PositionReaderSuite) TestReadEOF() {
+	var rn rune
+	var err error
+	r := NewPositionReader("t1")
+	// This will bring us to the end of the string:
+	for i := 0; i < 2; i++ {
+		rn, _, _ = r.ReadRune()
+	}
+	s.Equal("1", string(rn))
+	// This should return an EOF error:
+	_, _, err = r.ReadRune()
+	s.Equal(io.EOF, err)
 }

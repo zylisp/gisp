@@ -1,7 +1,7 @@
 package reader
 
 import (
-	"bufio"
+	"io"
 	"strings"
 )
 
@@ -15,13 +15,17 @@ type Position struct {
 // PositionReader wraps bufio.Reader and embeds the Position struct
 type PositionReader struct {
 	positionStack []Position
-	reader        *bufio.Reader
+	reader        io.RuneScanner
 	lastRune      rune
 }
 
 // initPosition defines the initial default position
 func initPosition() Position {
 	return Position{row: 1, column: 0, absolute: -1}
+}
+
+func nonPosition() Position {
+	return Position{row: -1, column: -1, absolute: -1}
 }
 
 // defaultPositions defines the defaults for use by the constructor
@@ -40,26 +44,36 @@ func NewPositionReader(stringData string, opts ...Position) *PositionReader {
 	if opts[0].row == 0 {
 		opts[0].row = defaultPos[0].row
 	}
-	if opts[0].column == 0 {
-		opts[0].column = defaultPos[0].column
-	}
 	return &PositionReader{
 		opts,
-		bufio.NewReader(strings.NewReader(stringData)),
+		strings.NewReader(stringData),
 		'0',
 	}
+}
+
+// stackLength returns the index in the postition stack for the most
+//             recently added position
+func (r *PositionReader) stackLength() int {
+	return len(r.positionStack)
 }
 
 // lastPositionIndex returns the index in the postition stack for the most
 //                   recently added position
 func (r *PositionReader) lastPositionIndex() int {
-	return len(r.positionStack) - 1
+	return r.stackLength() - 1
 }
 
 // lastPosition returns the most recently added position from the position
 //              stack
 func (r *PositionReader) lastPosition() Position {
-	return r.positionStack[r.lastPositionIndex()]
+	idx := r.lastPositionIndex()
+	stackLen := r.stackLength()
+	if idx >= 0 && stackLen > 0 {
+		return r.positionStack[idx]
+	} else if idx < 0 && stackLen > 0 {
+		return r.positionStack[0]
+	}
+	return nonPosition()
 }
 
 // nextToLastPositionIndex returns the index in the postition stack for the
@@ -71,13 +85,20 @@ func (r *PositionReader) nextToLastPositionIndex() int {
 // nextToLastPosition returns the second most recently added position from the
 //                    position stack
 func (r *PositionReader) nextToLastPosition() Position {
-	return r.positionStack[r.nextToLastPositionIndex()]
+	idx := r.nextToLastPositionIndex()
+	stackLen := r.stackLength()
+	if idx > 0 && stackLen > 1 {
+		return r.positionStack[idx]
+	}
+	return nonPosition()
 }
 
 // deleteLastPosition deletes the most recently added position in the position
 //                    stack
 func (r *PositionReader) deleteLastPosition() {
-	r.positionStack = r.positionStack[:r.lastPositionIndex()]
+	if r.stackLength() > 0 {
+		r.positionStack = r.positionStack[:r.lastPositionIndex()]
+	}
 }
 
 // pushPosition adds a new position to the position stack
@@ -140,7 +161,7 @@ func (r *PositionReader) Absolute() int {
 	return r.lastPosition().absolute
 }
 
-// ReadRune calls the ReadRune function of bufio.Reader and then applies
+// ReadRune calls the ReadRune function of io.Reader and then applies
 //          position-tracking logic
 func (r *PositionReader) ReadRune() (rune, int, error) {
 	rn, sz, err := r.reader.ReadRune()
@@ -151,7 +172,7 @@ func (r *PositionReader) ReadRune() (rune, int, error) {
 	return rn, sz, nil
 }
 
-// UnreadRune calls the UnreadRune function of bufio.Reader and then applies
+// UnreadRune calls the UnreadRune function of io.Reader and then applies
 //            position-tracking logic
 func (r *PositionReader) UnreadRune() error {
 	err := r.reader.UnreadRune()

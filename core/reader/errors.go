@@ -2,5 +2,7 @@ package reader
 
 // Reader-specific errors
 const (
-	UnsupportedLineReaderArgs string = "Unsupported number of args (%d) passed to LineReader constructor"
+	BadNumberSyntax               string = "Bad number syntax: %q"
+	UnsupportedRuneError          string = "Don't know what to do with rune: %q (%s)"
+	UnterminatedQuotedStringError string = "Unterminated quoted string"
 )

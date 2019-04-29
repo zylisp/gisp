@@ -28,9 +28,9 @@ test-reader:
 # Example usage:
 #  $ TEST=Backup make run-lexer-test
 run-reader-test:
-	@echo "\nRunning 'go test' for reader test $(TEST)...\n" && \
+	@echo "\nRunning 'go test' for reader test $(TEST) in suite $(SUITE)...\n" && \
 	cd ./core/reader && \
-	GO111MODULE=on go test -v -run ReaderSuite -testify.m $(TEST)
+	GO111MODULE=on go test -v -run $(SUITE) -testify.m $(TEST)
 
 gogen-examples:
 	@echo "\nGenerating .go files for examples ...\n"
