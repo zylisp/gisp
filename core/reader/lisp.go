@@ -8,9 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// stateFn state function type
-type stateFn func(*LispReader) stateFn
-
 /////////////////////////////////////////////////////////////////////////////
 ///   Object & Constructor   ////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -42,37 +39,41 @@ func NewLispReader(programName string, programData string) *LispReader {
 // Read ...
 func (l *LispReader) Read() {
 	var rn rune
-	for rn = l.read1(); isWhitespace(rn); {
-		continue
+	for {
+		rn = l.read1()
+		log.Tracef("Rune: %q", rn)
+		if isWhitespace(rn) {
+			log.Trace("Found whitespace; skipping ...")
+			continue
+		} else if rn == EOF {
+			log.Trace("Found end of file; returning ...")
+			readEndOfFile(l)
+			return
+		} else {
+			log.Tracef("Appending '%q' to token ...", rn)
+			l.WriteToken(rn)
+			switch {
+			case rn == leftParen:
+				readLeftParen(l)
+			case rn == rightParen:
+				readRightParen(l)
+			case rn == leftBracket:
+				readLeftVect(l)
+			case rn == rightBracket:
+				readRightVect(l)
+			case rn == doubleQuote:
+				readString(l)
+			case rn == semiColon:
+				readComment(l)
+			// // case isCompoundNumber(r):
+			// // 	return readNumber
+			// // case isAllowedIdentifierRune(r):
+			// // 	return readIdentifier
+			default:
+				log.Panic(fmt.Sprintf(UnsupportedRuneError, rn, string(rn)))
+			}
+		}
 	}
-
-	if rn == EOF {
-		readEndOfFile(l)
-		return
-	}
-	l.WriteToken(rn)
-
-	switch {
-	case rn == leftParen:
-		readLeftParen(l)
-	case rn == rightParen:
-		readRightParen(l)
-	case rn == leftBracket:
-		readLeftVect(l)
-	case rn == rightBracket:
-		readRightVect(l)
-	case rn == doubleQuote:
-		readString(l)
-	// // case r == semiColon:
-	// // 	return readComment
-	// // case isCompoundNumber(r):
-	// // 	return readNumber
-	// // case isAllowedIdentifierRune(r):
-	// // 	return readIdentifier
-	default:
-		log.Panic(fmt.Sprintf(UnsupportedRuneError, rn, string(rn)))
-	}
-	l.Read()
 }
 
 // Atoms ...
@@ -156,18 +157,32 @@ func readString(l *LispReader) {
 	for rn := l.read1(); !isStringEnd(rn); rn = l.read1() {
 		if isUnexpectedStringEnd(rn) {
 			log.Error(UnterminatedQuotedStringError)
-			return
+			break
 		}
 		l.WriteToken(rn)
 	}
 	l.tokenAsAtom(AtomString)
 }
 
+func readComment(l *LispReader) {
+	// Later we might want to save comments to metadata, but for now we're just
+	// going to drop them; however, every newline should count in the position
+	// tracking for the rows, and as long as we call .read1, that should happen
+	log.Trace("Starting to read comment ...")
+	var rn rune
+	for rn = l.read1(); !isCommentEnd(rn); rn = l.read1() {
+		// just keep slurping up the comment until the end of line is reached
+		log.Tracef("Got rune: %q", rn)
+		continue
+	}
+	log.Tracef("End comment rune: %q", rn)
+	log.Trace("Finished reading comment.")
+}
+
 /////////////////////////////////////////////////////////////////////////////
 ///   Utility Functions   ///////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-// isWhitespace reports whether a given rune is considered whitespace
 func isWhitespace(rn rune) bool {
 	return rn == space || rn == tab || rn == newline || rn == optionalCollectionDelimiter
 }
@@ -175,9 +190,17 @@ func isWhitespace(rn rune) bool {
 func isStringEnd(rn rune) bool {
 	return rn == doubleQuote
 }
-func isUnexpectedStringEnd(rn rune) bool {
+
+func isNewline(rn rune) bool {
+	return rn == newline
+}
+
+func isEOFOrNewline(rn rune) bool {
 	return rn == EOF || rn == newline
 }
+
+var isUnexpectedStringEnd = isEOFOrNewline
+var isCommentEnd = isEOFOrNewline
 
 // ReadAtomsData ...
 func ReadAtomsData(l *LispReader) []string {
