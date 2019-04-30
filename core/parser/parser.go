@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/zylisp/zylisp/core/lexer"
+	"github.com/zylisp/zylisp/core/reader"
 )
 
 // Pos type
@@ -19,64 +19,68 @@ var nilNode = NewIdentNode("nil")
 
 // ParseFromString parses code and returns a collection of nodes.
 func ParseFromString(name, program string) []Node {
-	return Parse(lexer.NewLexer(name, program))
+	r := reader.NewLispReader(name, program)
+	r.Read()
+	return Parse(r)
 }
 
 // Parse takes lexed data and returns a tree of parsed nodes. This function is
 //       a convenience wrapper around ParseAtoms.
-func Parse(l *lexer.Lexer) []Node {
+func Parse(l *reader.LispReader) []Node {
 	return ParseAtoms(l, make([]Node, 0), ' ')
 }
 
 // ParseAtoms iterates over the items in the given lexed data and adds parsed
 //            nodes to the given tree.
-func ParseAtoms(l *lexer.Lexer, tree []Node, lookingFor rune) []Node {
-	for item := l.NextAtom(); item.Type != lexer.AtomEOF; {
-		node, err := ParseAtom(l, item, lookingFor)
+func ParseAtoms(l *reader.LispReader, tree []Node, lookingFor rune) []Node {
+	for _, atom := range l.Atoms() {
+		if atom.Type == reader.AtomEOF {
+			break
+		}
+		node, err := ParseAtom(l, atom, lookingFor)
 		if err != nil {
 			return tree
 		}
 		tree = append(tree, node)
-		item = l.NextAtom()
 	}
 	return tree
 }
 
-// ParseAtom takes a given lexed item, determines its type, and then create a
+// ParseAtom takes a given Lisp atom, determines its type, and then create a
 //           corresponding and appropriate node for that atom.
-func ParseAtom(l *lexer.Lexer, item lexer.Atom, lookingFor rune) (Node, error) {
+func ParseAtom(l *reader.LispReader, atom reader.Atom, lookingFor rune) (Node, error) {
 	var node Node
-	log.Tracef("Parsed: %#v", item)
-	switch t := item.Type; t {
-	case lexer.AtomIdent:
-		node = NewIdentNode(item.Value)
-	case lexer.AtomString:
-		node = newStringNode(item.Value)
-	case lexer.AtomInt:
-		node = newIntNode(item.Value)
-	case lexer.AtomFloat:
-		node = newFloatNode(item.Value)
-	case lexer.AtomComplex:
-		node = newComplexNode(item.Value)
-	case lexer.AtomLeftParen:
+	log.Tracef("Parsed: %#v", atom)
+	switch t := atom.Type; t {
+	case reader.AtomIdent:
+		node = NewIdentNode(atom.Value)
+	case reader.AtomString:
+		node = newStringNode(atom.Value)
+	case reader.AtomInt:
+		node = newIntNode(atom.Value)
+	case reader.AtomFloat:
+		node = newFloatNode(atom.Value)
+	case reader.AtomComplex:
+		node = newComplexNode(atom.Value)
+	case reader.AtomLeftParen:
 		node = newCallNode(ParseAtoms(l, make([]Node, 0), ')'))
-	case lexer.AtomLeftVect:
+	case reader.AtomLeftVect:
 		node = newVectNode(ParseAtoms(l, make([]Node, 0), ']'))
-	case lexer.AtomRightParen:
+	case reader.AtomRightParen:
 		if lookingFor != ')' {
-			log.Error(RightCurvedBracketError, item.Position.Row(),
-				item.Position.Column())
+			log.Error(RightCurvedBracketError, atom.Row(),
+				atom.Column())
 		}
 		return nil, errors.New("done")
-	case lexer.AtomRightVect:
+	case reader.AtomRightVect:
 		if lookingFor != ']' {
-			log.Error(RightSquareBracketError, item.Position.Row(),
-				item.Position.Column())
+			log.Error(RightSquareBracketError, atom.Row(),
+				atom.Column())
 		}
 		return nil, errors.New("done")
-	case lexer.AtomError:
-		log.Panicf(UnspecifiedAtomError, lexer.AtomName(lexer.AtomError),
-			item.Position.Row(), item.Position.Column())
+	case reader.AtomError:
+		log.Panicf(UnspecifiedAtomError, reader.AtomName(reader.AtomError),
+			atom.Row(), atom.Column())
 	default:
 		log.Panic(AtomTypeError)
 	}
